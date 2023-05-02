@@ -21,6 +21,8 @@ public class SubCategoria extends GeradorId {
 	@Column(length = 60 , nullable = false)
 	private String nomeSubCategoria;
 //	@JsonBackReference
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Categoria categoria;

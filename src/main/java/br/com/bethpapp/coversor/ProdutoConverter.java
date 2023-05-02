@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import br.com.bethpapp.dominio.entidade.Produto;
-import br.com.bethpapp.modelo.dto.ProdutoDTo;
+import br.com.bethpapp.modelo.dto.ProdutoDTO;
 import br.com.bethpapp.modelo.input.ProdutoInput;
 
 ;
@@ -20,9 +20,9 @@ public class ProdutoConverter {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public ProdutoDTo toDto(Produto objeto) {
+	public ProdutoDTO toDto(Produto objeto) {
 
-		return modelMapper.map(objeto, ProdutoDTo.class);
+		return modelMapper.map(objeto, ProdutoDTO.class);
 	}
 
 	public Produto toEntity(ProdutoInput objeto) {
@@ -30,12 +30,12 @@ public class ProdutoConverter {
 		return modelMapper.map(objeto, Produto.class);
 	}
 
-	public Page<ProdutoDTo> topage(Page<Produto> objetos) {
+	public Page<ProdutoDTO> topage(Page<Produto> objetos) {
 
 		return objetos.map(obj -> toDto(obj));
 	}
 
-	public List<ProdutoDTo> toCollectionDto(List<Produto> categorias) {
+	public List<ProdutoDTO> toCollectionDto(List<Produto> categorias) {
 		return categorias.stream().map(this::toDto).collect(Collectors.toList());
 	}
 

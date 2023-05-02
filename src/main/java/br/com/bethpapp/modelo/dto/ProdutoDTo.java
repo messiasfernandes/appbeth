@@ -4,19 +4,18 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import br.com.bethpapp.dominio.entidade.Atributo;
-import br.com.bethpapp.dominio.entidade.Estoque;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 
-public class ProdutoDTo {
+public class ProdutoDTO {
 
 
 	private SubCategoriaDTO subcategoria;
 
-
+   private Long id;
 
 	private String nomeproduto;
 
@@ -40,7 +39,7 @@ public class ProdutoDTo {
 	private BigDecimal precocusto;
 
 	private BigDecimal customedio;
-	 private Estoque estoque;
+	 private EstoqueDTO estoque;
 
 	private List<Atributo> atributos;
 

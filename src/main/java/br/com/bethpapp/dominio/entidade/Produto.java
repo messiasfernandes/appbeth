@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -18,14 +19,14 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
 @Setter
 @Getter
 @Entity
-public class Produto  extends GeradorId{
+public class Produto extends GeradorId {
 
-	
 	private static final long serialVersionUID = 1L;
-	
+
 	@Setter(value = AccessLevel.NONE)
 	@NotEmpty
 	@Column(length = 120)
@@ -52,14 +53,17 @@ public class Produto  extends GeradorId{
 	private BigDecimal precocusto;
 	@Digits(integer = 9, fraction = 3)
 	private BigDecimal customedio;
-	  @OneToOne(mappedBy = "produto")
-	    private Estoque estoque;
-	@JsonIgnoreProperties(value = {  "nomeSubCategoria" }, allowGetters = true)
 
+	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	@JoinColumn
+	private Estoque estoque;
+
+	@JsonIgnoreProperties(value = { "nomeSubCategoria" }, allowGetters = true)
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private SubCategoria subcategoria;
-	
+
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
 	private List<Atributo> atributos;
