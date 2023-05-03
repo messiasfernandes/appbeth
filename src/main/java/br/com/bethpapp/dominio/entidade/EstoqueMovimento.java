@@ -31,16 +31,9 @@ public class EstoqueMovimento extends GeradorId {
 	@DateTimeFormat(pattern = " dd/MM/yyyy ")
 	@JsonFormat(pattern = "dd/MM/yyyy ")
 	private LocalDate datamovimento;
- //
-	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn()
     private Produto produto;
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonBackReference
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn
-//	private Estoque estoque;
 	private Integer qtde;
 	private Integer saldoanterior;
 

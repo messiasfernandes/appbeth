@@ -9,7 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
+import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.modelo.dto.EstoqueProdutoDTO;
+import br.com.bethpapp.modelo.input.EstoqueMovimentoInput;
+import br.com.bethpapp.modelo.input.ProdutoInput;
 
 @Component
 public class EstoqueMovimemtoConvereter {
@@ -21,7 +24,10 @@ public class EstoqueMovimemtoConvereter {
 
 		return modelMapper.map(objeto, EstoqueProdutoDTO.class);
 	}
+	public EstoqueMovimento toEntity(EstoqueMovimentoInput objeto) {
 
+		return modelMapper.map(objeto, EstoqueMovimento.class);
+	}
 	public Page<EstoqueProdutoDTO> topage(Page<EstoqueMovimento> objetos) {
 
 		return objetos.map(obj -> toDto(obj));

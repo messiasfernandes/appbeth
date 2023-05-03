@@ -3,7 +3,8 @@ package br.com.bethpapp.modelo.input;
 import lombok.Data;
 
 @Data
-public class SubCategoriaInput {
+public class EstoqueInput {
 	private Long id;
-	private String nomeSubCategoria;
+	private Integer quantidade;
+
 }

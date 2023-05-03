@@ -1,5 +1,7 @@
 package br.com.bethpapp.dominio.entidade;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,7 +24,7 @@ public class SubCategoria extends GeradorId {
 	private String nomeSubCategoria;
 //	@JsonBackReference
 	
-	
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Categoria categoria;

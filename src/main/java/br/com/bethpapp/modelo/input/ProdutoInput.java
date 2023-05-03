@@ -16,7 +16,7 @@ public class ProdutoInput{
 
 	
 	
-	
+	private Long id;
 	@Setter(value = AccessLevel.NONE)
 	@NotEmpty
 	@Column(length = 120)
@@ -45,7 +45,7 @@ public class ProdutoInput{
 	
 	private BigDecimal customedio;
 	private SubCategoriaInput subcategoria;
-	
+	private EstoqueInput estoque;
 
 	private List<Atributo> atributos;
 
