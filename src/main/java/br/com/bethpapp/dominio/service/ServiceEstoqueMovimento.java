@@ -11,6 +11,7 @@ import br.com.bethpapp.dominio.dao.DaoMovementacaoEstoque;
 import br.com.bethpapp.dominio.entidade.Estoque;
 import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
 import br.com.bethpapp.dominio.enumerado.TipoMovimentacao;
+import br.com.bethpapp.dominio.service.exeption.NegocioException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -19,8 +20,8 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 	private DaoMovementacaoEstoque daoMovementacaoEstoque;
 	@Autowired
 	private ServiceEstoque serviceEstoque;
-	@Autowired
-     private ServiceProduto serviceProduto;
+
+
 	@Override
 	public Page<EstoqueMovimento> buscar(String nome, Pageable pageable) {
 		// TODO Auto-generated method stub
@@ -38,39 +39,62 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 		// TODO Auto-generated method stub
 		return null;
 	}
-    @Transactional
+
+	@Transactional
 	@Override
 	public EstoqueMovimento salvar(EstoqueMovimento objeto) {
-    	
-   	objeto=	 verificarMovimento(objeto);
-        objeto.setDatamovimento(LocalDate.now());
+
+		verificarMovimento(objeto);
+		objeto.setDatamovimento(LocalDate.now());
 		return daoMovementacaoEstoque.save(objeto);
 	}
 
 	public Page<EstoqueMovimento> listar(String paramentro, LocalDate datanicio, LocalDate datafim, Pageable pageable) {
 		return daoMovementacaoEstoque.buscar(paramentro, datanicio, datafim, pageable);
 	}
-  private EstoqueMovimento verificarMovimento (EstoqueMovimento movimento) {
-	  if (movimento.getTipoMovimentacao() == TipoMovimentacao.Entrada ) {
-		  if (movimento.getProduto().getEstoque() != null) {
-			  System.out.println("pasou aqui");
-		    	movimento.setSaldoanterior(movimento.getProduto().getEstoque().getQuantidade());
-		    	movimento.getProduto().getEstoque().setQuantidade(movimento.getQtde()+movimento.getSaldoanterior());
-		    	movimento.getProduto().getEstoque().setProduto(movimento.getProduto());
-		    	serviceEstoque.salvar(movimento.getProduto().getEstoque());
-		    	
-		    	System.out.println(movimento.getProduto().getId());
-		    	System.out.println(movimento.getProduto().getNomeproduto());
-		    	System.out.println(movimento.getProduto().getEstoque().getQuantidade());
-		    	
-		    }else {
-		    	var estoque = new Estoque();
-		    	estoque.setProduto(movimento.getProduto());
-		    	estoque.setQuantidade(movimento.getQtde());
-		    	serviceEstoque.salvar(estoque);
-		    }
-	  }
-	  return movimento;
-	  
-  }
+
+	private EstoqueMovimento verificarMovimento(EstoqueMovimento movimento) {
+		if (movimento.getTipoMovimentacao() == TipoMovimentacao.Entrada) {
+			if (movimento.getProduto().getEstoque() != null) {
+
+				SomarEstoque(movimento);
+
+				serviceEstoque.salvar(movimento.getProduto().getEstoque());
+			} else {
+
+				serviceEstoque.salvar(adicionarEstoque(movimento));
+			}
+		} else {
+			serviceEstoque.salvar(baxarEstoque(movimento).getProduto().getEstoque());
+		}
+
+		return movimento;
+
+	}
+
+	private EstoqueMovimento baxarEstoque(EstoqueMovimento movimento) {
+		if (movimento.getProduto().getEstoque()==null) {
+			throw new NegocioException("Não possivel baixar estoque de um produto que não tenha estoque");
+		}
+		movimento.setSaldoanterior(movimento.getProduto().getEstoque().getQuantidade());
+		movimento.getProduto().getEstoque().setQuantidade(movimento.getSaldoanterior() - movimento.getQtde());
+		movimento.getProduto().getEstoque().setProduto(movimento.getProduto());
+		return movimento;
+	}
+
+	private EstoqueMovimento SomarEstoque(EstoqueMovimento movimento) {
+		movimento.setSaldoanterior(movimento.getProduto().getEstoque().getQuantidade());
+		movimento.getProduto().getEstoque().setQuantidade(movimento.getSaldoanterior() + movimento.getQtde());
+		movimento.getProduto().getEstoque().setProduto(movimento.getProduto());
+
+		return movimento;
+
+	}
+
+	private Estoque adicionarEstoque(EstoqueMovimento movimento) {
+		var estoque = new Estoque();
+		estoque.setProduto(movimento.getProduto());
+		estoque.setQuantidade(movimento.getQtde());
+		return estoque;
+	}
 }

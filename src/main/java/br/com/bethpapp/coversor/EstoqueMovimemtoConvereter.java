@@ -9,10 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
-import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.modelo.dto.EstoqueProdutoDTO;
 import br.com.bethpapp.modelo.input.EstoqueMovimentoInput;
-import br.com.bethpapp.modelo.input.ProdutoInput;
 
 @Component
 public class EstoqueMovimemtoConvereter {

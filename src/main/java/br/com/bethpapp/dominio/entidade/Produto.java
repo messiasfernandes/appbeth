@@ -68,4 +68,21 @@ public class Produto extends GeradorId {
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
 	private List<Atributo> atributos;
 
+	public void setNomeproduto(String nomeproduto) {
+		if(nomeproduto!=null) {
+			this.nomeproduto = nomeproduto.toUpperCase();
+		}else {
+			this.nomeproduto = nomeproduto;
+		}
+	
+	}
+
+	public void setMarca(String marca) {
+		if (marca != null) {
+			this.marca = marca.toUpperCase();
+		} else {
+			this.marca = marca;
+		}
+	}
+
 }

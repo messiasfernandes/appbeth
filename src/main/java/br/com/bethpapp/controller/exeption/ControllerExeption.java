@@ -7,14 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import br.com.bethpapp.dominio.service.exeption.NegocioException;
 
 @ControllerAdvice
 public class ControllerExeption extends ResponseEntityExceptionHandler {
@@ -33,12 +37,19 @@ public class ControllerExeption extends ResponseEntityExceptionHandler {
 			campos.add(new Problema.Campo(nome, mensagem));
 		}
 
-		var problema = Problema.builder().
-				status(status.value()).
-				titulo("Um ou mais campos estão inválidos. " + "Faça o preenchimento correto e tente novamente").
-				status(status.value()).
-				dataHora(OffsetDateTime.now()).campos(campos).build();
-                         
+		var problema = Problema.builder().status(status.value())
+				.titulo("Um ou mais campos estão inválidos. " + "Faça o preenchimento correto e tente novamente")
+				.status(status.value()).dataHora(OffsetDateTime.now()).campos(campos).build();
+
 		return handleExceptionInternal(ex, problema, headers, status, request);
+	}
+
+	@ExceptionHandler(NegocioException.class)
+	public ResponseEntity<Object> IlegalExeption(NegocioException ex, WebRequest request) {
+		var status = HttpStatus.BAD_REQUEST;
+		var problema = Problema.builder().status(status.value()).titulo(ex.getMessage()).status(status.value())
+				.dataHora(OffsetDateTime.now()).build();
+
+		return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
 	}
 }

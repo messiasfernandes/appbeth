@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.bethpapp.dominio.enumerado.TipoMovimentacao;
 import jakarta.persistence.Column;
