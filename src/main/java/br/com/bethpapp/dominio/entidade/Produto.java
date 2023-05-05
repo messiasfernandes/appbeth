@@ -53,7 +53,8 @@ public class Produto extends GeradorId {
 	private BigDecimal precocusto;
 	@Digits(integer = 9, fraction = 3)
 	private BigDecimal customedio;
-
+	@Column
+    private Integer estoquemino;
 	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn
 	private Estoque estoque;
