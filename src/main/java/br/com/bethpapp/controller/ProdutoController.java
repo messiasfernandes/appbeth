@@ -58,8 +58,11 @@ public class ProdutoController implements ProdutoOpenApi {
 	@Override
 	public ResponseEntity<ProdutoDTO> Atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoInput produto,
 			HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println(id);
+		produto.setId(id);
+		System.out.println(produto.getId());
+		var produtoeditado = serviceProduto.salvar(produtoConverter.toEntity(produto));
+		return ResponseEntity.status(HttpStatus.OK).body(produtoConverter.toDto(produtoeditado));
 	}
 
 	@PostMapping

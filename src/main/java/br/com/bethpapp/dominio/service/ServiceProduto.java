@@ -15,14 +15,13 @@ import br.com.bethpapp.dominio.service.exeption.EntidadeEmUsoExeption;
 import br.com.bethpapp.dominio.service.exeption.RegistroNaoEncontrado;
 import jakarta.transaction.Transactional;
 
-
-
 @Service
 public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produto> {
 	@Autowired
 	private DaoProduto daoProduto;
 	@Autowired
-  private DaoEstoque daoEstoque;
+	private DaoEstoque daoEstoque;
+
 	@Override
 	public Page<Produto> buscar(String nome, Pageable pageable) {
 
@@ -53,43 +52,34 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 	@Transactional
 	@Override
 	public Produto salvar(Produto objeto) {
-	
-	var estoque = new Estoque();
-      estoque.setProduto(objeto);
-	//daoEstoque.save(estoque);
-    ///  System.out.println(objeto.getEstoque().getQuantidade());
-      
-      System.out.println(objeto.getNomeproduto());
-    //  objeto.setEstoque(estoque);
+		if (objeto.getAtributos().size() > 0) {
+			objeto.setCaracteristica(concatenar(objeto));
+		}
 
-		
 		return daoProduto.save(objeto);
 	}
-	
+
 	private String concatenar(Produto objeto) {
 		StringBuilder strBuilder = new StringBuilder();
-        var tam =objeto.getAtributos().size()-1;
-   
-	    for (int i=0; i< objeto.getAtributos().size();i++) {
-	    
-	    if(i==tam) {
-	    	
-	    	strBuilder.append(objeto.getAtributos().get(i).getTipo().concat(" : "));
-	    	strBuilder.append(objeto.getAtributos().get(i).getValor().concat(" "));
-	    	
-	    }else {
-	    	
-	    	strBuilder.append(objeto.getAtributos().get(i).getTipo().concat(" :"));
-	    	strBuilder.append(objeto.getAtributos().get(i).getValor().concat(" | "));
-	    }
-	    	
-	    }
+		var tam = objeto.getAtributos().size() - 1;
 
-	
+		for (int i = 0; i < objeto.getAtributos().size(); i++) {
+
+			if (i == tam) {
+
+				// strBuilder.append(objeto.getAtributos().get(i).getTipo().concat(" : "));
+				strBuilder.append(objeto.getAtributos().get(i).getValor().concat(" "));
+
+			} else {
+
+				// strBuilder.append(objeto.getAtributos().get(i).getTipo().concat(" :"));
+				strBuilder.append(objeto.getAtributos().get(i).getValor().concat(" | "));
+			}
+
+		}
 
 		return strBuilder.toString();
-		
-	}
 
+	}
 
 }
