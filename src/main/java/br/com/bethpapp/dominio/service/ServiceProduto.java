@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.bethpapp.dominio.dao.DaoEstoque;
 import br.com.bethpapp.dominio.dao.DaoProduto;
 import br.com.bethpapp.dominio.entidade.Estoque;
 import br.com.bethpapp.dominio.entidade.Produto;
@@ -21,8 +20,7 @@ import jakarta.transaction.Transactional;
 public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produto> {
 	@Autowired
 	private DaoProduto daoProduto;
-	@Autowired
-  private DaoEstoque daoEstoque;
+
 	@Override
 	public Page<Produto> buscar(String nome, Pageable pageable) {
 
