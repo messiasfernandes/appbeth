@@ -22,9 +22,7 @@ public class SubCategoria extends GeradorId {
 	@NotEmpty
 	@Column(length = 60 , nullable = false)
 	private String nomeSubCategoria;
-//	@JsonBackReference
-	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Categoria categoria;
