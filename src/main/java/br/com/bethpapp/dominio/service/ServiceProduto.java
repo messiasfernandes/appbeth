@@ -2,14 +2,11 @@ package br.com.bethpapp.dominio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.bethpapp.dominio.dao.DaoEstoque;
 import br.com.bethpapp.dominio.dao.DaoProduto;
-import br.com.bethpapp.dominio.entidade.Estoque;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.exeption.EntidadeEmUsoExeption;
 import br.com.bethpapp.dominio.service.exeption.RegistroNaoEncontrado;
@@ -19,8 +16,6 @@ import jakarta.transaction.Transactional;
 public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produto> {
 	@Autowired
 	private DaoProduto daoProduto;
-	@Autowired
-	private DaoEstoque daoEstoque;
 
 	@Override
 	public Page<Produto> buscar(String nome, Pageable pageable) {
@@ -31,21 +26,26 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 	@Transactional()
 	@Override
 	public void excluir(Long codigo) {
+
+		buccarporid(codigo);
 		try {
+
 			daoProduto.deleteById(codigo);
 			daoProduto.flush();
-		} catch (EmptyResultDataAccessException e) {
-			throw new RegistroNaoEncontrado("Produto não encotrado ");
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoExeption(
 					"Operação não permitida!! Este registro pode estar asssociado a outra tabela");
 		}
 
+		daoProduto.deleteById(codigo);
+
 	}
 
 	@Override
 	public Produto buccarporid(Long id) {
-
+		if (daoProduto.findById(id).isEmpty()) {
+			throw new RegistroNaoEncontrado("Produto não encotrada");
+		}
 		return daoProduto.findById(id).get();
 	}
 

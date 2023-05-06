@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.ServiceFuncoes;
 import jakarta.persistence.EntityManager;
@@ -19,7 +18,6 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-
 public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 	@PersistenceContext
 	EntityManager em;
@@ -29,14 +27,12 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Produto> criteria = builder.createQuery(Produto.class);
 		Root<Produto> root = criteria.from(Produto.class);
-		Predicate[] predicates=null;
-      
-    	   predicates = criarRestricoes(paramentro, builder, root); 
-       
-		
+		Predicate[] predicates = null;
+
+		predicates = criarRestricoes(paramentro, builder, root);
 
 		root.fetch("subcategoria").fetch("categoria");
-		root.fetch("estoque",JoinType.LEFT);
+		root.fetch("estoque", JoinType.LEFT);
 		root.fetch("atributos", JoinType.LEFT);
 		criteria.select(root);
 		criteria.where(predicates);
@@ -72,7 +68,7 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if ((!ehnumero(paramentro) && (qtdecaraceteres(paramentro) > 0))) {
-			System.out.println("pasou aqui");
+		//	System.out.println("pasou aqui");
 			predicates.add(builder.or(builder.like(root.get("marca"), paramentro + "%"),
 					builder.like(root.get("subcategoria").get("nomeSubCategoria"), paramentro + "%"),
 					builder.like(root.get("nomeproduto"), "%" + paramentro + "%")
@@ -80,6 +76,16 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 			)
 
 			);
+
+		}
+		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) != 13)) {
+			System.out.println("pasou aqui");
+			Long id = Sonumero(paramentro);
+			predicates.add(builder.or(builder.equal(root.get("id"), id)));
+		}
+		
+		if ((ehnumero(paramentro) ) && (qtdecaraceteres(paramentro) == 13)) {
+			predicates.add(builder.like(root.get("codigoEan13"), paramentro + "%"));
 		}
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
