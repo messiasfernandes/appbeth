@@ -32,7 +32,7 @@ public interface ProdutoOpenApi extends ControllerOpenApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Produto excluído"),
 			@ApiResponse(responseCode = "404", description = "Produto não encontrado") })
 
-	ResponseEntity<Void> remover(@Param(value = "ID de um Produto") Long iproduto);
+	ResponseEntity<Void> remover(@Param(value = "ID de um Produto") Long idproduto);
 
 	ResponseEntity<ProdutoDTO> buscar(@Param(value = "ID de um Produto") Long idproduto);
 	@Operation(summary = "Atualizar um Produto ")

@@ -7,5 +7,6 @@ import br.com.bethpapp.dominio.entidade.Produto;
 
 public interface ProdutoQuery {
 	Page<Produto> buscar(String paramentro, Pageable pageable);
+	
 
 }
