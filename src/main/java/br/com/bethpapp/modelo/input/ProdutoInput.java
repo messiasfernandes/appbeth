@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import br.com.bethpapp.dominio.entidade.Atributo;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
