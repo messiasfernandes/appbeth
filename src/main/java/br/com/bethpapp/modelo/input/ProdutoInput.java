@@ -21,7 +21,7 @@ public class ProdutoInput {
 	private String imagemPrincipal;
 
 	private String sku;
-
+	private Integer estoqueminimo;
 	private String codigoEan13;
 
 	private String caracteristica;

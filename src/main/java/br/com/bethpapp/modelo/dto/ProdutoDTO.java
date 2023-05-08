@@ -1,21 +1,18 @@
 package br.com.bethpapp.modelo.dto;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bethpapp.dominio.entidade.Atributo;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 
 public class ProdutoDTO {
 
-
 	private SubCategoriaDTO subcategoria;
 
-   private Long id;
+	private Long id;
 
 	private String nomeproduto;
 
@@ -26,12 +23,12 @@ public class ProdutoDTO {
 	private String imagemPrincipal;
 
 	private String sku;
-
+	private Integer estoqueminimo;
 
 	private String codigoEan13;
 
 	private String caracteristica;
-	
+
 	private String codigofabricante;
 
 	private BigDecimal precovenda;
@@ -39,8 +36,8 @@ public class ProdutoDTO {
 	private BigDecimal precocusto;
 
 	private BigDecimal customedio;
-	 private EstoqueDTO estoque;
+	private EstoqueDTO estoque;
 
-	private List<Atributo> atributos;
+	private List<AtributoDTO> atributos = new ArrayList<>();
 
 }

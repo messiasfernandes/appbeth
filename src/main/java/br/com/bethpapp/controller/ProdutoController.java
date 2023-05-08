@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bethpapp.controller.documentacao.ProdutoOpenApi;
 import br.com.bethpapp.coversor.ProdutoConverter;
+import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.ServiceProduto;
 import br.com.bethpapp.modelo.dto.ProdutoDTO;
 import br.com.bethpapp.modelo.input.ProdutoInput;
@@ -44,11 +45,14 @@ public class ProdutoController implements ProdutoOpenApi {
 				.body(produtoConverter.topage(serviceProduto.buscar(paramentro, page)));
 	}
 
+    @GetMapping("/{idproduto}")
 	@Override
-	public ResponseEntity<ProdutoDTO> buscar(Long idproduto) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<ProdutoDTO> buscar(@PathVariable Long idproduto) {
+
+		return ResponseEntity.status(HttpStatus.OK).body(produtoConverter.toDto(serviceProduto.buccarporid(idproduto)));
 	}
+
+
 
 	@PutMapping("/{id}")
 	@Override
@@ -69,18 +73,18 @@ public class ProdutoController implements ProdutoOpenApi {
 		return ResponseEntity.status(HttpStatus.CREATED).body(produtoConverter.toDto(produtosalvo));
 	}
 
-	// @DeleteMapping("/{idproduto}")
+	 @DeleteMapping("/{idproduto}")
 	@Override
 	public ResponseEntity<Void> remover(@PathVariable Long idproduto) {
 		serviceProduto.excluir(idproduto);
 		return ResponseEntity.noContent().build();
 	}
 
-	@DeleteMapping("/{idproduto}")
-	//@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	void excluir(@PathVariable Long idproduto) {
-		serviceProduto.excluir(idproduto);
-
-	}
+//	@DeleteMapping("/{idproduto}")
+//	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+//	void excluir(@PathVariable Long idproduto) {
+//		serviceProduto.excluir(idproduto);
+//
+//	}
 
 }
