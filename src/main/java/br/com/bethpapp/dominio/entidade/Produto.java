@@ -1,7 +1,11 @@
 package br.com.bethpapp.dominio.entidade;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -53,20 +57,20 @@ public class Produto extends GeradorId {
 	private BigDecimal precocusto;
 	@Digits(integer = 9, fraction = 3)
 	private BigDecimal customedio;
-
+	@Column
+    private Integer estoqueminimo;
 	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn
 	private Estoque estoque;
 
 	@JsonIgnoreProperties(value = { "nomeSubCategoria" }, allowGetters = true)
-	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private SubCategoria subcategoria;
-
+	@Fetch(FetchMode.SUBSELECT)
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
-	private List<Atributo> atributos;
+	private List<Atributo> atributos = new ArrayList<>();
 
 	public void setNomeproduto(String nomeproduto) {
 		if(nomeproduto!=null) {

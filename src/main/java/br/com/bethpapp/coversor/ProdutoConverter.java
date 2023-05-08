@@ -12,7 +12,7 @@ import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.modelo.dto.ProdutoDTO;
 import br.com.bethpapp.modelo.input.ProdutoInput;
 
-;
+
 
 @Component
 public class ProdutoConverter {
