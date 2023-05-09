@@ -13,12 +13,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bethpapp.controller.documentacao.ProdutoOpenApi;
 import br.com.bethpapp.coversor.ProdutoConverter;
-import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.ServiceProduto;
 import br.com.bethpapp.modelo.dto.ProdutoDTO;
 import br.com.bethpapp.modelo.input.ProdutoInput;
@@ -80,11 +78,6 @@ public class ProdutoController implements ProdutoOpenApi {
 		return ResponseEntity.noContent().build();
 	}
 
-//	@DeleteMapping("/{idproduto}")
-//	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-//	void excluir(@PathVariable Long idproduto) {
-//		serviceProduto.excluir(idproduto);
-//
-//	}
+
 
 }

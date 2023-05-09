@@ -34,12 +34,13 @@ public class EstoqueMovimentacaoController implements EstoqueMovimentoOpenApi {
 	@Override
 	public ResponseEntity<Page<EstoqueProdutoDTO>> listar(
 			@RequestParam(value = "paramentro", required = false, defaultValue = "") String paramentro,
+			@RequestParam(value = "tipo", required = true, defaultValue = "Entrada") String tipo,
 			@RequestParam(value = "dataincio", required = false) LocalDate dataincio,
 			@RequestParam(value = "datafim", required = false) LocalDate datafim,
 			@RequestParam(value = "page", defaultValue = "0") Integer pagina,
 			@RequestParam(value = "size", defaultValue = "4") Integer size, Pageable page) {
 		return ResponseEntity.status(HttpStatus.OK).body(estoqueMovimemtoConvereter
-				.topage(serviceEstoqueMovimento.listar(paramentro, dataincio, datafim, page)));
+				.topage(serviceEstoqueMovimento.listar(paramentro,tipo, dataincio, datafim, page)));
 	}
 
 	@Override

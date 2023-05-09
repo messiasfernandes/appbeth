@@ -26,7 +26,7 @@ public interface EstoqueMovimentoOpenApi extends ControllerOpenApi {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = EstoqueMovimento.class)) }),
 			@ApiResponse(responseCode = "400", description = "Requisão Invaldia", content = @Content),
 			@ApiResponse(responseCode = "404", description = "Movimentação não encontrada", content = @Content) })
-	ResponseEntity<Page<EstoqueProdutoDTO>> listar(String paramentro, LocalDate dataincio, LocalDate datafim,
+	ResponseEntity<Page<EstoqueProdutoDTO>> listar(String paramentro,String tipo, LocalDate dataincio, LocalDate datafim,
 			Integer pagina, Integer size,  Pageable page);
 
 	@Operation(summary = "Excluid um Movimentação por ID")

@@ -49,8 +49,8 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 		return daoMovementacaoEstoque.save(objeto);
 	}
 
-	public Page<EstoqueMovimento> listar(String paramentro, LocalDate datanicio, LocalDate datafim, Pageable pageable) {
-		return daoMovementacaoEstoque.buscar(paramentro, datanicio, datafim, pageable);
+	public Page<EstoqueMovimento> listar(String paramentro, String tipo, LocalDate datanicio, LocalDate datafim, Pageable pageable) {
+		return daoMovementacaoEstoque.buscar(paramentro,tipo, datanicio, datafim, pageable);
 	}
 
 	private EstoqueMovimento verificarMovimento(EstoqueMovimento movimento) {
