@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
 import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
 
 public interface EstoqueMovmentoQuery {
-	Page<EstoqueMovimento> buscar(String paramentro, LocalDate datanicio, LocalDate datafim, Pageable pageable);
+	Page<EstoqueMovimento> buscar(String paramentro, String tipo, LocalDate datanicio, LocalDate datafim, Pageable pageable);
 }
