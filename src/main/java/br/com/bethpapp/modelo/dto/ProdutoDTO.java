@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.bethpapp.dominio.entidade.Componente;
 import lombok.Data;
 
 @Data
@@ -39,5 +40,5 @@ public class ProdutoDTO {
 	private EstoqueDTO estoque;
 
 	private List<AtributoDTO> atributos = new ArrayList<>();
-
+	private List<ComponeteDTO> componentes;
 }

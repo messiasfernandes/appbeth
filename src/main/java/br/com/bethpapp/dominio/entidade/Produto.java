@@ -16,6 +16,8 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Digits;
@@ -58,7 +60,7 @@ public class Produto extends GeradorId {
 	@Digits(integer = 9, fraction = 3)
 	private BigDecimal customedio;
 	@Column
-    private Integer estoqueminimo;
+	private Integer estoqueminimo;
 	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn
 	private Estoque estoque;
@@ -71,14 +73,20 @@ public class Produto extends GeradorId {
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
 	private List<Atributo> atributos = new ArrayList<>();
-
+	  @ManyToMany
+	    @JoinTable(
+	        name = "produto_componente",
+	        joinColumns = @JoinColumn(name = "produto_id"),
+	        inverseJoinColumns = @JoinColumn(name = "componente_id")
+	    )
+	    private List<Componente> componentes;
 	public void setNomeproduto(String nomeproduto) {
-		if(nomeproduto!=null) {
+		if (nomeproduto != null) {
 			this.nomeproduto = nomeproduto.toUpperCase();
-		}else {
+		} else {
 			this.nomeproduto = nomeproduto;
 		}
-	
+
 	}
 
 	public void setMarca(String marca) {

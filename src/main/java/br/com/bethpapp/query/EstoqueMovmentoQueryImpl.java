@@ -25,24 +25,24 @@ public class EstoqueMovmentoQueryImpl extends ServiceFuncoes implements EstoqueM
 	EntityManager em;
 
 	@Override
-	public Page<EstoqueMovimento> buscar(String paramentro, String tipo, LocalDate datanicio, LocalDate datafim, Pageable pageable) {
+	public Page<EstoqueMovimento> buscar(String paramentro, String tipo, LocalDate datanicio, LocalDate datafim,
+			Pageable pageable) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<EstoqueMovimento> criteria = builder.createQuery(EstoqueMovimento.class);
 		Root<EstoqueMovimento> root = criteria.from(EstoqueMovimento.class);
-		
+
 		Predicate[] predicates = null;
-   
-		predicates = criarRestricoes(paramentro,tipo, datanicio, datafim, builder, root);
- 
-		  
+
+		predicates = criarRestricoes(paramentro, tipo, datanicio, datafim, builder, root);
+
 		root.fetch("produto").fetch("estoque", JoinType.LEFT);
 		criteria.multiselect(root);
-	//	criteria.groupBy(root);
+		// criteria.groupBy(root);
 		criteria.select(root);
-		criteria.where ( predicates);
-		
+		criteria.where(predicates);
+
 		System.out.println(root.get("produto").get("estoque").get("id"));
-	
+
 		criteria.orderBy(builder.asc(root.get("datamovimento")));
 		TypedQuery<EstoqueMovimento> query = em.createQuery(criteria);
 		adicionarRestricoesDePaginacao(query, pageable);
@@ -54,12 +54,11 @@ public class EstoqueMovmentoQueryImpl extends ServiceFuncoes implements EstoqueM
 
 		CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
 		Root<EstoqueMovimento> root = criteria.from(EstoqueMovimento.class);
-   
-     
-		criteria.where(criarRestricoes(paramentro,tipo, datinicio, datafim, builder, root));
+
+		criteria.where(criarRestricoes(paramentro, tipo, datinicio, datafim, builder, root));
 
 		criteria.select(builder.count(root));
-		
+
 		return em.createQuery(criteria).getSingleResult();
 	}
 
@@ -73,18 +72,28 @@ public class EstoqueMovmentoQueryImpl extends ServiceFuncoes implements EstoqueM
 
 	}
 
-	private Predicate[] criarRestricoes(String paramentro,String tipo,  LocalDate datainicio, LocalDate datafim,
+	private Predicate[] criarRestricoes(String paramentro, String tipo, LocalDate datainicio, LocalDate datafim,
 			CriteriaBuilder builder, Root<EstoqueMovimento> root) {
 		List<Predicate> predicates = new ArrayList<>();
-        TipoMovimentacao tipoMovimentacao = TipoMovimentacao.valueOf(tipo);
-		if ((datainicio != null && datafim != null && (qtdecaraceteres(paramentro) > 0))) {
-			predicates.add(builder.and(builder.like(root.get("produto").get("nomeproduto"), paramentro.toUpperCase() + "%"),
-			builder.equal(root.get("tipoMovimentacao"),  tipoMovimentacao),
-					builder.between(root.get("datamovimento"), datainicio, datafim) 
-					
 
-			));
-		
+		if ((datainicio != null && datafim != null
+				&& (qtdecaraceteres(paramentro) > 0 && qtdecaraceteres(tipo) == 0))) {
+			predicates.add(
+					builder.and(builder.like(root.get("produto").get("nomeproduto"), paramentro.toUpperCase() + "%"),
+
+							builder.between(root.get("datamovimento"), datainicio, datafim)
+
+					));
+
+		} else if ((datainicio != null && datafim != null
+				&& (qtdecaraceteres(paramentro) > 0 && qtdecaraceteres(tipo) > 0))) {
+			TipoMovimentacao tipoMovimentacao = TipoMovimentacao.valueOf(tipo);
+			predicates.add(
+					builder.and(builder.like(root.get("produto").get("nomeproduto"), paramentro.toUpperCase() + "%"),
+							builder.equal(root.get("tipoMovimentacao"), tipoMovimentacao),
+							builder.between(root.get("datamovimento"), datainicio, datafim)
+
+					));
 		}
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
