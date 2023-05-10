@@ -7,7 +7,6 @@ import br.com.bethpapp.dominio.entidade.Atributo;
 import lombok.Data;
 
 @Data
-
 public class ProdutoInput {
 
 	private Long id;
@@ -23,7 +22,9 @@ public class ProdutoInput {
 	private String sku;
 	private Integer estoqueminimo;
 	private String codigoEan13;
+	private String descricao;
 
+	private Boolean ativo;
 	private String caracteristica;
 
 	private String codigofabricante;

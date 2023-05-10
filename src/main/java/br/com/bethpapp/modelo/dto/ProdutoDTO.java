@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.bethpapp.dominio.entidade.Componente;
 import lombok.Data;
 
 @Data
@@ -25,7 +24,9 @@ public class ProdutoDTO {
 
 	private String sku;
 	private Integer estoqueminimo;
+    private String descricao;
 
+	private Boolean ativo;
 	private String codigoEan13;
 
 	private String caracteristica;
