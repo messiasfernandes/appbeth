@@ -30,10 +30,11 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 		Predicate[] predicates = null;
 
 		predicates = criarRestricoes(paramentro, builder, root);
-
+		//root.fetch("componentes", JoinType.LEFT);
 		root.fetch("subcategoria").fetch("categoria");
 		root.fetch("estoque", JoinType.LEFT);
 		root.fetch("atributos", JoinType.LEFT);
+		
 		criteria.select(root);
 		criteria.where(predicates);
 		criteria.orderBy(builder.asc(root.get("nomeproduto")));

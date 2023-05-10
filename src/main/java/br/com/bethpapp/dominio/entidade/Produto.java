@@ -76,7 +76,9 @@ public class Produto extends GeradorId {
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
 	private List<Atributo> atributos = new ArrayList<>();
-	  @ManyToMany
+	
+	@Fetch(FetchMode.SUBSELECT)
+	  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	    @JoinTable(
 	        name = "produto_componente",
 	        joinColumns = @JoinColumn(name = "produto_id"),
@@ -98,6 +100,6 @@ public class Produto extends GeradorId {
 		} else {
 			this.marca = marca;
 		}
-	}
+	} 
 
 }
