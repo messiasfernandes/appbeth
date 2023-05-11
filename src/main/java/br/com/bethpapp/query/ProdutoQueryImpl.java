@@ -6,14 +6,17 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 
 import br.com.bethpapp.dominio.entidade.Produto;
+import br.com.bethpapp.dominio.entidade.SubCategoria;
 import br.com.bethpapp.dominio.service.ServiceFuncoes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -30,13 +33,15 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 		Predicate[] predicates = null;
 
 		predicates = criarRestricoes(paramentro, builder, root);
-		//root.fetch("componentes", JoinType.LEFT);
-		root.fetch("subcategoria").fetch("categoria");
+    
+		root.fetch("subcategoria", JoinType.LEFT).fetch("categoria", JoinType.LEFT);
 		root.fetch("estoque", JoinType.LEFT);
 		root.fetch("atributos", JoinType.LEFT);
-		
+
 		criteria.select(root);
+
 		criteria.where(predicates);
+
 		criteria.orderBy(builder.asc(root.get("nomeproduto")));
 		TypedQuery<Produto> query = em.createQuery(criteria);
 		adicionarRestricoesDePaginacao(query, pageable);
@@ -69,26 +74,34 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if ((!ehnumero(paramentro) && (qtdecaraceteres(paramentro) > 0))) {
-		//	System.out.println("pasou aqui");
+			System.out.println("pasou aqui" + paramentro);
+
+			paramentro = paramentro.toUpperCase();
 			predicates.add(builder.or(builder.like(root.get("marca"), paramentro + "%"),
-					builder.like(root.get("subcategoria").get("nomeSubCategoria"), paramentro + "%"),
 					builder.like(root.get("nomeproduto"), "%" + paramentro + "%")
 
-			)
-
-			);
-
-		}
-		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) != 13)) {
-			System.out.println("pasou aqui");
-			Long id = Sonumero(paramentro);
-			predicates.add(builder.or(builder.equal(root.get("id"), id)));
-		}
+			));
+			Join<Produto, SubCategoria> subcategoria = root.join("subcategoria", JoinType.LEFT);
+			predicates.add(builder.or(builder.like(subcategoria.get("nomeSubCategoria"), paramentro + "%"),
+					builder.isNull(subcategoria)));
 		
-		if ((ehnumero(paramentro) ) && (qtdecaraceteres(paramentro) == 13)) {
-			predicates.add(builder.like(root.get("codigoEan13"), paramentro + "%"));
+			
+			if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) != 13)) {
+				System.out.println("pasou aqui");
+				Long id = Sonumero(paramentro);
+				predicates.add(builder.or(builder.equal(root.get("id"), id)));
+			}
+
+			if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) == 13)) {
+				predicates.add(builder.like(root.get("codigoEan13"), paramentro + "%"));
+			}
+			
 		}
+	
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
-
+	
+	public boolean isTemComponente(List<Predicate> componentes){
+	    return !CollectionUtils.isEmpty(componentes);
+	}
 }

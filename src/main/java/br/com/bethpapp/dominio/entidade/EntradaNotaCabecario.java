@@ -34,6 +34,6 @@ public class EntradaNotaCabecario extends GeradorId {
 	@JsonManagedReference
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "entradaNotafiscal", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ItemEtradaNota> items_entrada = new ArrayList<>();
+	private List<ItemEntradaNota> items_entrada = new ArrayList<>();
 
 }

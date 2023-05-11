@@ -46,5 +46,5 @@ public class Comanda implements Serializable {
 	private Mesa mesa;
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "comanda", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ItemdaComanda> itemsdaComanda = new ArrayList<>();
+	private List<ItemComanda> itemsdaComanda = new ArrayList<>();
 }

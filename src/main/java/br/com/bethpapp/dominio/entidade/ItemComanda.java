@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class ItemdaComanda extends GeradorId {
+public class ItemComanda extends GeradorId {
 	
 	private static final long serialVersionUID = 1L;
 	@NotNull

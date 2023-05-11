@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -69,12 +70,13 @@ public class Produto extends GeradorId {
 	private Estoque estoque;
 
 	@JsonIgnoreProperties(value = { "nomeSubCategoria" }, allowGetters = true)
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn
 	private SubCategoria subcategoria;
 	@Fetch(FetchMode.SUBSELECT)
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
+	@BatchSize(size = 10)
 	private List<Atributo> atributos = new ArrayList<>();
 	
 	@Fetch(FetchMode.SUBSELECT)

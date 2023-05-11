@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class ItemEtradaNota extends GeradorId {
+public class ItemEntradaNota extends GeradorId {
 
 	private static final long serialVersionUID = 1L;
 	@Digits(integer = 9, fraction = 3)
