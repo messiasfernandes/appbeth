@@ -1,6 +1,7 @@
 package br.com.bethpapp.dominio.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,7 +46,8 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 	public EstoqueMovimento salvar(EstoqueMovimento objeto) {
 
 		verificarMovimento(objeto);
-		objeto.setDatamovimento(LocalDate.now());
+		objeto.setDatamovimento(LocalDateTime.now());
+		System.out.println(objeto.getDatamovimento());
 		return daoMovementacaoEstoque.save(objeto);
 	}
 

@@ -1,6 +1,7 @@
 package br.com.bethpapp.modelo.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,9 +18,9 @@ public class EstoqueProdutoDTO {
 	@Enumerated(EnumType.STRING)
 	private TipoMovimentacao tipoMovimentacao;
 
-	@DateTimeFormat(pattern = " dd/MM/yyyy")
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate datamovimento;
+	@DateTimeFormat(pattern = " dd/MM/yyyy HH:mm ")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	private LocalDateTime datamovimento;
 	private Integer qtde;
 	private Integer saldoanterior;
 	private ProdutoLigtDTO produto;

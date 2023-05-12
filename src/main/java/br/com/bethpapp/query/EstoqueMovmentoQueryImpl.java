@@ -16,6 +16,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -75,27 +76,31 @@ public class EstoqueMovmentoQueryImpl extends ServiceFuncoes implements EstoqueM
 	private Predicate[] criarRestricoes(String paramentro, String tipo, LocalDate datainicio, LocalDate datafim,
 			CriteriaBuilder builder, Root<EstoqueMovimento> root) {
 		List<Predicate> predicates = new ArrayList<>();
-
+		Expression<LocalDate> data =null;
 		if ((datainicio != null && datafim != null
 				&& (qtdecaraceteres(paramentro) > 0 && qtdecaraceteres(tipo) == 0))) {
+			data = extrairData(root, builder);
 			predicates.add(
 					builder.and(builder.like(root.get("produto").get("nomeproduto"), paramentro.toUpperCase() + "%"),
 
-							builder.between(root.get("datamovimento"), datainicio, datafim)
+							builder.between(data, datainicio, datafim)
 
 					));
 
 		} else if ((datainicio != null && datafim != null
 				&& (qtdecaraceteres(paramentro) > 0 && qtdecaraceteres(tipo) > 0))) {
 			TipoMovimentacao tipoMovimentacao = TipoMovimentacao.valueOf(tipo);
+			data = extrairData(root, builder);
 			predicates.add(
 					builder.and(builder.like(root.get("produto").get("nomeproduto"), paramentro.toUpperCase() + "%"),
 							builder.equal(root.get("tipoMovimentacao"), tipoMovimentacao),
-							builder.between(root.get("datamovimento"), datainicio, datafim)
+							builder.between(data, datainicio, datafim)
 
 					));
 		}
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
-
+  private Expression<LocalDate> extrairData(Root<EstoqueMovimento> root,CriteriaBuilder builder){
+	 return builder.function("date", LocalDate.class, root.get("datamovimento"));
+  }
 }

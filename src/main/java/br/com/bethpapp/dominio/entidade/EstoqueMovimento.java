@@ -1,6 +1,7 @@
 package br.com.bethpapp.dominio.entidade;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,9 +28,9 @@ public class EstoqueMovimento extends GeradorId {
 	@Enumerated(EnumType.STRING)
 	private TipoMovimentacao tipoMovimentacao;
 
-	@DateTimeFormat(pattern = " dd/MM/yyyy ")
-	@JsonFormat(pattern = "dd/MM/yyyy ")
-	private LocalDate datamovimento;
+	@DateTimeFormat(pattern = " dd/MM/yyyy HH:mm ")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	private LocalDateTime datamovimento;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn()
     private Produto produto;

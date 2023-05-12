@@ -3,6 +3,7 @@ package br.com.bethpapp.dominio.entidade;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
@@ -86,7 +87,7 @@ public class Produto extends GeradorId {
 	        joinColumns = @JoinColumn(name = "produto_id"),
 	        inverseJoinColumns = @JoinColumn(name = "componente_id")
 	    )
-	    private List<Componente> componentes;
+	    private Set<Componente> componentes;
 	public void setNomeproduto(String nomeproduto) {
 		if (nomeproduto != null) {
 			this.nomeproduto = nomeproduto.toUpperCase();

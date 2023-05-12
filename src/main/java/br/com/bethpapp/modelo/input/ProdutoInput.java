@@ -2,8 +2,10 @@ package br.com.bethpapp.modelo.input;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import br.com.bethpapp.dominio.entidade.Atributo;
+import br.com.bethpapp.dominio.entidade.Componente;
 import lombok.Data;
 
 @Data
@@ -38,5 +40,6 @@ public class ProdutoInput {
 	private EstoqueInput estoque;
 
 	private List<Atributo> atributos;
+    private Set<Componente> componentes;
 
 }

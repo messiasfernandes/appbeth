@@ -37,7 +37,7 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 		root.fetch("subcategoria", JoinType.LEFT).fetch("categoria", JoinType.LEFT);
 		root.fetch("estoque", JoinType.LEFT);
 		root.fetch("atributos", JoinType.LEFT);
-
+	//	root.fetch("componentes", JoinType.LEFT);
 		criteria.select(root);
 
 		criteria.where(predicates);
@@ -76,14 +76,14 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 		if ((!ehnumero(paramentro) && (qtdecaraceteres(paramentro) > 0))) {
 			System.out.println("pasou aqui" + paramentro);
 
-			paramentro = paramentro.toUpperCase();
-			predicates.add(builder.or(builder.like(root.get("marca"), paramentro + "%"),
-					builder.like(root.get("nomeproduto"), "%" + paramentro + "%")
+			//paramentro = paramentro.toUpperCase();
+			predicates.add(builder.or(builder.like(root.get("marca"), paramentro.toUpperCase() + "%"),
+					builder.like(root.get("nomeproduto"), "%" + paramentro.toUpperCase() + "%")
 
 			));
-			Join<Produto, SubCategoria> subcategoria = root.join("subcategoria", JoinType.LEFT);
-			predicates.add(builder.or(builder.like(subcategoria.get("nomeSubCategoria"), paramentro + "%"),
-					builder.isNull(subcategoria)));
+//			Join<Produto, SubCategoria> subcategoria = root.join("subcategoria", JoinType.LEFT);
+//			predicates.add(builder.or(builder.like(subcategoria.get("nomeSubCategoria"), paramentro + "%"),
+//					builder.isNull(subcategoria)));
 		
 			
 			if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) != 13)) {
