@@ -81,5 +81,11 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 		return strBuilder.toString();
 
 	}
+	public Long buscarCodFabricante(String codigofabricante) {
+		return daoProduto.isCodigoFabCadastrado(codigofabricante);
+	}
+	public Produto buscarporCodFabricante(String codigofabricante) {
+		return daoProduto.findByCodigofabricante(codigofabricante);
+	}
 
 }

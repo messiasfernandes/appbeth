@@ -1,6 +1,5 @@
 package br.com.bethpapp.modelo.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +13,7 @@ import lombok.Data;
 
 @Data
 public class EstoqueProdutoDTO {
-	//@Column(length = 15, nullable = false)
+	
 	@Enumerated(EnumType.STRING)
 	private TipoMovimentacao tipoMovimentacao;
 

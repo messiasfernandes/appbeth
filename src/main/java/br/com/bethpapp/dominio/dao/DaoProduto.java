@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface DaoProduto extends JpaRepository<Produto, java.lang.Long>, ProdutoQuery {
 	@Query("SELECT Count(*)from Produto p where p.codigofabricante =:pfabricante")
 	Long isCodigoFabCadastrado(String pfabricante);
+	
+	Produto findByCodigofabricante(String codigofabricante);
 }

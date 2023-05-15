@@ -1,6 +1,7 @@
 package br.com.bethpapp.dominio.entidade;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -49,7 +50,7 @@ public class Produto extends GeradorId {
 	@Column(length = 60)
 	private String sku;
 	@Column(length = 120)
-    private String descricao;
+	private String descricao;
 	@Column
 	private Boolean ativo;
 	@Column(length = 13)
@@ -58,10 +59,14 @@ public class Produto extends GeradorId {
 	private String caracteristica;
 	@Column(length = 13)
 	private String codigofabricante;
+
 	@Digits(integer = 9, fraction = 3)
+	@Setter(value = AccessLevel.NONE)
 	private BigDecimal precovenda;
+	@Setter(value = AccessLevel.NONE)
 	@Digits(integer = 9, fraction = 3)
 	private BigDecimal precocusto;
+	@Setter(value = AccessLevel.NONE)
 	@Digits(integer = 9, fraction = 3)
 	private BigDecimal customedio;
 	@Column
@@ -79,15 +84,12 @@ public class Produto extends GeradorId {
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
 	@BatchSize(size = 10)
 	private List<Atributo> atributos = new ArrayList<>();
-	
+
 	@Fetch(FetchMode.SUBSELECT)
-	  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	    @JoinTable(
-	        name = "produto_componente",
-	        joinColumns = @JoinColumn(name = "produto_id"),
-	        inverseJoinColumns = @JoinColumn(name = "componente_id")
-	    )
-	    private Set<Componente> componentes;
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "produto_componente", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "componente_id"))
+	private Set<Componente> componentes;
+
 	public void setNomeproduto(String nomeproduto) {
 		if (nomeproduto != null) {
 			this.nomeproduto = nomeproduto.toUpperCase();
@@ -103,6 +105,20 @@ public class Produto extends GeradorId {
 		} else {
 			this.marca = marca;
 		}
-	} 
+	}
 
+	public void setPrecocusto(BigDecimal precocusto) {
+		this.precocusto = precocusto.setScale(3, RoundingMode.HALF_UP);
+
+	}
+
+	public void setCustomedio(BigDecimal customedio) {
+		this.customedio = customedio.setScale(3, RoundingMode.HALF_UP);
+
+	}
+
+	public void setPrecovenda(BigDecimal precovenda) {
+		this.precovenda = precovenda.setScale(3, RoundingMode.HALF_UP);
+
+	}
 }

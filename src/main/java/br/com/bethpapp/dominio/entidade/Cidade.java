@@ -26,7 +26,7 @@ public class Cidade implements Serializable {
 	private String nome;
 
 	@JsonIgnoreProperties(value = "nomestado", allowGetters = true)
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "cod_estado")
 	private Estado estado;
 

@@ -1,5 +1,6 @@
 package br.com.bethpapp.dominio.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.bethpapp.dominio.dao.DaoMovementacaoEstoque;
+import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
 import br.com.bethpapp.dominio.entidade.Estoque;
 import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
 import br.com.bethpapp.dominio.enumerado.TipoMovimentacao;
@@ -58,12 +60,12 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 	private EstoqueMovimento verificarMovimento(EstoqueMovimento movimento) {
 		if (movimento.getTipoMovimentacao() == TipoMovimentacao.Entrada) {
 			if (movimento.getProduto().getEstoque() != null) {
-
+                
 				SomarEstoque(movimento);
 
 				serviceEstoque.salvar(movimento.getProduto().getEstoque());
 			} else {
-
+                movimento.setSaldoanterior(0);
 				serviceEstoque.salvar(adicionarEstoque(movimento));
 			}
 		} else {
@@ -98,5 +100,21 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 		estoque.setProduto(movimento.getProduto());
 		estoque.setQuantidade(movimento.getQtde());
 		return estoque;
+	}
+	
+	@Transactional(rollbackOn = Exception.class)
+	void entradaEstoquue(EntradaNotaCabecario pEntrada) {
+	
+	
+		
+
+		for (int i = 0; i < pEntrada.getItems_entrada().size(); i++) {
+	     EstoqueMovimento estoquemovimento = new EstoqueMovimento();
+	     estoquemovimento.setProduto(pEntrada.getItems_entrada().get(i).getProduto());
+	     estoquemovimento.setTipoMovimentacao(TipoMovimentacao.Entrada);
+	     estoquemovimento.setQtde(pEntrada.getItems_entrada().get(i).getQtde());
+	     salvar(estoquemovimento);
+		}
+
 	}
 }

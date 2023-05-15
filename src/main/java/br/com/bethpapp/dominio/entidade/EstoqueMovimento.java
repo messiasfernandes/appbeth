@@ -1,6 +1,5 @@
 package br.com.bethpapp.dominio.entidade;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
