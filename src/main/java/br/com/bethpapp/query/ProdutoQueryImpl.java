@@ -72,30 +72,36 @@ public class ProdutoQueryImpl extends ServiceFuncoes implements ProdutoQuery {
 
 	private Predicate[] criarRestricoes(String paramentro, CriteriaBuilder builder, Root<Produto> root) {
 		List<Predicate> predicates = new ArrayList<>();
-
+	
+//		Join<Produto, SubCategoria> subcategoria = root.join("subcategoria", JoinType.LEFT);
+//		 Predicate predicate = builder.isNotNull(subcategoria.get("id"));
+//	 if(predicate!=null) {
+////			 
+//			System.out.println("pasou aqui" +builder.toString());
+//          builder.like(root.get("subcategoria").get("nomeSubCategoria"), paramentro.toUpperCase() + "%");
+//	 }
 		if ((!ehnumero(paramentro) && (qtdecaraceteres(paramentro) > 0))) {
-			System.out.println("pasou aqui" + paramentro);
-
+		
+		
 			//paramentro = paramentro.toUpperCase();
-			predicates.add(builder.or(builder.like(root.get("marca"), paramentro.toUpperCase() + "%"),
+			predicates.add(builder.or(builder.like(
+					root.get("marca"), paramentro.toUpperCase() + "%"),
+					//builder.like(	root.get("subcategoria").get("nomeSubCategoria"), paramentro.toUpperCase()+ "%"),
 					builder.like(root.get("nomeproduto"), "%" + paramentro.toUpperCase() + "%")
-
+				
 			));
-//			Join<Produto, SubCategoria> subcategoria = root.join("subcategoria", JoinType.LEFT);
-//			predicates.add(builder.or(builder.like(subcategoria.get("nomeSubCategoria"), paramentro + "%"),
-//					builder.isNull(subcategoria)));
 		
 			
-			if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) != 13)) {
-				System.out.println("pasou aqui");
-				Long id = Sonumero(paramentro);
-				predicates.add(builder.or(builder.equal(root.get("id"), id)));
-			}
+		}
+		
+		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) != 13)) {
+			System.out.println("pasou aqui");
+			Long id = Sonumero(paramentro);
+			predicates.add(builder.or(builder.equal(root.get("id"), id)));
+		}
 
-			if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) == 13)) {
-				predicates.add(builder.like(root.get("codigoEan13"), paramentro + "%"));
-			}
-			
+		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) == 13)) {
+			predicates.add(builder.like(root.get("codigoEan13"), paramentro + "%"));
 		}
 	
 		return predicates.toArray(new Predicate[predicates.size()]);
