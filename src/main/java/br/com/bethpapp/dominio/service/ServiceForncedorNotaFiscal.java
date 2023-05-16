@@ -18,7 +18,7 @@ public class ServiceForncedorNotaFiscal {
 	private DaoForncedor daoForncedor;
 	@Autowired
 	private DaoCidade daoCidade;
-	
+
 	public Fornecedor salvarfornecedorNota(NodeList emitentes) {
 		Fornecedor forncedor = new Fornecedor();
 		var endreco = new Endereco();
@@ -27,8 +27,8 @@ public class ServiceForncedorNotaFiscal {
 			Element emitente = (Element) emitentes.item(i);
 			forncedor.setCpfouCnpj(emitente.getElementsByTagName("CNPJ").item(i).getTextContent());
 			forncedor.setNome(emitente.getElementsByTagName("xNome").item(i).getTextContent());
-			///String fone= emitente.getElementsByTagName("fone").toString();
-			if( emitente.getElementsByTagName("fone").toString().isEmpty()){
+			/// String fone= emitente.getElementsByTagName("fone").toString();
+			if (emitente.getElementsByTagName("fone").toString().isEmpty()) {
 				forncedor.setTelefone(emitente.getElementsByTagName("fone").item(i).getTextContent());
 			}
 
@@ -64,6 +64,5 @@ public class ServiceForncedorNotaFiscal {
 
 		return fonecedorexistente;
 	}
-
 
 }

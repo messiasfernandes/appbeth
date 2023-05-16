@@ -2,6 +2,10 @@ package br.com.bethpapp.dominio.entidade;
 
 import java.io.Serializable;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Subselect;
+
 import br.com.bethpapp.dominio.enumerado.TipoPessoa;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -44,6 +48,7 @@ public class Pessoa implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
 	private TipoPessoa tipessoa;
+	@Fetch(FetchMode.SUBSELECT)
 	@Embedded
 	private Endereco endereco;
 

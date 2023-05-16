@@ -8,9 +8,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
-
-@Data
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Setter
+@Getter
+@EqualsAndHashCode
 @Entity
 @Table(name = "tab_estado")
 public class Estado implements Serializable {

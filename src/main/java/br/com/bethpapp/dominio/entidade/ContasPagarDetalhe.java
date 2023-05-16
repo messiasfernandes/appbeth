@@ -2,6 +2,7 @@ package br.com.bethpapp.dominio.entidade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import org.springframework.format.annotation.NumberFormat;
@@ -17,6 +18,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 @Setter
@@ -30,15 +32,19 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable{
 	private Long numtitulo;
 	@NotNull
 	private Integer numparcela;
+	@Setter(value = AccessLevel.NONE)
 	@Column(columnDefinition = "DECIMAL(9,3) DEFAULT 0.000")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valoparcela;
+	@Setter(value = AccessLevel.NONE)
 	@Column(columnDefinition = "DECIMAL(9,3) DEFAULT 0.000")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valoprago;
+	@Setter(value = AccessLevel.NONE)
 	@Column(columnDefinition = "DECIMAL(9,3) DEFAULT 0.000")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valorapagar;
+
 	@ManyToOne
 	private ContasPagar contasaPagar;
 	@JsonFormat(pattern = "dd/MM/yyyy")
@@ -51,5 +57,13 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable{
 	@Column(length = 25)
 	private StatusPagamento statusPagmaento;
 
-	
+	public void setValoparcela(BigDecimal valoparcela) {
+		this.valoparcela = valoparcela.setScale(3,RoundingMode.HALF_UP);
+	}
+	public void setValoprago(BigDecimal valoprago) {
+		this.valoprago = valoprago.setScale(3,RoundingMode.HALF_UP);
+	}
+	public void setValorapagar(BigDecimal valorapagar) {
+		this.valorapagar = valorapagar.setScale(3,RoundingMode.HALF_UP);
+	}
 }

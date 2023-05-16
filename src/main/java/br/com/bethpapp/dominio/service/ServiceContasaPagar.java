@@ -16,6 +16,7 @@ import br.com.bethpapp.dominio.entidade.ContasPagarDetalhe;
 import br.com.bethpapp.dominio.entidade.FormadePagmamento;
 import br.com.bethpapp.dominio.entidade.Fornecedor;
 import br.com.bethpapp.dominio.enumerado.StatusPagamento;
+import jakarta.transaction.Transactional;
 
 
 @Service
@@ -25,7 +26,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	@Autowired
 	private DaoFormaDePagamento daoFormaDePagamento;
 	
-	
+	@Transactional
 	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma) {
 		ContasPagar contaContasaPagar = new ContasPagar();
 		contaContasaPagar.setFornecedor(fornecedor);
@@ -78,6 +79,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 		return null;
 	}
 
+	@Transactional
 
 	@Override
 	public ContasPagar salvar(ContasPagar objeto) {
