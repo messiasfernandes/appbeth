@@ -20,10 +20,12 @@ public class EntradaNotaFiscalController implements EntradaNotafiscalOpenApi {
 	@Autowired
 	private ServiceImportaNotafiscal importar_notasevice;
 	@PostMapping
-	public ResponseEntity<EntradaNotaCabecario> importanota(@RequestParam(value = "xml", required = true) 
-	String xml,@RequestParam(value = "margem", required = true) BigDecimal margen) {
+	public ResponseEntity<EntradaNotaCabecario> importanota(@RequestParam(value = "xml", required = true) String xml,
+			@RequestParam(value = "margem", required = true) BigDecimal margen, @RequestParam(value = "idforma", required =  true) Long idforma,
+			@RequestParam(value = "qtdeparecla", required =  true) Integer qtdeparecla) {
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(importar_notasevice.imporxml(xml,margen));
+		return ResponseEntity.status(HttpStatus.CREATED).body(importar_notasevice.imporxml(xml,margen,idforma,qtdeparecla));
 	}
+
 
 }

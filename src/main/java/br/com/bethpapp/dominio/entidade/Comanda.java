@@ -11,7 +11,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.bethpapp.dominio.enumerado.statusPagamento;
+import br.com.bethpapp.dominio.enumerado.StatusPagamento;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +40,7 @@ public class Comanda implements Serializable {
 	private LocalDateTime data_abertura;
 	@Column(length = 20)
 	@Enumerated(EnumType.STRING)
-	private statusPagamento statusPagamento;
+	private StatusPagamento statusPagamento;
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn

@@ -40,8 +40,10 @@ public class ServiceImportaNotafiscal {
 	private ServiceEstoqueMovimento serviceEstoqueMovimento;
 	@Autowired
 	private ServiceForncedorNotaFiscal serviceForncedorNotaFiscal;
+	@Autowired
+	private ServiceContasaPagar serviceContasaPagar;
 
-	public EntradaNotaCabecario imporxml(String xml, BigDecimal pMargem) {
+	public EntradaNotaCabecario imporxml(String xml, BigDecimal pMargem,Long idforma, Integer qtdeparcelas) {
 		System.out.println(arquivo + local_arquivo_xml + xml);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		var entrada = new EntradaNotaCabecario();
@@ -77,7 +79,7 @@ public class ServiceImportaNotafiscal {
 			e.printStackTrace();
 		}
 
-		return salvar(entrada, pMargem);
+		 return salvar(entrada, pMargem, idforma, qtdeparcelas);
 	}
 
 	private List<ItemEntradaNota> adicionarProduto(NodeList nodprouto, BigDecimal margem) {
@@ -145,7 +147,8 @@ public class ServiceImportaNotafiscal {
 	}
 
 	@Transactional(rollbackOn = Exception.class)
-	public EntradaNotaCabecario salvar(EntradaNotaCabecario entrada, BigDecimal margen) {
+	public EntradaNotaCabecario salvar(EntradaNotaCabecario entrada, BigDecimal margen, Long idforma,
+			Integer qtdeparcelas) {
 		entrada.getItems_entrada().forEach(e -> e.setEntradaNotafiscal(entrada));
 
 		if ((daoEntradaNota.buscarnota(entrada.getFornecedor().getId(), entrada.getNumerodanota()) == true)) {
@@ -170,7 +173,14 @@ public class ServiceImportaNotafiscal {
 
 				}
 			}
+			Long titulo = Long.parseLong(entrada.getNumerodanota());
+			BigDecimal totalnota = new BigDecimal(0);
+			for (int j = 0; j < entrada.getItems_entrada().size(); j++) {
+				totalnota = totalnota.add(entrada.getItems_entrada().get(j).getSubtotal());
+
+			}
 			serviceEstoqueMovimento.entradaEstoquue(entrada);
+			serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma);
 			daoEntradaNota.save(entrada);
 			return entrada;
 		}

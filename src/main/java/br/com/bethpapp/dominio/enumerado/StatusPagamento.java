@@ -1,11 +1,11 @@
 package br.com.bethpapp.dominio.enumerado;
 
-public enum statusPagamento {
-	Aberto(" Aberto"), Fechada("Fechado");
+public enum StatusPagamento {
+	PENDENTE("Pendente"), QUITADO("Quitado"), CANCELADO("Cancelado"), PAGOPARCIAL("Pagamento Parcial");
 
 	private String descricao;
 
-	private statusPagamento(String descricao) {
+	private StatusPagamento(String descricao) {
 		this.descricao = descricao;
 	}
 

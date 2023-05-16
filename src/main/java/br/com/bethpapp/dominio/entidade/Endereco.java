@@ -2,6 +2,7 @@ package br.com.bethpapp.dominio.entidade;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
@@ -10,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter
 @Setter
 @Embeddable
@@ -25,8 +27,8 @@ public class Endereco {
 	@Column(length = 9)
 	private String cep;
 	
-	@JsonIgnoreProperties(value = { "nome", "estado" }, allowGetters = true)
-	@ManyToOne(fetch = FetchType.EAGER)
+//	@JsonIgnoreProperties(value = { "nome", "estado" }, allowGetters = true)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
 	private Cidade cidade;
 

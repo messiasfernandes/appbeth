@@ -9,7 +9,8 @@ import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.bethpapp.dominio.enumerado.statusPagamento;
+import br.com.bethpapp.dominio.enumerado.StatusPagamento;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -48,7 +49,7 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable{
 	@NonNull
 	@Enumerated(EnumType.STRING)
 	@Column(length = 25)
-	private statusPagamento statusPagmaento;
+	private StatusPagamento statusPagmaento;
 
 	
 }
