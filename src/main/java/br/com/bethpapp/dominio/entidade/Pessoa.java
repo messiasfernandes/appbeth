@@ -2,21 +2,24 @@ package br.com.bethpapp.dominio.entidade;
 
 import java.io.Serializable;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Subselect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import br.com.bethpapp.dominio.enumerado.TipoPessoa;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 
 
@@ -31,9 +34,13 @@ public class Pessoa implements Serializable {
    public Pessoa() {
 	
 }
+   @Setter(value = AccessLevel.NONE)
 	@Column(length = 100)
 	private String nome;
 
+	public void setNome(String nome) {
+	this.nome = nome.toUpperCase();
+}
 	@Column(length = 14)
 	private String cpfouCnpj;
 
@@ -48,10 +55,25 @@ public class Pessoa implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20)
 	private TipoPessoa tipessoa;
-	@Fetch(FetchMode.SUBSELECT)
-	@Embedded
-	private Endereco endereco;
-
+//	@Fetch(FetchMode.SUBSELECT)
+//	@Embedded
+//	private Endereco endereco;
+	@Column(length = 30)
+     private String rg_Inscricao;
+	@Column(length = 60)
+	private String logradouro;
+    @Size(max = 30 , message = "è permitdo no máximo 30 carecteres!!!")
+	@Column(length = 30)
+	private String complento;
+	private String bairro;
+	
+	@Column(length = 9)
+	private String cep;
+	
+	@JsonIgnoreProperties(value = { "nome", "estado" }, allowGetters = true)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(nullable = false)
+	private Cidade cidade;
 
 
 }

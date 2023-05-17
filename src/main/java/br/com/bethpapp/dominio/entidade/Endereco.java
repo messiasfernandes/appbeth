@@ -1,8 +1,5 @@
 package br.com.bethpapp.dominio.entidade;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;

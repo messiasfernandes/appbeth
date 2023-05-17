@@ -1,12 +1,12 @@
 package br.com.bethpapp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import br.com.bethpapp.dominio.entidade.Cliente;
-import br.com.bethpapp.dominio.enumerado.TipoPessoa;
+import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
 
 @SpringBootTest
 class BethAppApplicationTests {
@@ -19,9 +19,9 @@ class BethAppApplicationTests {
 		n2= n1.subtract(new BigDecimal(n)).intValueExact();
 	   System.out.println(	n2);
 	   
-	   Cliente cliente = new Cliente();
-	   cliente.setCelular(null);
-	   cliente.setTipessoa(TipoPessoa.FÍSICA);
+	  EstoqueMovimento estoqueMovimento = new EstoqueMovimento();
+	  estoqueMovimento.setDatamovimento(LocalDateTime.now());
+	  System.out.println(estoqueMovimento.getDatamovimento());
 	}
 	
 

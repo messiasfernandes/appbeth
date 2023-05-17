@@ -21,7 +21,7 @@ public class ServiceForncedorNotaFiscal {
 
 	public Fornecedor salvarfornecedorNota(NodeList emitentes) {
 		Fornecedor forncedor = new Fornecedor();
-		var endreco = new Endereco();
+		
 		var cidade = new Cidade();
 		for (int i = 0; i < emitentes.getLength(); i++) {
 			Element emitente = (Element) emitentes.item(i);
@@ -32,15 +32,15 @@ public class ServiceForncedorNotaFiscal {
 				forncedor.setTelefone(emitente.getElementsByTagName("fone").item(i).getTextContent());
 			}
 
-			endreco.setLogradouro(emitente.getElementsByTagName("xLgr").item(i).getTextContent() + ","
+			forncedor.setLogradouro(emitente.getElementsByTagName("xLgr").item(i).getTextContent() + ","
 					+ emitente.getElementsByTagName("nro").item(i).getTextContent());
 			cidade = daoCidade.findById(Long.parseLong(emitente.getElementsByTagName("cMun").item(i).getTextContent()))
 					.get();
 			System.out.println(cidade);
-			endreco.setBairro(emitente.getElementsByTagName("xBairro").item(i).getTextContent());
-			endreco.setCep(emitente.getElementsByTagName("CEP").item(i).getTextContent());
-			endreco.setCidade(cidade);
-			forncedor.setEndereco(endreco);
+			forncedor.setBairro(emitente.getElementsByTagName("xBairro").item(i).getTextContent());
+			forncedor.setCep(emitente.getElementsByTagName("CEP").item(i).getTextContent());
+			forncedor.setCidade(cidade);
+		///	forncedor.setEndereco(endreco);
 
 		}
 

@@ -1,6 +1,5 @@
 package br.com.bethpapp.dominio.service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -49,6 +48,7 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 
 		verificarMovimento(objeto);
 		objeto.setDatamovimento(LocalDateTime.now());
+		//objeto.setDatamovimento(LocalDateTime.of(2023, Month.APRIL, 12, 22, 30));
 		System.out.println(objeto.getDatamovimento());
 		return daoMovementacaoEstoque.save(objeto);
 	}

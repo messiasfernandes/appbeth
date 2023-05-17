@@ -1,6 +1,7 @@
 package br.com.bethpapp.dominio.entidade;
 
 import br.com.bethpapp.dominio.enumerado.Localizacao;
+import br.com.bethpapp.dominio.enumerado.StatusMesa;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,4 +23,7 @@ public class Mesa extends GeradorId {
 	@Column(length = 30)
 	@Enumerated(EnumType.STRING)
 	private Localizacao loclizacao;
+	@Column(length = 30)
+	@Enumerated(EnumType.STRING)
+	private StatusMesa statusMesa;
 }

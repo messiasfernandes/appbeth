@@ -44,7 +44,7 @@ public class EstoqueMovmentoQueryImpl extends ServiceFuncoes implements EstoqueM
 
 		System.out.println(root.get("produto").get("estoque").get("id"));
 
-		criteria.orderBy(builder.asc(root.get("datamovimento")));
+		criteria.orderBy(builder.desc(root.get("datamovimento")));
 		TypedQuery<EstoqueMovimento> query = em.createQuery(criteria);
 		adicionarRestricoesDePaginacao(query, pageable);
 		return new PageImpl<>(query.getResultList(), pageable, total(paramentro, tipo, datanicio, datafim));
