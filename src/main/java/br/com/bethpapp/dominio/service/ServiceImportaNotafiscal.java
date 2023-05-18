@@ -117,7 +117,7 @@ public class ServiceImportaNotafiscal {
 				p.setUnidade(produto.getElementsByTagName("uCom").item(j).getTextContent());
                 p.setPrecocusto(precocusto);
                 p.setCustomedio(precocusto);
-                p.setPrecovenda(marge2.multiply(p.getPrecocusto()));
+                p.setPrecovenda(margem.multiply(p.getPrecocusto()));
                 p.setAtivo(true);
 				intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
 				/// p.setPrecovenda(margem.multiply(precocusto);

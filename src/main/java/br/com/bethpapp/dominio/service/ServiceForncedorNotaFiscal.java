@@ -39,6 +39,7 @@ public class ServiceForncedorNotaFiscal {
 			System.out.println(cidade);
 			forncedor.setBairro(emitente.getElementsByTagName("xBairro").item(i).getTextContent());
 			forncedor.setCep(emitente.getElementsByTagName("CEP").item(i).getTextContent());
+			forncedor.setRg_Inscricao(emitente.getElementsByTagName("IE").item(i).getTextContent());
 			forncedor.setCidade(cidade);
 		///	forncedor.setEndereco(endreco);
 
