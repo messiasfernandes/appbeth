@@ -28,7 +28,7 @@ public class ServiceForncedorNotaFiscal {
 			forncedor.setCpfouCnpj(emitente.getElementsByTagName("CNPJ").item(i).getTextContent());
 			forncedor.setNome(emitente.getElementsByTagName("xNome").item(i).getTextContent());
 			/// String fone= emitente.getElementsByTagName("fone").toString();
-			if (emitente.getElementsByTagName("fone").toString().isEmpty()) {
+			if (!emitente.getElementsByTagName("fone").toString().isEmpty()) {
 				forncedor.setTelefone(emitente.getElementsByTagName("fone").item(i).getTextContent());
 			}
 

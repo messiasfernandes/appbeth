@@ -2,6 +2,11 @@ package br.com.bethpapp.dominio.entidade;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -17,10 +22,12 @@ import lombok.Setter;
 public class ItemComanda extends GeradorId {
 	
 	private static final long serialVersionUID = 1L;
+
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Produto produto;
+///	@JsonIgnore
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn

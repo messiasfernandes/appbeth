@@ -1,5 +1,8 @@
 package br.com.bethpapp.dominio.entidade;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -12,10 +15,9 @@ import lombok.Setter;
 public class Estoque extends GeradorId {
 
 	private static final long serialVersionUID = 1L;
-
-// @JsonIgnore
-
-	@OneToOne(optional = false)
+//  @JsonIgnore
+  // @JsonBackReference
+	@OneToOne()
 	@JoinColumn()
 	private Produto produto;
 
