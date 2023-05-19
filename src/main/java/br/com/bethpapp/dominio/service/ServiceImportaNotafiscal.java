@@ -42,7 +42,7 @@ public class ServiceImportaNotafiscal {
 	private ServiceForncedorNotaFiscal serviceForncedorNotaFiscal;
 	@Autowired
 	private ServiceContasaPagar serviceContasaPagar;
-
+  private LocalDate dataemisao;
 	public EntradaNotaCabecario imporxml(String xml, BigDecimal pMargem,Long idforma, Integer qtdeparcelas) {
 		System.out.println(arquivo + local_arquivo_xml + xml);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -59,6 +59,7 @@ public class ServiceImportaNotafiscal {
 				entrada.setNumerodanota(dadoinit.getElementsByTagName("nNF").item(i).getTextContent());
 
 			}
+			dataemisao= entrada.getData_emissao_nota();
 			entrada.setData_entrada(LocalDate.now());
 			entrada.setArquivo_nota(xml);
 			Element raiz = doc.getDocumentElement();
@@ -118,6 +119,7 @@ public class ServiceImportaNotafiscal {
                 p.setPrecocusto(precocusto);
                 p.setCustomedio(precocusto);
                 p.setPrecovenda(margem.multiply(p.getPrecocusto()));
+                System.out.println(p.getPrecovenda());
                 p.setAtivo(true);
 				intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
 				/// p.setPrecovenda(margem.multiply(precocusto);
@@ -181,7 +183,7 @@ public class ServiceImportaNotafiscal {
 
 			}
 			serviceEstoqueMovimento.entradaEstoquue(entrada);
-			serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma);
+			serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma,dataemisao);
 			daoEntradaNota.save(entrada);
 			return entrada;
 		}

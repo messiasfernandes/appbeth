@@ -27,10 +27,10 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	private DaoFormaDePagamento daoFormaDePagamento;
 	
 	@Transactional
-	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma) {
+	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma, LocalDate  dataEmisao) {
 		ContasPagar contaContasaPagar = new ContasPagar();
 		contaContasaPagar.setFornecedor(fornecedor);
-		   contaContasaPagar.setDatalancamento(LocalDate.now());
+		   contaContasaPagar.setDatalancamento(dataEmisao);
 		     Integer numeroparcela=0;
 		     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(3, RoundingMode.HALF_UP));
 		   
