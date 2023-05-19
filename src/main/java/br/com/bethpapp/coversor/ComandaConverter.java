@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import br.com.bethpapp.dominio.entidade.Comanda;
@@ -21,6 +22,10 @@ public class ComandaConverter {
 		return modelMapper.map(objeto, ComandaDTO.class);
 	}
   
+	public Page<ComandaDTO> topage(Page<Comanda> objetos) {
+
+		return objetos.map(obj -> toDto(obj));
+	}
 
 	
 	public List<ComandaDTO> toCollectionDto(List<Comanda> categorias) {

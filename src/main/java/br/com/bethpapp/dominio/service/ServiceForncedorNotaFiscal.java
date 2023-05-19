@@ -8,7 +8,6 @@ import org.w3c.dom.NodeList;
 import br.com.bethpapp.dominio.dao.DaoCidade;
 import br.com.bethpapp.dominio.dao.DaoForncedor;
 import br.com.bethpapp.dominio.entidade.Cidade;
-import br.com.bethpapp.dominio.entidade.Endereco;
 import br.com.bethpapp.dominio.entidade.Fornecedor;
 import br.com.bethpapp.dominio.enumerado.TipoPessoa;
 

@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.bethpapp.dominio.entidade.Mesa;
 import br.com.bethpapp.dominio.enumerado.StatusPagamento;
 import lombok.Data;
 @Data
@@ -21,7 +20,7 @@ public class ComandaDTO {
 
 	private StatusPagamento statusPagamento;
 	
-	private Mesa mesa;
+	private MesaDTO mesa;
 
 	private List<ItemdaComadaDTO> itemsdaComanda = new ArrayList<>();
 

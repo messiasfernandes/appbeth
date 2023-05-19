@@ -1,5 +1,8 @@
 package br.com.bethpapp.dominio.entidade;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import br.com.bethpapp.dominio.enumerado.Localizacao;
 import br.com.bethpapp.dominio.enumerado.StatusMesa;
 import jakarta.persistence.Column;
@@ -12,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+
 public class Mesa extends GeradorId {
 
 	private static final long serialVersionUID = 1L;

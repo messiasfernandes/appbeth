@@ -10,6 +10,7 @@ import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.bethpapp.dominio.enumerado.StatusPagamento;
 import jakarta.persistence.CascadeType;
@@ -41,10 +42,10 @@ public class Comanda implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusPagamento statusPagamento;
 	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn()
 	private Mesa mesa;
-	//@JsonManagedReference
+	@JsonManagedReference
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comanda", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemComanda> itemsdaComanda = new ArrayList<>();
