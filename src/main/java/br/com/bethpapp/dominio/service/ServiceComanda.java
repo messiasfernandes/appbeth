@@ -19,13 +19,13 @@ public class ServiceComanda implements ServiceModel<Comanda> {
 	@Override
 	public void excluir(Long codigo) {
 		// TODO Auto-generated method stub
-		
+		daoComanda.deleteById(codigo);
 	}
 
 	@Override
 	public Comanda buccarporid(Long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return daoComanda.findById(id).get();
 	}
 
 	@Override
