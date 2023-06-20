@@ -10,5 +10,6 @@ public interface DaoEstoque  extends JpaRepository<Estoque, Long>{
 	
 	@Query("from Estoque e where e.produto.id  =:idproduto  ")
 	Estoque buscarproduto(Long idproduto);
+	
 
 }

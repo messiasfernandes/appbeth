@@ -21,4 +21,11 @@ public class Estoque extends GeradorId {
 
 	private Integer quantidade;
 
+	public Estoque() {
+	
+		this.quantidade = 0;
+	}
+	
+	
+
 }
