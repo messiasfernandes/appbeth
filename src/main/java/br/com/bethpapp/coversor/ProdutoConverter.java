@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.modelo.dto.ProdutoDTO;
+import br.com.bethpapp.modelo.dto.ProdutoDtoEditar;
 import br.com.bethpapp.modelo.input.ProdutoInput;
 
 
@@ -37,6 +38,10 @@ public class ProdutoConverter {
 
 	public List<ProdutoDTO> toCollectionDto(List<Produto> categorias) {
 		return categorias.stream().map(this::toDto).collect(Collectors.toList());
+	}
+	public ProdutoDtoEditar toDtoEdit(Produto objeto) {
+
+		return modelMapper.map(objeto, ProdutoDtoEditar.class);
 	}
 
 }

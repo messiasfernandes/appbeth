@@ -3,6 +3,7 @@ package br.com.bethpapp.dominio.entidade;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ public class Estoque extends GeradorId {
 //  @JsonIgnore
   // @JsonBackReference
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn()
+  
 	private Produto produto;
 
 	private Integer quantidade;

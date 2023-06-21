@@ -19,6 +19,7 @@ import br.com.bethpapp.controller.documentacao.ProdutoOpenApi;
 import br.com.bethpapp.coversor.ProdutoConverter;
 import br.com.bethpapp.dominio.service.ServiceProduto;
 import br.com.bethpapp.modelo.dto.ProdutoDTO;
+import br.com.bethpapp.modelo.dto.ProdutoDtoEditar;
 import br.com.bethpapp.modelo.input.ProdutoInput;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -36,6 +37,7 @@ public class ProdutoController implements ProdutoOpenApi {
 	@GetMapping
 	@Override
 	public ResponseEntity<Page<ProdutoDTO>> listar(
+			
 			@RequestParam(value = "paramentro", required = false, defaultValue = "") String paramentro,
 			@RequestParam(value = "page", defaultValue = "0") Integer pagina,
 			@RequestParam(value = "size", defaultValue = "4") Integer size, Pageable page) {
@@ -45,22 +47,22 @@ public class ProdutoController implements ProdutoOpenApi {
 
     @GetMapping("/{idproduto}")
 	@Override
-	public ResponseEntity<ProdutoDTO> buscar(@PathVariable Long idproduto) {
+	public ResponseEntity<ProdutoDtoEditar> buscar(@PathVariable Long idproduto) {
 
-		return ResponseEntity.status(HttpStatus.OK).body(produtoConverter.toDto(serviceProduto.buccarporid(idproduto)));
+		return ResponseEntity.status(HttpStatus.OK).body(produtoConverter.toDtoEdit(serviceProduto.buccarporid(idproduto)));
 	}
 
 
 
 	@PutMapping("/{id}")
 	@Override
-	public ResponseEntity<ProdutoDTO> Atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoInput produto,
+	public ResponseEntity<ProdutoDtoEditar> Atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoInput produto,
 			HttpServletResponse response) {
 		System.out.println(id);
 		produto.setId(id);
 		System.out.println(produto.getId());
 		var produtoeditado = serviceProduto.salvar(produtoConverter.toEntity(produto));
-		return ResponseEntity.status(HttpStatus.OK).body(produtoConverter.toDto(produtoeditado));
+		return ResponseEntity.status(HttpStatus.OK).body(produtoConverter.toDtoEdit(produtoeditado));
 	}
 
 	@PostMapping

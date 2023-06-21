@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.modelo.dto.ProdutoDTO;
+import br.com.bethpapp.modelo.dto.ProdutoDtoEditar;
 import br.com.bethpapp.modelo.input.ProdutoInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,11 +35,11 @@ public interface ProdutoOpenApi extends ControllerOpenApi {
 
 	ResponseEntity<Void> remover(@Param(value = "ID de um Produto") Long idproduto);
 
-	ResponseEntity<ProdutoDTO> buscar(@Param(value = "ID de um Produto") Long idproduto);
+	ResponseEntity<ProdutoDtoEditar> buscar(@Param(value = "ID de um Produto") Long idproduto);
 	@Operation(summary = "Atualizar um Produto ")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Produto Atualizado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "problema com resquisão") })
-	ResponseEntity<ProdutoDTO> Atualizar( @Param(value = "id")Long id,  @Param(value = "corpo") ProdutoInput produto, HttpServletResponse response);
+	ResponseEntity<ProdutoDtoEditar> Atualizar( @Param(value = "id")Long id,  @Param(value = "corpo") ProdutoInput produto, HttpServletResponse response);
 
 	@Operation(summary = "Salvar um Produto ")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Produto salvo com sucesso"),

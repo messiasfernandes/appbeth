@@ -74,7 +74,7 @@ public class Produto extends GeradorId {
     //@JsonIgnore
 	///@JsonBackReference
 	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-	@JoinColumn
+    @JoinColumn
 	private Estoque estoque;
 
 	@JsonIgnoreProperties(value = { "nomeSubCategoria" }, allowGetters = true)
