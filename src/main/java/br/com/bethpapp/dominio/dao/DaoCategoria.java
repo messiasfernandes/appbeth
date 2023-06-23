@@ -7,6 +7,6 @@ import br.com.bethpapp.dominio.entidade.Categoria;
 
 
 @Repository
-public interface DaoCategoria extends JpaRepository <Categoria, Long> {
+public interface DaoCategoria extends JpaRepository <Categoria, Long>  {
 
 }
