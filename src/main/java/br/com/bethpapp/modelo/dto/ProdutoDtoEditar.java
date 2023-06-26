@@ -28,7 +28,7 @@ public class ProdutoDtoEditar {
 	private String sku;
 	private Integer estoqueminimo;
     private String descricao;
-
+    private Boolean controlarestoque;
 	private Boolean ativo;
 	private String codigoEan13;
 

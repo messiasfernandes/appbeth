@@ -1,8 +1,5 @@
 package br.com.bethpapp.controller;
 
-import java.awt.print.Pageable;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,8 +19,7 @@ import br.com.bethpapp.modelo.dto.SubCategoriaDTO;
 @RestController
 public class SubCategoriaController {
 
-	@Autowired
-	private DaoSubcategoria daoSubcategoria;
+
 	@Autowired
 	private ServiceSubCategoria subcategoriaService;
 	@Autowired

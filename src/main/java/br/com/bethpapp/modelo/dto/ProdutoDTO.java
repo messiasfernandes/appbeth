@@ -34,7 +34,7 @@ public class ProdutoDTO {
 
 	private Boolean ativo;
 	private String codigoEan13;
-
+	private Boolean controlarestoque;
 	private String caracteristica;
 
 	private String codigofabricante;

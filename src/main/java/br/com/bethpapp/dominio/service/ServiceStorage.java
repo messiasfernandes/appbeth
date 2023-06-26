@@ -48,7 +48,7 @@ public class ServiceStorage {
 				arquivcos.add(arquivo);
 				file.transferTo(new File(local.toAbsolutePath().toString(),
 						FileSystems.getDefault().getSeparator() + file.getOriginalFilename()));
-				Thumbnails.of(this.local.resolve(file.getOriginalFilename()).toString()).size(250, 250)
+				Thumbnails.of(this.local.resolve(file.getOriginalFilename()).toString()).size(400, 280)
 						.toFiles(Rename.NO_CHANGE);
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block

@@ -53,6 +53,8 @@ public class Produto extends GeradorId {
 	private String descricao;
 	@Column
 	private Boolean ativo;
+	@Column
+	private Boolean controlarestoque;
 	@Column(length = 13)
 	private String codigoEan13;
 	@Column(length = 255)
