@@ -10,6 +10,7 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -73,9 +74,9 @@ public class Produto extends GeradorId {
 	private BigDecimal customedio;
 	@Column
 	private Integer estoqueminimo;
-    //@JsonIgnore
+    @JsonIgnore
 	///@JsonBackReference
-	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn
 	private Estoque estoque;
 
