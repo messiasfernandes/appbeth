@@ -6,4 +6,5 @@ import lombok.Data;
 public class SubCategoriaInput {
 	private Long id;
 	private String nomeSubCategoria;
+	private CategoriaInput categoria;
 }

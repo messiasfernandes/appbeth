@@ -30,16 +30,16 @@ public class ProdutoInput {
 	private String caracteristica;
 
 	private String codigofabricante;
-
+	private Boolean controlarestoque;
 	private BigDecimal precovenda;
 
 	private BigDecimal precocusto;
 
 	private BigDecimal customedio;
 	private SubCategoriaInput subcategoria;
-	private EstoqueInput estoque;
+	// private EstoqueInput estoque;
 
 	private List<Atributo> atributos;
-    private Set<Componente> componentes;
+	private Set<Componente> componentes;
 
 }
