@@ -19,7 +19,8 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 	@Autowired
 	private DaoProduto daoProduto;
 	@Autowired
-    private DaoEstoque daoEstoque;
+	private DaoEstoque daoEstoque;
+
 	@Override
 	public Page<Produto> buscar(String nome, Pageable pageable) {
 
@@ -55,15 +56,21 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 	@Transactional
 	@Override
 	public Produto salvar(Produto objeto) {
-	
+		var estoque = new Estoque();
+		Produto produto = null;
 		if (objeto.getAtributos().size() > 0) {
 			objeto.setCaracteristica(concatenar(objeto));
 		}
-      var produto = daoProduto.save(objeto);
-      var estoque = new Estoque();
-      estoque.setQuantidade(0);
-      estoque.setProduto(produto);
-      daoEstoque.save(estoque);
+		estoque= daoEstoque.buscarproduto(objeto.getId());
+		if (estoque==null) {
+			 estoque = new Estoque();
+			estoque.setQuantidade(0);
+			produto = daoProduto.save(objeto);
+			estoque.setProduto(produto);
+			daoEstoque.save(estoque);
+		} else {
+			produto = daoProduto.save(objeto);
+		}
 		return produto;
 	}
 
@@ -89,9 +96,11 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 		return strBuilder.toString();
 
 	}
+
 	public Long buscarCodFabricante(String codigofabricante) {
 		return daoProduto.isCodigoFabCadastrado(codigofabricante);
 	}
+
 	public Produto buscarporCodFabricante(String codigofabricante) {
 		return daoProduto.findByCodigofabricante(codigofabricante);
 	}
