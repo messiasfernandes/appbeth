@@ -10,6 +10,7 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -53,6 +54,8 @@ public class Produto extends GeradorId {
 	private String descricao;
 	@Column
 	private Boolean ativo;
+	@Column
+	private Boolean controlarestoque;
 	@Column(length = 13)
 	private String codigoEan13;
 	@Column(length = 255)
@@ -71,10 +74,10 @@ public class Produto extends GeradorId {
 	private BigDecimal customedio;
 	@Column
 	private Integer estoqueminimo;
-    //@JsonIgnore
+    @JsonIgnore
 	///@JsonBackReference
-	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-	@JoinColumn
+	@OneToOne(mappedBy = "produto", fetch = FetchType.LAZY)
+    @JoinColumn
 	private Estoque estoque;
 
 	@JsonIgnoreProperties(value = { "nomeSubCategoria" }, allowGetters = true)

@@ -14,7 +14,6 @@ import br.com.bethpapp.controller.documentacao.EntradaNotafiscalOpenApi;
 import br.com.bethpapp.coversor.EntradaNotaFiscalConverter;
 import br.com.bethpapp.dominio.service.ServiceImportaNotafiscal;
 import br.com.bethpapp.modelo.dto.EntradaNotaCabecarioDTO;
-
 @RequestMapping("/importarnotasfiscais")
 @RestController
 public class EntradaNotaFiscalController implements EntradaNotafiscalOpenApi {

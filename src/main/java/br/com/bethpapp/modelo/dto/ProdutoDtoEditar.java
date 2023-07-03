@@ -11,11 +11,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
 import lombok.Data;
-
 @Data
-
-public class ProdutoDTO {
-
+public class ProdutoDtoEditar {
 	private SubCategoriaDTO subcategoria;
 
 	private Long id;
@@ -31,10 +28,10 @@ public class ProdutoDTO {
 	private String sku;
 	private Integer estoqueminimo;
     private String descricao;
-
+    private Boolean controlarestoque;
 	private Boolean ativo;
 	private String codigoEan13;
-	private Boolean controlarestoque;
+
 	private String caracteristica;
 
 	private String codigofabricante;
@@ -48,8 +45,9 @@ public class ProdutoDTO {
 	@JsonFormat(pattern = "#,##0.00", shape = Shape.STRING)
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal customedio;
-	private EstoqueDTO estoque;
+	
 
 	private List<AtributoDTO> atributos = new ArrayList<>();
 	private Set<ComponeteDTO> componentes;
+
 }

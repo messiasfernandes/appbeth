@@ -11,6 +11,7 @@ import lombok.Data;
 
 @Data
 public class EntradaNotaCabecarioDTO {
+	private Long id;
 	@Column(length = 25)
 	private String numerodanota;
 	@JsonFormat(pattern = "dd/MM/yyyy")
