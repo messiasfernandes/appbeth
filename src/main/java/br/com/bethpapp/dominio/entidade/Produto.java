@@ -76,7 +76,7 @@ public class Produto extends GeradorId {
 	private Integer estoqueminimo;
     @JsonIgnore
 	///@JsonBackReference
-	@OneToOne(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "produto", fetch = FetchType.LAZY)
     @JoinColumn
 	private Estoque estoque;
 

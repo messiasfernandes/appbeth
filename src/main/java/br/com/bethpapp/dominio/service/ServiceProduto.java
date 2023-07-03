@@ -56,21 +56,21 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 	@Transactional
 	@Override
 	public Produto salvar(Produto objeto) {
-		var estoque = new Estoque();
+	//	var estoque = new Estoque();
 		Produto produto = null;
 		if (objeto.getAtributos().size() > 0) {
 			objeto.setCaracteristica(concatenar(objeto));
 		}
-		estoque= daoEstoque.buscarproduto(objeto.getId());
-		if (estoque==null) {
-			 estoque = new Estoque();
-			estoque.setQuantidade(0);
+//		estoque= daoEstoque.buscarproduto(objeto.getId());
+//		if (estoque==null) {
+//			 estoque = new Estoque();
+//			estoque.setQuantidade(0);
+//			produto = daoProduto.save(objeto);
+//			estoque.setProduto(produto);
+		//	daoEstoque.save(estoque);
+	//	} else {
 			produto = daoProduto.save(objeto);
-			estoque.setProduto(produto);
-			daoEstoque.save(estoque);
-		} else {
-			produto = daoProduto.save(objeto);
-		}
+	//	}
 		return produto;
 	}
 
