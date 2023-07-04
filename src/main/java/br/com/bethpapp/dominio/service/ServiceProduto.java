@@ -41,7 +41,7 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 					"Operação não permitida!! Este registro pode estar asssociado a outra tabela");
 		}
 
-		daoProduto.deleteById(codigo);
+		//daoProduto.deleteById(codigo);
 
 	}
 
