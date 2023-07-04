@@ -1,13 +1,17 @@
 package br.com.bethpapp.dominio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.bethpapp.dominio.dao.DaoSubcategoria;
 import br.com.bethpapp.dominio.entidade.SubCategoria;
+import br.com.bethpapp.dominio.service.exeption.EntidadeEmUsoExeption;
+import br.com.bethpapp.dominio.service.exeption.RegistroNaoEncontrado;
 import br.com.bethpapp.query.SubCategoriaSpec;
+import jakarta.transaction.Transactional;
 @Service
 public class ServiceSubCategoria extends ServiceFuncoes implements ServiceModel<SubCategoria>{
 	@Autowired
@@ -32,20 +36,29 @@ public class ServiceSubCategoria extends ServiceFuncoes implements ServiceModel<
 
 	@Override
 	public void excluir(Long codigo) {
-		// TODO Auto-generated method stub
+		buccarporid(codigo);
+	try {
+		daoSubcategoria.deleteById(codigo);
+		daoSubcategoria.flush();
+	} catch (DataIntegrityViolationException e) {
+		throw new EntidadeEmUsoExeption("Operação não permitida!! Este registro pode estar asssociado a outra tabela");
+	}
+	daoSubcategoria.deleteById(codigo);
 		
 	}
 
 	@Override
 	public SubCategoria buccarporid(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		if (daoSubcategoria.findById(id).isEmpty()) {
+			throw new RegistroNaoEncontrado("Subcategoria não encotrada");
+		}
+		return daoSubcategoria.findById(id).get();
 	}
-
+    @Transactional
 	@Override
 	public SubCategoria salvar(SubCategoria objeto) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return daoSubcategoria.save(objeto);
 	}
 
 }
