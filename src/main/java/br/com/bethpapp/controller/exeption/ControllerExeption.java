@@ -51,12 +51,12 @@ public class ControllerExeption extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, problema, headers, status, request);
 	}
 
-	@ExceptionHandler(NegocioException.class)
+	@ExceptionHandler({NegocioException.class})
 	public ResponseEntity<Object> IlegalExeption(NegocioException ex, WebRequest request) {
 		var status = HttpStatus.BAD_REQUEST;
 		var problema = Problema.builder().status(status.value()).titulo(ex.getMessage())
 				.dataHora(OffsetDateTime.now()).build();
-
+         System.out.println(problema.getTitulo());
 		return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
 	}
 	
@@ -99,13 +99,13 @@ public class ControllerExeption extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
 	}
 	
-	@ExceptionHandler({ EntityNotFoundException.class })
-	public ModelAndView resolveException(HttpServletRequest request, Exception ex) {
-	    request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, HttpStatus.BAD_REQUEST.value());
-	    request.setAttribute(RequestDispatcher.ERROR_MESSAGE,
-	            "This will override the error message configured by Boot");
-	    ModelAndView mav = new ModelAndView();
-	    mav.setViewName("/error");
-	    return mav;
-	}
+//	@ExceptionHandler({ EntityNotFoundException.class })
+//	public ModelAndView resolveException(HttpServletRequest request, Exception ex) {
+//	    request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, HttpStatus.BAD_REQUEST.value());
+//	    request.setAttribute(RequestDispatcher.ERROR_MESSAGE,
+//	            "This will override the error message configured by Boot");
+//	    ModelAndView mav = new ModelAndView();
+//	    mav.setViewName("/error");
+//	    return mav;
+//	}
 }

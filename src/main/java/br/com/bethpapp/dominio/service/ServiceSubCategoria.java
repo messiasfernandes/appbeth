@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 import br.com.bethpapp.dominio.dao.DaoSubcategoria;
 import br.com.bethpapp.dominio.entidade.SubCategoria;
 import br.com.bethpapp.dominio.service.exeption.EntidadeEmUsoExeption;
+import br.com.bethpapp.dominio.service.exeption.NegocioException;
 import br.com.bethpapp.dominio.service.exeption.RegistroNaoEncontrado;
 import br.com.bethpapp.query.SubCategoriaSpec;
 import jakarta.transaction.Transactional;
@@ -54,11 +56,19 @@ public class ServiceSubCategoria extends ServiceFuncoes implements ServiceModel<
 		}
 		return daoSubcategoria.findById(id).get();
 	}
-    @Transactional
+	@Transactional
 	@Override
 	public SubCategoria salvar(SubCategoria objeto) {
-		
-		return daoSubcategoria.save(objeto);
-	}
+		SubCategoria subcategoriaexistente = daoSubcategoria.buscar(objeto.getNomeSubCategoria());
+		if (subcategoriaexistente != null && !subcategoriaexistente.equals(objeto)) {
+		    throw new NegocioException("Subcategoria cadastrada no banco de dados");
+		}
 
+		if (subcategoriaexistente == null) {
+		    return daoSubcategoria.save(objeto);
+		} else {
+		    return subcategoriaexistente;
+		}
+
+	}
 }
