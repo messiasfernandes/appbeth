@@ -69,7 +69,8 @@ public class Produto extends GeradorId {
 	@Setter(value = AccessLevel.NONE)
 	@Digits(integer = 9, fraction = 3)
 	private BigDecimal precocusto;
-	@Setter(value = AccessLevel.NONE)
+
+
 	@Digits(integer = 9, fraction = 3)
 	private BigDecimal customedio;
 	@Column

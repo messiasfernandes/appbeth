@@ -71,7 +71,7 @@ public class SubCategoriaController implements SubCategoriaOpenApi {
 
 	@PostMapping
 	@Override
-	public ResponseEntity<SubCategoriaDTO> criar(SubCategoriaInput subcategoria, HttpServletResponse response) {
+	public ResponseEntity<SubCategoriaDTO> criar( @Valid @RequestBody SubCategoriaInput subcategoria, HttpServletResponse response) {
 		var subcategoriasalva = subcategoriaService.salvar(subCategoriaConverter.toEntity(subcategoria));
 		return ResponseEntity.status(HttpStatus.CREATED).body(subCategoriaConverter.toDto(subcategoriasalva));
 	}
