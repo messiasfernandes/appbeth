@@ -46,9 +46,7 @@ public class EntradasdeNotaRepositoryQueryImpl extends ServiceFuncoes implements
 		predicates = criarRestricoes(paramentro, builder, root);
 
 		root.fetch("fornecedor", JoinType.INNER);
-	//	root.fetch("estoque", JoinType.LEFT);
-	//	root.fetch("atributos", JoinType.LEFT);
-		// root.fetch("componentes", JoinType.LEFT);
+
 		criteria.select(root);
 
 		criteria.where(predicates);
@@ -94,8 +92,8 @@ public class EntradasdeNotaRepositoryQueryImpl extends ServiceFuncoes implements
 
 		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) <11)) {
 			System.out.println("pasou aqui"+ paramentro);
-			Long id = Sonumero(paramentro);
-			predicates.add(builder.or(builder.equal(root.get("numerodanota"), id)));
+			//Long id = Sonumero(paramentro);
+			predicates.add(builder.or(builder.equal(root.get("numerodanota"), paramentro)));
 		}
 
 		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) == 14)||(qtdecaraceteres(paramentro) == 11)) {
