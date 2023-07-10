@@ -2,6 +2,7 @@ package br.com.bethpapp.coversor;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
@@ -15,6 +16,11 @@ public class EntradaNotaFiscalConverter {
 	public EntradaNotaCabecarioDTO toDto(EntradaNotaCabecario objeto) {
 
 		return modelMapper.map(objeto, EntradaNotaCabecarioDTO.class);
+	}
+	
+	public Page<EntradaNotaCabecarioDTO> topage(Page<EntradaNotaCabecario> objetos) {
+
+		return objetos.map(obj -> toDto(obj));
 	}
 
 }

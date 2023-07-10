@@ -6,7 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 public interface EstoqueMovmentoQuery {
+	
+
 	Page<EstoqueMovimento> buscar(String paramentro, String tipo, LocalDate datanicio, LocalDate datafim, Pageable pageable);
 }
