@@ -91,8 +91,8 @@ public class EntradasdeNotaRepositoryQueryImpl extends ServiceFuncoes implements
 		}
 
 		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) <11)) {
-			System.out.println("pasou aqui"+ paramentro);
-			//Long id = Sonumero(paramentro);
+			
+		
 			predicates.add(builder.or(builder.equal(root.get("numerodanota"), paramentro)));
 		}
 
