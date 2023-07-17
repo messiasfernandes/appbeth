@@ -44,8 +44,8 @@ public class CategoriaService extends ServiceFuncoes implements ServiceModel<Cat
 
 	@Override
 	public Categoria salvar(Categoria objeto) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return daoCategoria.save(objeto);
 	}
 
 }

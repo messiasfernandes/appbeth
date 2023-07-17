@@ -20,11 +20,12 @@ import br.com.bethpapp.modelo.dto.CategoriaDTO;
 import br.com.bethpapp.modelo.input.CategoriaInput;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+
 @CrossOrigin
 @RequestMapping("/categorias")
 @RestController
-public class CategoriaController {
-	
+public class CategoriaController  extends ControllerEvent{
+
 	@Autowired
 	private CategoriaService categoriaService;
 	@Autowired
@@ -42,14 +43,23 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-
 	public ResponseEntity<CategoriaDTO> adicionar(@Valid @RequestBody CategoriaInput categoria,
 			HttpServletResponse response) {
 
-		Categoria categoriasalva = categoriaService.salvar(categoriaConverter.toEntity(categoria));
+		var categoriasalva = categoriaService.salvar(categoriaConverter.toEntity(categoria));
+
+		criaevento(categoriasalva.getId(), response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaConverter.toDto(categoriasalva));
+
+	}
+
+	public ResponseEntity<Categoria> adicionar2(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
+		System.out.println(categoria.getNomecategoria());
+		var categoriasalva = categoriaService.salvar(categoria);
+		System.out.println(categoria.getNomecategoria());
 		/// publisher.publishEvent(new RecursoCriadoEvent(this, response,
 		/// categoriasalva.getIdcategoria()));
-		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaConverter.toDto(categoriasalva));
+		return ResponseEntity.status(HttpStatus.CREATED).body(categoriasalva);
 
 	}
 }
