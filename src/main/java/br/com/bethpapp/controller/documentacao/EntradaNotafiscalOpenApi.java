@@ -1,18 +1,13 @@
 package br.com.bethpapp.controller.documentacao;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
-import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
-import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.modelo.dto.EntradaNotaCabecarioDTO;
-import br.com.bethpapp.modelo.dto.EstoqueProdutoDTO;
-import br.com.bethpapp.modelo.dto.ProdutoDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
-import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.ServiceFuncoes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
