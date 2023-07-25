@@ -20,7 +20,7 @@ import br.com.bethpapp.dominio.service.ServiceNotaFiscal;
 import br.com.bethpapp.modelo.dto.EntradaNotaCabecarioDTO;
 @RequestMapping("/importarnotasfiscais")
 @RestController
-public class EntradaNotaFiscalController implements EntradaNotafiscalOpenApi {
+public class EntradaNotaFiscalController extends ControllerEvent implements EntradaNotafiscalOpenApi {
 	
 	@Autowired
 	private ServiceImportaNotafiscal importar_notasevice;

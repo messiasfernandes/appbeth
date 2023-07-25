@@ -15,13 +15,14 @@ import br.com.bethpapp.dominio.entidade.FormadePagmamento;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/formadepagamentos")
-public class FormadePagamentoController {
+
+@RequestMapping("/formasdepagamentos")
+public class FormadePagamentoController extends ControllerEvent{
 	@Autowired
 	private DaoFormaDePagamento daoFormaDePagamento;
 	@GetMapping
-	
-	public ResponseEntity<List<FormadePagmamento>>lista(){
+	public ResponseEntity<List<FormadePagmamento>>  lista() {
+
 		return ResponseEntity.status(HttpStatus.OK).body(daoFormaDePagamento.findAll());
 	}
 

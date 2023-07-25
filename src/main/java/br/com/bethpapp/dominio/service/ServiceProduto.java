@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.bethpapp.dominio.dao.DaoEstoque;
 import br.com.bethpapp.dominio.dao.DaoProduto;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.exeption.EntidadeEmUsoExeption;

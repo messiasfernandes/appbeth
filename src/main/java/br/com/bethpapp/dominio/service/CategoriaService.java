@@ -54,7 +54,7 @@ public class CategoriaService extends ServiceFuncoes implements ServiceModel<Cat
 
 	@Override
 	public Categoria salvar(Categoria objeto) {
-
+      
 		return daoCategoria.save(objeto);
 	}
 

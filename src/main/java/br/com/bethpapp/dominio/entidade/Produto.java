@@ -44,7 +44,7 @@ public class Produto extends GeradorId {
 	@Setter(value = AccessLevel.NONE)
 	@Column(length = 60)
 	private String marca;
-	@Column(length = 3)
+	@Column(length = 6)
 	private String unidade;
 	@Column(length = 255)
 	private String imagemPrincipal;
