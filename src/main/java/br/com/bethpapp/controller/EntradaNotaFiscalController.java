@@ -32,9 +32,9 @@ public class EntradaNotaFiscalController implements EntradaNotafiscalOpenApi {
 	@PostMapping
 	public ResponseEntity<EntradaNotaCabecarioDTO> importanota(@RequestParam(value = "xml", required = true) String xml,
 			@RequestParam(value = "margem", required = true) BigDecimal margen, @RequestParam(value = "idforma", required =  true) Long idforma,
-			@RequestParam(value = "qtdeparecla", required =  true) Integer qtdeparecla) {
+			@RequestParam(value = "qtdeparcela", required =  true) Integer qtdeparcela) {
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(entradanfConverter.toDto(  importar_notasevice.imporxml(xml,margen,idforma,qtdeparecla)));
+		return ResponseEntity.status(HttpStatus.CREATED).body(entradanfConverter.toDto(  importar_notasevice.imporxml(xml,margen,idforma,qtdeparcela)));
 	}
 	@GetMapping
 	@Override
