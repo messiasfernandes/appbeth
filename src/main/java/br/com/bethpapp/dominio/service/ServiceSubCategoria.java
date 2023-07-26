@@ -45,7 +45,7 @@ public class ServiceSubCategoria extends ServiceFuncoes implements ServiceModel<
 	} catch (DataIntegrityViolationException e) {
 		throw new EntidadeEmUsoExeption("Operação não permitida!! Este registro pode estar asssociado a outra tabela");
 	}
-	daoSubcategoria.deleteById(codigo);
+	
 		
 	}
 

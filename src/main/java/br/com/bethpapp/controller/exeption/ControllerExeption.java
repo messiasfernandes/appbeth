@@ -17,15 +17,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.bethpapp.dominio.service.exeption.EntidadeEmUsoExeption;
 import br.com.bethpapp.dominio.service.exeption.NegocioException;
 import br.com.bethpapp.dominio.service.exeption.RegistroNaoEncontrado;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class ControllerExeption extends ResponseEntityExceptionHandler {

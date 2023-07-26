@@ -27,6 +27,8 @@ public class Componente extends GeradorId {
 	@NotNull
 	@Column
 	private BigDecimal qtde;
+	@Column
+	private BigDecimal subtotal;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn()
 	private Produto produto;

@@ -25,7 +25,7 @@ public class CategoriaConverter {
 		return modelMapper.map(objeto, CategoriaDTO.class);
 	}
      public Categoria toEntity(CategoriaInput objeto) {
-		
+	System.out.println(objeto.getNomecategoria());
 		return modelMapper.map(objeto, Categoria.class);
 	}
 

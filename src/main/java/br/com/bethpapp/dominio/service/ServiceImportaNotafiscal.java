@@ -23,6 +23,7 @@ import br.com.bethpapp.dominio.entidade.Fornecedor;
 import br.com.bethpapp.dominio.entidade.ItemEntradaNota;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.exeption.NegocioException;
+import br.com.bethpapp.utils.LeituraXml;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -42,8 +43,10 @@ public class ServiceImportaNotafiscal {
 	private ServiceForncedorNotaFiscal serviceForncedorNotaFiscal;
 	@Autowired
 	private ServiceContasaPagar serviceContasaPagar;
-  private LocalDate dataemisao;
-	public EntradaNotaCabecario imporxml(String xml, BigDecimal pMargem,Long idforma, Integer qtdeparcelas) {
+	private LeituraXml leituraXml =new LeituraXml();
+	private LocalDate dataemisao;
+
+	public EntradaNotaCabecario imporxml(String xml, BigDecimal pMargem, Long idforma, Integer qtdeparcelas) {
 		System.out.println(arquivo + local_arquivo_xml + xml);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		var entrada = new EntradaNotaCabecario();
@@ -52,16 +55,8 @@ public class ServiceImportaNotafiscal {
 			org.w3c.dom.Document doc = builder.parse(arquivo + local_arquivo_xml + xml);
 
 			var dados = doc.getElementsByTagName("ide");
-			for (int i = 0; i < dados.getLength(); i++) {
-				Element dadoinit = (Element) dados.item(i);
-				entrada.setData_emissao_nota(LocalDate
-						.parse(dadoinit.getElementsByTagName("dhEmi").item(i).getTextContent().substring(0, 10)));
-				entrada.setNumerodanota(dadoinit.getElementsByTagName("nNF").item(i).getTextContent());
-
-			}
+			entrada= leituraXml.lerxml(xml, dados);
 			dataemisao= entrada.getData_emissao_nota();
-			entrada.setData_entrada(LocalDate.now());
-			entrada.setArquivo_nota(xml);
 			Element raiz = doc.getDocumentElement();
 			System.out.println("Nota fiscal" + raiz.getNodeName());
 			NodeList emitentes = raiz.getElementsByTagName("emit");
@@ -80,7 +75,7 @@ public class ServiceImportaNotafiscal {
 			e.printStackTrace();
 		}
 
-		 return salvar(entrada, pMargem, idforma, qtdeparcelas);
+		return salvar(entrada, pMargem, idforma, qtdeparcelas);
 	}
 
 	private List<ItemEntradaNota> adicionarProduto(NodeList nodprouto, BigDecimal margem) {
@@ -116,11 +111,11 @@ public class ServiceImportaNotafiscal {
 				// p.setPrecovenda(margem.multiply(p.getPrecocusto()));
 				produto.getElementsByTagName("qTrib").item(j).getTextContent();
 				p.setUnidade(produto.getElementsByTagName("uCom").item(j).getTextContent());
-                p.setPrecocusto(precocusto);
-                p.setCustomedio(precocusto);
-                p.setPrecovenda(margem.multiply(p.getPrecocusto()));
-                System.out.println(p.getPrecovenda());
-                p.setAtivo(true);
+				p.setPrecocusto(precocusto);
+				p.setCustomedio(precocusto);
+				p.setPrecovenda(margem.multiply(p.getPrecocusto()));
+				System.out.println(p.getPrecovenda());
+				p.setAtivo(true);
 				intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
 				/// p.setPrecovenda(margem.multiply(precocusto);
 
@@ -183,7 +178,7 @@ public class ServiceImportaNotafiscal {
 
 			}
 			serviceEstoqueMovimento.entradaEstoquue(entrada);
-			serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma,dataemisao);
+			serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma, dataemisao);
 			daoEntradaNota.save(entrada);
 			return entrada;
 		}

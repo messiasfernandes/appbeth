@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,17 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bethpapp.coversor.CategoriaConverter;
-import br.com.bethpapp.dominio.entidade.Categoria;
 import br.com.bethpapp.dominio.service.CategoriaService;
 import br.com.bethpapp.modelo.dto.CategoriaDTO;
 import br.com.bethpapp.modelo.input.CategoriaInput;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+
 @CrossOrigin
 @RequestMapping("/categorias")
 @RestController
-public class CategoriaController {
-	
+public class CategoriaController  extends ControllerEvent{
+
 	@Autowired
 	private CategoriaService categoriaService;
 	@Autowired
@@ -42,14 +44,22 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-
 	public ResponseEntity<CategoriaDTO> adicionar(@Valid @RequestBody CategoriaInput categoria,
 			HttpServletResponse response) {
 
-		Categoria categoriasalva = categoriaService.salvar(categoriaConverter.toEntity(categoria));
-		/// publisher.publishEvent(new RecursoCriadoEvent(this, response,
-		/// categoriasalva.getIdcategoria()));
+		var categoriasalva = categoriaService.salvar(categoriaConverter.toEntity(categoria));
+
+		criaevento(categoriasalva.getId(), response);
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaConverter.toDto(categoriasalva));
 
 	}
+
+
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> remover(@PathVariable Long id) {
+		categoriaService.excluir(id);
+		return ResponseEntity.noContent().build();
+	}
+
 }

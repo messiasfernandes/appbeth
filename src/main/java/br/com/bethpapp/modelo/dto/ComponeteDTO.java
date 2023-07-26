@@ -8,6 +8,6 @@ import lombok.Data;
 public class ComponeteDTO {
 	private Long id;
 	private BigDecimal qtde;
-
+    private BigDecimal subtotal;
 	private ProdutoLigtDTO produto;
 }

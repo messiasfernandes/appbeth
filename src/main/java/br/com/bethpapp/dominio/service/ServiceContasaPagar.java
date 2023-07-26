@@ -1,6 +1,7 @@
 package br.com.bethpapp.dominio.service;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
@@ -32,7 +33,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 		contaContasaPagar.setFornecedor(fornecedor);
 		   contaContasaPagar.setDatalancamento(dataEmisao);
 		     Integer numeroparcela=0;
-		     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(3, RoundingMode.HALF_UP));
+		     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(3), MathContext.DECIMAL128);
 		   
 		FormadePagmamento formadePagmamento = daoFormaDePagamento.findById(idForma).get();
 	     for (int i=0; i< qtepacerla;i++) {

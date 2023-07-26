@@ -17,7 +17,7 @@ public class CategoriaSpec {
 			if (codigo != null) {
 				if (codigo != null) {
 
-					predicates.add(builder.equal(root.get("idcategoria"), codigo));
+					predicates.add(builder.equal(root.get("id"), codigo));
 				}
 
 			}
