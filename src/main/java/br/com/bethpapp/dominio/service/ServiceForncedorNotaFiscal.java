@@ -3,6 +3,7 @@ package br.com.bethpapp.dominio.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import br.com.bethpapp.dominio.dao.DaoCidade;
@@ -18,7 +19,7 @@ public class ServiceForncedorNotaFiscal {
 	@Autowired
 	private DaoCidade daoCidade;
 
-	public Fornecedor salvarfornecedorNota(NodeList emitentes) {
+	public Fornecedor adiconafornecedorXml( NodeList emitentes) {
 		Fornecedor forncedor = new Fornecedor();
 		
 		var cidade = new Cidade();
@@ -26,21 +27,28 @@ public class ServiceForncedorNotaFiscal {
 			Element emitente = (Element) emitentes.item(i);
 			forncedor.setCpfouCnpj(emitente.getElementsByTagName("CNPJ").item(i).getTextContent());
 			forncedor.setNome(emitente.getElementsByTagName("xNome").item(i).getTextContent());
-			/// String fone= emitente.getElementsByTagName("fone").toString();
-//			if (!emitente.getElementsByTagName("fone").toString().isEmpty()) {
-//				forncedor.setTelefone(emitente.getElementsByTagName("fone").item(i).getTextContent());
-//			}
+			NodeList nodeList = emitente.getElementsByTagName("fone");
+			if (nodeList != null && nodeList.getLength() > 0) {
+			    Node foneNode = nodeList.item(i);
+			    if (foneNode != null) {
+			        String foneContent = foneNode.getTextContent();
+			        if (!foneContent.isEmpty()) {
+			            forncedor.setTelefone(foneContent);
+			        }
+			    }
+			}
+
 
 			forncedor.setLogradouro(emitente.getElementsByTagName("xLgr").item(i).getTextContent() + ","
 					+ emitente.getElementsByTagName("nro").item(i).getTextContent());
 			cidade = daoCidade.findById(Long.parseLong(emitente.getElementsByTagName("cMun").item(i).getTextContent()))
 					.get();
-			System.out.println(cidade);
+	
 			forncedor.setBairro(emitente.getElementsByTagName("xBairro").item(i).getTextContent());
 			forncedor.setCep(emitente.getElementsByTagName("CEP").item(i).getTextContent());
 			forncedor.setRg_Inscricao(emitente.getElementsByTagName("IE").item(i).getTextContent());
 			forncedor.setCidade(cidade);
-		///	forncedor.setEndereco(endreco);
+	
 
 		}
 
@@ -56,7 +64,7 @@ public class ServiceForncedorNotaFiscal {
 			}
 
 		}
-		return daoForncedor.save(forncedor);
+		return forncedor;
 	}
 
 	public Fornecedor buscar(String pCpfouCnpj) {
@@ -64,5 +72,7 @@ public class ServiceForncedorNotaFiscal {
 
 		return fonecedorexistente;
 	}
-
+    public Fornecedor salvarfornecedorXml(Fornecedor fornecedorxml) {
+    	return daoForncedor.save(fornecedorxml);
+    }
 }

@@ -2,7 +2,6 @@ package br.com.bethpapp.dominio.service;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import br.com.bethpapp.dominio.entidade.ContasPagarDetalhe;
 import br.com.bethpapp.dominio.entidade.FormadePagmamento;
 import br.com.bethpapp.dominio.entidade.Fornecedor;
 import br.com.bethpapp.dominio.enumerado.StatusPagamento;
+import br.com.bethpapp.dominio.service.exeption.NegocioException;
 import jakarta.transaction.Transactional;
 
 
@@ -30,33 +30,39 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	@Transactional
 	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma, LocalDate  dataEmisao) {
 		ContasPagar contaContasaPagar = new ContasPagar();
-		contaContasaPagar.setFornecedor(fornecedor);
-		   contaContasaPagar.setDatalancamento(dataEmisao);
-		     Integer numeroparcela=0;
-		     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(3), MathContext.DECIMAL128);
-		   
-		FormadePagmamento formadePagmamento = daoFormaDePagamento.findById(idForma).get();
-	     for (int i=0; i< qtepacerla;i++) {
-	    	 ContasPagarDetalhe contasaPagarDetalhe = new ContasPagarDetalhe();
-	    	 numeroparcela=i+1;
-	    	 contasaPagarDetalhe.setContasaPagar(contaContasaPagar);
-	         contasaPagarDetalhe.setNumparcela(numeroparcela);	
-	         contasaPagarDetalhe.setFormadePagamento(formadePagmamento);
-	         contasaPagarDetalhe.setStatusPagmaento(StatusPagamento.PENDENTE);
-	         contasaPagarDetalhe.setValoparcela(valoparcela);
-	         contasaPagarDetalhe.setValorapagar(valoparcela);
-	         contasaPagarDetalhe.setValoprago(new BigDecimal(0));
-	         contasaPagarDetalhe.setNumtitulo(titulo);
-	         if (formadePagmamento.getId()==1l) {
-	          	 contasaPagarDetalhe.setDataVencimento(contaContasaPagar.getDatalancamento().plusDays((numeroparcela* 0)));
-	         }else {
-	        	 contasaPagarDetalhe.setDataVencimento(contaContasaPagar.getDatalancamento().plusDays((numeroparcela* 30))); 
-	         }
-	         
-	         contaContasaPagar.getContasaPagarDetalhes().add(contasaPagarDetalhe);
+		try {
+			
+			contaContasaPagar.setFornecedor(fornecedor);
+			   contaContasaPagar.setDatalancamento(dataEmisao);
+			     Integer numeroparcela=0;
+			     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(3), MathContext.DECIMAL128);
+			   
+			FormadePagmamento formadePagmamento = daoFormaDePagamento.findById(idForma).get();
+		     for (int i=0; i< qtepacerla;i++) {
+		    	 ContasPagarDetalhe contasaPagarDetalhe = new ContasPagarDetalhe();
+		    	 numeroparcela=i+1;
+		    	 contasaPagarDetalhe.setContasaPagar(contaContasaPagar);
+		         contasaPagarDetalhe.setNumparcela(numeroparcela);	
+		         contasaPagarDetalhe.setFormadePagamento(formadePagmamento);
+		         contasaPagarDetalhe.setStatusPagmaento(StatusPagamento.PENDENTE);
+		         contasaPagarDetalhe.setValoparcela(valoparcela);
+		         contasaPagarDetalhe.setValorapagar(valoparcela);
+		         contasaPagarDetalhe.setValoprago(new BigDecimal(0));
+		         contasaPagarDetalhe.setNumtitulo(titulo);
+		         if (formadePagmamento.getId()==1l) {
+		          	 contasaPagarDetalhe.setDataVencimento(contaContasaPagar.getDatalancamento().plusDays((numeroparcela* 0)));
+		         }else {
+		        	 contasaPagarDetalhe.setDataVencimento(contaContasaPagar.getDatalancamento().plusDays((numeroparcela* 30))); 
+		         }
+		         
+		         contaContasaPagar.getContasaPagarDetalhes().add(contasaPagarDetalhe);
+			}
+		} catch (Exception e) {
+			throw new NegocioException("Erro ao adicionar contas a pagar");
 		}
+		
 	     
-	     return salvar(contaContasaPagar);
+	     return contaContasaPagar;
 	}
 
 
