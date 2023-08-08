@@ -43,7 +43,7 @@ public class ServiceImportaNotafiscal {
 	private ServiceForncedorNotaFiscal serviceForncedorNotaFiscal;
 	@Autowired
 	private ServiceContasaPagar serviceContasaPagar;
-	private LeituraXml leituraXml =new LeituraXml();
+	private LeituraXml leituraXml = new LeituraXml();
 	private LocalDate dataemisao;
 
 	public EntradaNotaCabecario imporxml(String xml, BigDecimal pMargem, Long idforma, Integer qtdeparcelas) {
@@ -55,10 +55,10 @@ public class ServiceImportaNotafiscal {
 			org.w3c.dom.Document doc = builder.parse(arquivo + local_arquivo_xml + xml);
 
 			var dados = doc.getElementsByTagName("ide");
-			entrada= leituraXml.lerxml(xml, dados);
-			dataemisao= entrada.getData_emissao_nota();
+			entrada = leituraXml.lerxml(xml, dados);
+			dataemisao = entrada.getData_emissao_nota();
 			Element raiz = doc.getDocumentElement();
-			
+
 			NodeList emitentes = raiz.getElementsByTagName("emit");
 			entrada.setFornecedor(dadosFornecedor(emitentes));
 			NodeList produtos = raiz.getElementsByTagName("det");
@@ -78,8 +78,6 @@ public class ServiceImportaNotafiscal {
 		return salvar(entrada, pMargem, idforma, qtdeparcelas);
 	}
 
-	
-
 	private Fornecedor dadosFornecedor(NodeList emitentes) {
 
 		return serviceForncedorNotaFiscal.adiconafornecedorXml(emitentes);
@@ -94,31 +92,31 @@ public class ServiceImportaNotafiscal {
 
 			throw new NegocioException("Nota  cadastrada já no banco de dados");
 		} else {
-			   Map<String, Produto> produtosExistentes = new HashMap<>();
-		        
-		        for (int i = 0; i < entrada.getItems_entrada().size(); i++) {
-		            System.out.println(entrada.getItems_entrada().get(i).getProduto().getCodigofabricante());
-		            String codigoFabricante = entrada.getItems_entrada().get(i).getProduto().getCodigofabricante();
-		            long cont = serviceProduto.buscarCodFabricante(codigoFabricante);
+			Map<String, Produto> produtosExistentes = new HashMap<>();
 
-		            if (cont > 0L) {
-		                Produto produtoExistente = produtosExistentes.computeIfAbsent(codigoFabricante,
-		                        key -> serviceProduto.buscarporCodFabricante(key));
-		                entrada.getItems_entrada().get(i).setProduto(produtoExistente);
-		            } else {
-		                serviceProduto.salvar(entrada.getItems_entrada().get(i).getProduto());
-		            }
-		        }
-		        
-		        Long titulo = Long.parseLong(entrada.getNumerodanota());
-		        BigDecimal totalnota = entrada.getItems_entrada().stream()
-		                .map(ItemEntradaNota::getSubtotal)
-		                .reduce(BigDecimal.ZERO, BigDecimal::add);
+			for (int i = 0; i < entrada.getItems_entrada().size(); i++) {
+				System.out.println(entrada.getItems_entrada().get(i).getProduto().getCodigofabricante());
+				String codigoFabricante = entrada.getItems_entrada().get(i).getProduto().getCodigofabricante();
+				long cont = serviceProduto.buscarCodFabricante(codigoFabricante);
+
+				if (cont > 0L) {
+					Produto produtoExistente = produtosExistentes.computeIfAbsent(codigoFabricante,
+							key -> serviceProduto.buscarporCodFabricante(key));
+					entrada.getItems_entrada().get(i).setProduto(produtoExistente);
+				} else {
+					serviceProduto.salvar(entrada.getItems_entrada().get(i).getProduto());
+				}
+			}
+
+			Long titulo = Long.parseLong(entrada.getNumerodanota());
+			BigDecimal totalnota = entrada.getItems_entrada().stream().map(ItemEntradaNota::getSubtotal)
+					.reduce(BigDecimal.ZERO, BigDecimal::add);
 			serviceEstoqueMovimento.entradaEstoquue(entrada);
 			serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
-		var contas=	serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma, dataemisao);
-		serviceContasaPagar.salvar(contas);
-		daoEntradaNota.save(entrada);
+			var contas = serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma,
+					dataemisao);
+			serviceContasaPagar.salvar(contas);
+			daoEntradaNota.save(entrada);
 			return entrada;
 		}
 

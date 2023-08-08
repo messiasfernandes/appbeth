@@ -19,9 +19,9 @@ public class ServiceForncedorNotaFiscal {
 	@Autowired
 	private DaoCidade daoCidade;
 
-	public Fornecedor adiconafornecedorXml( NodeList emitentes) {
+	public Fornecedor adiconafornecedorXml(NodeList emitentes) {
 		Fornecedor forncedor = new Fornecedor();
-		
+
 		var cidade = new Cidade();
 		for (int i = 0; i < emitentes.getLength(); i++) {
 			Element emitente = (Element) emitentes.item(i);
@@ -29,26 +29,24 @@ public class ServiceForncedorNotaFiscal {
 			forncedor.setNome(emitente.getElementsByTagName("xNome").item(i).getTextContent());
 			NodeList nodeList = emitente.getElementsByTagName("fone");
 			if (nodeList != null && nodeList.getLength() > 0) {
-			    Node foneNode = nodeList.item(i);
-			    if (foneNode != null) {
-			        String foneContent = foneNode.getTextContent();
-			        if (!foneContent.isEmpty()) {
-			            forncedor.setTelefone(foneContent);
-			        }
-			    }
+				Node foneNode = nodeList.item(i);
+				if (foneNode != null) {
+					String foneContent = foneNode.getTextContent();
+					if (!foneContent.isEmpty()) {
+						forncedor.setTelefone(foneContent);
+					}
+				}
 			}
-
 
 			forncedor.setLogradouro(emitente.getElementsByTagName("xLgr").item(i).getTextContent() + ","
 					+ emitente.getElementsByTagName("nro").item(i).getTextContent());
 			cidade = daoCidade.findById(Long.parseLong(emitente.getElementsByTagName("cMun").item(i).getTextContent()))
 					.get();
-	
+
 			forncedor.setBairro(emitente.getElementsByTagName("xBairro").item(i).getTextContent());
 			forncedor.setCep(emitente.getElementsByTagName("CEP").item(i).getTextContent());
 			forncedor.setRg_Inscricao(emitente.getElementsByTagName("IE").item(i).getTextContent());
 			forncedor.setCidade(cidade);
-	
 
 		}
 
@@ -72,7 +70,8 @@ public class ServiceForncedorNotaFiscal {
 
 		return fonecedorexistente;
 	}
-    public Fornecedor salvarfornecedorXml(Fornecedor fornecedorxml) {
-    	return daoForncedor.save(fornecedorxml);
-    }
+
+	public Fornecedor salvarfornecedorXml(Fornecedor fornecedorxml) {
+		return daoForncedor.save(fornecedorxml);
+	}
 }
