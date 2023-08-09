@@ -22,6 +22,8 @@ public class Parcela {
 	private FormadePagmamento formadePagmamento;
 	@Column(nullable = false, columnDefinition = "DECIMAL(9,2) DEFAULT 0.00")
 	private BigDecimal percentual;
+	@Column( columnDefinition = "DECIMAL(9,2) DEFAULT 0.00")
+	private BigDecimal juros;
 	@Transient
 	private BigDecimal totalpercentual;
 	@NotNull
