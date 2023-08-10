@@ -36,7 +36,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 			   contaContasaPagar.setDatalancamento(dataEmisao);
 			     Integer numeroparcela=0;
 			     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(3), MathContext.DECIMAL128);
-			   
+			    contaContasaPagar.setTotalPagar(valortotalconta);
 			FormadePagmamento formadePagmamento = daoFormaDePagamento.findById(idForma).get();
 		     for (int i=0; i< qtepacerla;i++) {
 		    	 ContasPagarDetalhe contasaPagarDetalhe = new ContasPagarDetalhe();
@@ -48,7 +48,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 		         contasaPagarDetalhe.setValoparcela(valoparcela);
 		         contasaPagarDetalhe.setValorapagar(valoparcela);
 		         contasaPagarDetalhe.setValoprago(new BigDecimal(0));
-		         contasaPagarDetalhe.setNumtitulo(titulo);
+		         contasaPagarDetalhe.setNumtitulo(titulo.toString()+ "-"+numeroparcela.toString()+"/"+qtepacerla.toString());
 		         if (formadePagmamento.getId()==1l) {
 		          	 contasaPagarDetalhe.setDataVencimento(contaContasaPagar.getDatalancamento().plusDays((numeroparcela* 0)));
 		         }else {

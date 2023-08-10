@@ -1,6 +1,7 @@
 package br.com.bethpapp.dominio.entidade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class ContasPagar extends GeradorId implements Serializable {
 	private LocalDate datalancamento;
 	@Column(length = 120)
 	private String observacao;
-
+    private BigDecimal totalPagar;
 	@JsonManagedReference
 	@Fetch(FetchMode.SUBSELECT)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "contasaPagar", cascade = CascadeType.ALL, orphanRemoval = true)

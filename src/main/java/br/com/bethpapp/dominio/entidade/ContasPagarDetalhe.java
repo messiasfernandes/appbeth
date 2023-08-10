@@ -29,7 +29,7 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	@NotNull
-	private Long numtitulo;
+	private String numtitulo;
 	@NotNull
 	private Integer numparcela;
 	@Setter(value = AccessLevel.NONE)
@@ -44,11 +44,15 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable{
 	@Column(columnDefinition = "DECIMAL(9,3) DEFAULT 0.000")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valorapagar;
-
+    private BigDecimal taxaJuro;
+    private BigDecimal taxadesConto;
 	@ManyToOne
 	private ContasPagar contasaPagar;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataVencimento;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate descontoAte;
+	
 	
 	@ManyToOne
 	private FormadePagmamento formadePagamento;
