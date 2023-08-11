@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import br.com.bethpapp.dominio.entidade.ContasPagar;
 import br.com.bethpapp.dominio.entidade.ContasPagarDetalhe;
 import br.com.bethpapp.dominio.entidade.EstoqueMovimento;
+import br.com.bethpapp.dominio.enumerado.PagamentoStatus;
 import br.com.bethpapp.dominio.enumerado.StatusPagamento;
 
 @SpringBootTest
@@ -28,8 +29,7 @@ class BethAppApplicationTests {
 	}
 	@Test
   void enustring(){
-	  ContasPagarDetalhe contasaPagarDetalhe = new ContasPagarDetalhe();
-	contasaPagarDetalhe.setStatusPagmaento(StatusPagamento.valueOf("Pendente"));
-	System.out.println(contasaPagarDetalhe.getStatusPagmaento());
+	  String meumeuenu = PagamentoStatus.PENDENTE.name();
+	  System.out.println(meumeuenu);
   }
 }
