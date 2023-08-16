@@ -31,12 +31,13 @@ public class LeituraXml {
 	}
 
 	public List<ItemEntradaNota> adicionarProduto(NodeList nodprouto, BigDecimal margem) {
-		var fator = new BigDecimal(1);
-		var marge2 = margem.divide(new BigDecimal(100));
-		margem = marge2;
-		margem = margem.add(fator);
+		//var fator = new BigDecimal(1);
+	//	var marge2 = margem.divide(new BigDecimal(100));
+		margem =margem.divide(new BigDecimal(100));
+	//	margem = marge2;
+		margem = margem.add(BigDecimal.ONE);
 
-		System.out.println(margem);
+		System.out.println( "margem"+margem);
 
 		List<ItemEntradaNota> entradas = new ArrayList<>();
 		try {

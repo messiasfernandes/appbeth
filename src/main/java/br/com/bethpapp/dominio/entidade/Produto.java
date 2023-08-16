@@ -63,24 +63,21 @@ public class Produto extends GeradorId {
 	@Column(length = 13)
 	private String codigofabricante;
 
-	@Digits(integer = 9, fraction = 3)
+	@Digits(integer = 9, fraction = 4)
 	@Setter(value = AccessLevel.NONE)
 	private BigDecimal precovenda;
 	@Setter(value = AccessLevel.NONE)
-	@Digits(integer = 9, fraction = 3)
+	@Digits(integer = 9, fraction = 4)
 	private BigDecimal precocusto;
 
-
-	@Digits(integer = 9, fraction = 3)
+	@Digits(integer = 9, fraction = 4)
 	private BigDecimal customedio;
 	@Column
 	private Integer estoqueminimo;
-    @JsonIgnore
-	///@JsonBackReference
+	@JsonIgnore
 	@OneToOne(mappedBy = "produto", fetch = FetchType.LAZY)
-    @JoinColumn
+	@JoinColumn
 	private Estoque estoque;
-
 	@JsonIgnoreProperties(value = { "nomeSubCategoria" }, allowGetters = true)
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn

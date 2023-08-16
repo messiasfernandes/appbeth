@@ -32,7 +32,8 @@ public class CondicaoPagamento extends GeradorId {
 	@Fetch(FetchMode.SUBSELECT)
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "condicao_parcelas", joinColumns = @JoinColumn(name = "codicao_id"))
-
+	
 	private List<Parcela> parcelas = new ArrayList<>();
 
+	
 }

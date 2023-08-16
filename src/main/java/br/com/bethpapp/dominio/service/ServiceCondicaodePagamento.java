@@ -33,5 +33,9 @@ public class ServiceCondicaodePagamento implements ServiceModel<CondicaoPagament
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	private CondicaoPagamento ValidarCondicao() {
+		return null;
+	}
 
 }

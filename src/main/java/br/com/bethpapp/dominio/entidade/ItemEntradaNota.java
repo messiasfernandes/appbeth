@@ -23,7 +23,7 @@ public class ItemEntradaNota extends GeradorId {
 	
 	private Integer qtde;
 	@Setter(value = AccessLevel.NONE)
-	@Digits(integer = 9, fraction = 3)
+	@Digits(integer = 9, fraction = 4)
 	private BigDecimal subtotal;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
@@ -33,7 +33,7 @@ public class ItemEntradaNota extends GeradorId {
 	@JoinColumn(nullable = false)
 	private EntradaNotaCabecario entradaNotafiscal;
 	public void setSubtotal(BigDecimal subtotal) {
-		this.subtotal = subtotal.setScale(3,RoundingMode.HALF_UP);
+		this.subtotal = subtotal.setScale(4,RoundingMode.HALF_UP);
 	}
 	
 }

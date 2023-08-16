@@ -21,39 +21,38 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
 @Setter
 @Getter
 @Entity
-public class ContasPagarDetalhe extends GeradorId implements Serializable{
+public class ContasPagarDetalhe extends GeradorId implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
 	@NotNull
 	private String numtitulo;
 	@NotNull
 	private Integer numparcela;
 	@Setter(value = AccessLevel.NONE)
-	@Column(columnDefinition = "DECIMAL(9,3) DEFAULT 0.000")
+	@Column(columnDefinition = "DECIMAL(9,4) DEFAULT 0.0000")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valoparcela;
 	@Setter(value = AccessLevel.NONE)
-	@Column(columnDefinition = "DECIMAL(9,3) DEFAULT 0.000")
+	@Column(columnDefinition = "DECIMAL(9,4) DEFAULT 0.0000")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valoprago;
 	@Setter(value = AccessLevel.NONE)
-	@Column(columnDefinition = "DECIMAL(9,3) DEFAULT 0.000")
+	@Column(columnDefinition = "DECIMAL(9,4) DEFAULT 0.0000")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valorapagar;
-    private BigDecimal taxaJuro;
-    private BigDecimal taxadesConto;
+	private BigDecimal taxaJuro;
+	private BigDecimal taxadesConto;
 	@ManyToOne
 	private ContasPagar contasaPagar;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataVencimento;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate descontoAte;
-	
-	
+
 	@ManyToOne
 	private FormadePagmamento formadePagamento;
 	@NonNull
@@ -62,12 +61,14 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable{
 	private StatusPagamento statusPagmaento;
 
 	public void setValoparcela(BigDecimal valoparcela) {
-		this.valoparcela = valoparcela.setScale(3,RoundingMode.HALF_UP);
+		this.valoparcela = valoparcela.setScale(3, RoundingMode.HALF_UP);
 	}
+
 	public void setValoprago(BigDecimal valoprago) {
-		this.valoprago = valoprago.setScale(3,RoundingMode.HALF_UP);
+		this.valoprago = valoprago.setScale(3, RoundingMode.HALF_UP);
 	}
+
 	public void setValorapagar(BigDecimal valorapagar) {
-		this.valorapagar = valorapagar.setScale(3,RoundingMode.HALF_UP);
+		this.valorapagar = valorapagar.setScale(3, RoundingMode.HALF_UP);
 	}
 }
