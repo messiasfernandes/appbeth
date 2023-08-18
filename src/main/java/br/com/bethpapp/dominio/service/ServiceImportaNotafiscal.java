@@ -57,9 +57,12 @@ public class ServiceImportaNotafiscal {
 			var dados = doc.getElementsByTagName("ide");
 			entrada = leituraXml.lerxml(xml, dados);
 			dataemisao = entrada.getData_emissao_nota();
+            
 			Element raiz = doc.getDocumentElement();
 
 			NodeList emitentes = raiz.getElementsByTagName("emit");
+			NodeList transportadora= raiz.getElementsByTagName("transp");
+			entrada.setTransporteNotafiscal(leituraXml.adicionarTranportadora(transportadora));;
 			entrada.setFornecedor(dadosFornecedor(emitentes));
 			NodeList produtos = raiz.getElementsByTagName("det");
 			entrada.setItems_entrada(leituraXml.adicionarProduto(produtos, pMargem));

@@ -33,7 +33,7 @@ public class ComandaQueryImpl extends ServiceFuncoes implements ComandaQuery{
 
 		root.fetch("itemsdaComanda", JoinType.LEFT).fetch("produto", JoinType.LEFT);
 	
-		// root.fetch("componentes", JoinType.LEFT);
+		
 		criteria.select(root);
 
 		criteria.where(predicates);

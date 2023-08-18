@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
 import br.com.bethpapp.dominio.entidade.ItemEntradaNota;
 import br.com.bethpapp.dominio.entidade.Produto;
+import br.com.bethpapp.dominio.entidade.TransporteNotafiscal;
 import br.com.bethpapp.dominio.service.exeption.NegocioException;
 
 public class LeituraXml {
@@ -22,7 +24,9 @@ public class LeituraXml {
 			entrada.setData_emissao_nota(
 					LocalDate.parse(dadoinit.getElementsByTagName("dhEmi").item(i).getTextContent().substring(0, 10)));
 			entrada.setNumerodanota(dadoinit.getElementsByTagName("nNF").item(i).getTextContent());
-
+			entrada.setModelo(dadoinit.getElementsByTagName("mod").item(i).getTextContent());
+			entrada.setNaturezaopercao(dadoinit.getElementsByTagName("natOp").item(i).getTextContent());
+			entrada.setSerie(dadoinit.getElementsByTagName("serie").item(i).getTextContent());
 		}
 
 		entrada.setData_entrada(LocalDate.now());
@@ -31,13 +35,12 @@ public class LeituraXml {
 	}
 
 	public List<ItemEntradaNota> adicionarProduto(NodeList nodprouto, BigDecimal margem) {
-		//var fator = new BigDecimal(1);
-	//	var marge2 = margem.divide(new BigDecimal(100));
-		margem =margem.divide(new BigDecimal(100));
-	//	margem = marge2;
+
+		margem = margem.divide(new BigDecimal(100));
+
 		margem = margem.add(BigDecimal.ONE);
 
-		System.out.println( "margem"+margem);
+		System.out.println("margem" + margem);
 
 		List<ItemEntradaNota> entradas = new ArrayList<>();
 		try {
@@ -61,7 +64,7 @@ public class LeituraXml {
 					intemProduto.setQtde(Integer.valueOf(qte.intValueExact()));
 
 					var precocusto = (new BigDecimal(produto.getElementsByTagName("vUnTrib").item(j).getTextContent()));
-				
+
 					produto.getElementsByTagName("qTrib").item(j).getTextContent();
 					p.setUnidade(produto.getElementsByTagName("uCom").item(j).getTextContent());
 					p.setPrecocusto(precocusto);
@@ -70,10 +73,9 @@ public class LeituraXml {
 					System.out.println(p.getPrecovenda());
 					p.setAtivo(true);
 					intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
-			
 
 					intemProduto.setProduto(p);
-		
+
 					entradas.add(intemProduto);
 
 				}
@@ -82,7 +84,41 @@ public class LeituraXml {
 		} catch (Exception e) {
 			throw new NegocioException("Erro adicionar produto");
 		}
-      return entradas;
+		return entradas;
 	}
 
+	public TransporteNotafiscal adicionarTranportadora(NodeList nodeTranportadora) {
+		var transportadoraNotafiscal = new TransporteNotafiscal();
+		for (int k = 0; k < nodeTranportadora.getLength(); k++) {
+		Element transportadora = (Element) nodeTranportadora.item(k);
+	//	transportadoraNotafiscal.setCnpj(transportadora.getElementsByTagName("CNPJ").item(k).getTextContent());
+		transportadoraNotafiscal.setNomeTransporte(transportadora.getElementsByTagName("xNome").item(k).getTextContent());
+		NodeList nodeList = transportadora.getElementsByTagName("IE");
+		if (nodeList != null && nodeList.getLength() > 0) {
+			Node foneNode = nodeList.item(k);
+			if (foneNode != null) {
+				String foneContent = foneNode.getTextContent();
+				if (!foneContent.isEmpty()) {
+					transportadoraNotafiscal.setIncricaoEstadual(foneContent);
+				}
+			}
+		}
+		NodeList nodeLista = transportadora.getElementsByTagName("placa");
+		if (nodeLista != null && nodeLista.getLength() > 0) {
+			Node placa = nodeLista.item(k);
+			if (placa != null) {
+				String placat = placa.getTextContent();
+				if (!placat.isEmpty()) {
+					transportadoraNotafiscal.setIncricaoEstadual(placat);
+				}
+			}
+		}
+	//	transportadoraNotafiscal.setIncricaoEstadual(transportadora.getElementsByTagName("IE").item(k).getTextContent());
+		transportadoraNotafiscal.setEnderreco(transportadora.getElementsByTagName("xEnder").item(k).getTextContent());
+		transportadoraNotafiscal.setPesoBruto(new BigDecimal(transportadora.getElementsByTagName("pesoB").item(k).getTextContent()));
+	//	transportadoraNotafiscal.setPlacaVeiculo(transportadora.getElementsByTagName("placa").item(k).getTextContent());
+		transportadoraNotafiscal.setQtevolume(Integer.parseInt(transportadora.getElementsByTagName("qVol").item(k).getTextContent()));
+		}
+		return transportadoraNotafiscal;
+	}
 }
