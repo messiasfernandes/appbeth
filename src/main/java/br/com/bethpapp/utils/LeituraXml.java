@@ -88,37 +88,79 @@ public class LeituraXml {
 	}
 
 	public TransporteNotafiscal adicionarTranportadora(NodeList nodeTranportadora) {
-		var transportadoraNotafiscal = new TransporteNotafiscal();
-		for (int k = 0; k < nodeTranportadora.getLength(); k++) {
-		Element transportadora = (Element) nodeTranportadora.item(k);
-		//transportadoraNotafiscal.setCnpj(transportadora.getElementsByTagName("CNPJ").item(k).getTextContent());
-//	   transportadoraNotafiscal.setNomeTransporte(transportadora.getElementsByTagName("xNome").item(k).getTextContent());
-		NodeList nodeList = transportadora.getElementsByTagName("IE");
-		if (nodeList != null && nodeList.getLength() > 0) {
-			Node foneNode = nodeList.item(k);
-			if (foneNode != null) {
-				String foneContent = foneNode.getTextContent();
-				if (!foneContent.isEmpty()) {
-					transportadoraNotafiscal.setIncricaoEstadual(foneContent);
-				}
-			}
-		}
-		NodeList nodeLista = transportadora.getElementsByTagName("placa");
-		if (nodeLista != null && nodeLista.getLength() > 0) {
-			Node placa = nodeLista.item(k);
-			if (placa != null) {
-				String placat = placa.getTextContent();
-				if (!placat.isEmpty()) {
-					transportadoraNotafiscal.setIncricaoEstadual(placat);
-				}
-			}
-		}
-///	transportadoraNotafiscal.setIncricaoEstadual(transportadora.getElementsByTagName("IE").item(k).getTextContent());
-	//	transportadoraNotafiscal.setEnderreco(transportadora.getElementsByTagName("xEnder").item(k).getTextContent());
-		transportadoraNotafiscal.setPesoBruto(new BigDecimal(transportadora.getElementsByTagName("pesoB").item(k).getTextContent()));
-	//	transportadoraNotafiscal.setPlacaVeiculo(transportadora.getElementsByTagName("placa").item(k).getTextContent());
-		transportadoraNotafiscal.setQtevolume(Integer.parseInt(transportadora.getElementsByTagName("qVol").item(k).getTextContent()));
-		}
-		return transportadoraNotafiscal;
+	    TransporteNotafiscal transportadoraNotafiscal = new TransporteNotafiscal();
+
+	    for (int k = 0; k < nodeTranportadora.getLength(); k++) {
+	        Element transportadora = (Element) nodeTranportadora.item(k);
+	        String modFrete = transportadora.getElementsByTagName("modFrete").item(k).getTextContent();
+
+	        System.out.println("modFrete: " + modFrete);
+
+	        if ("0".equals(modFrete)) {
+	            NodeList nodeTransporte = transportadora.getElementsByTagName("transporta");
+
+	            for (int i = 0; i < nodeTransporte.getLength(); i++) {
+	                Element elementeTrans = (Element) nodeTransporte.item(i);
+	                tratarTransportaElemento(elementeTrans, transportadoraNotafiscal);
+	            }
+
+	            Element volElement = (Element) transportadora.getElementsByTagName("vol").item(k);
+	            if (volElement != null) {
+	                tratarVolElemento(volElement, transportadoraNotafiscal);
+	            }
+	        }
+	    }
+
+	    return transportadoraNotafiscal;
 	}
+
+	private void tratarTransportaElemento(Element element, TransporteNotafiscal transportadoraNotafiscal) {
+	    String xEnder = element.getElementsByTagName("xEnder").item(0) != null ? element.getElementsByTagName("xEnder").item(0).getTextContent() : "";
+	    String xNome = element.getElementsByTagName("xNome").item(0) != null ? element.getElementsByTagName("xNome").item(0).getTextContent() : "";
+
+	    if (!xEnder.isEmpty()) {
+	        System.out.println("xEnder: " + xEnder);
+	    }
+	    if (!xNome.isEmpty()) {
+	        System.out.println("xNome: " + xNome);
+	    }
+
+	    // Configurar atributos em transportadoraNotafiscal
+	     if (!xEnder.isEmpty()) {
+	         transportadoraNotafiscal.setEnderreco(xEnder);
+	     }
+	     if (!xNome.isEmpty()) {
+	         transportadoraNotafiscal.setNomeTransporte(xNome);
+	     }
+	
+	}
+
+	private void tratarVolElemento(Element element, TransporteNotafiscal transportadoraNotafiscal) {
+	    int qVol = element.getElementsByTagName("qVol").item(0) != null ? Integer.parseInt(element.getElementsByTagName("qVol").item(0).getTextContent()) : 0;
+	    BigDecimal pesoB = element.getElementsByTagName("pesoB").item(0) != null ? new BigDecimal(element.getElementsByTagName("pesoB").item(0).getTextContent()) : BigDecimal.ZERO;
+	    BigDecimal pesoL = element.getElementsByTagName("pesoL").item(0) != null ? new BigDecimal(element.getElementsByTagName("pesoL").item(0).getTextContent()) : BigDecimal.ZERO;
+
+	    if (qVol != 0) {
+	        System.out.println("qVol: " + qVol);
+	    }
+	    if (!pesoB.equals(BigDecimal.ZERO)) {
+	        System.out.println("pesoB: " + pesoB);
+	    }
+	    if (!pesoL.equals(BigDecimal.ZERO)) {
+	        System.out.println("pesoL: " + pesoL);
+	    }
+
+	   //  Configurar atributos em transportadoraNotafiscal
+	     if (qVol != 0) {
+	         transportadoraNotafiscal.setQtevolume(qVol);
+	     }
+	     if (!pesoB.equals(BigDecimal.ZERO)) {
+	         transportadoraNotafiscal.setPesoBruto(pesoB);
+	     }
+	     if (!pesoL.equals(BigDecimal.ZERO)) {
+	         transportadoraNotafiscal.setPesoLiquido(pesoL);
+	     }
+	    // ...
+	}
+
 }

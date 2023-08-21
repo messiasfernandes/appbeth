@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -50,7 +51,7 @@ public class EntradaNotaCabecario extends GeradorId {
 	@Digits(integer = 9, fraction = 4)
 	@Transient
 	private BigDecimal totalInf;
-	@ManyToOne(optional = true, cascade = CascadeType.ALL)
+	@Embedded
 	private TransporteNotafiscal transporteNotafiscal;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
@@ -62,7 +63,8 @@ public class EntradaNotaCabecario extends GeradorId {
 	@Column(length = 255)
 	private String arquivo_nota;
 	@Column(length = 60)
-     private String chaveNota;
+	private String chaveNota;
+
 	public EntradaNotaCabecario() {
 		totalInf = BigDecimal.ZERO;
 	}
@@ -73,7 +75,7 @@ public class EntradaNotaCabecario extends GeradorId {
 
 	@Transient
 	private BigDecimal somarTotalnota() {
-	
+
 		for (int i = 0; i < items_entrada.size(); i++) {
 			this.totalInf = totalInf.add(items_entrada.get(i).getSubtotal());
 			System.out.println(totalInf);
