@@ -34,8 +34,8 @@ public class ServiceCondicaodePagamento implements ServiceModel<CondicaoPagament
 		return null;
 	}
 	
-	private CondicaoPagamento ValidarCondicao() {
-		return null;
-	}
+//	private CondicaoPagamento ValidarCondicao() {
+//		return null;
+//	}
 
 }

@@ -32,7 +32,7 @@ public class EntradaNotaCabecarioDTO {
 	 private TransporteNotafiscal transporteNotafiscal;
 	private BigDecimal pesoBruto;
 	private FornecedorDTO fornecedor;
-
+    private String chaveNota;
 	private List<ItemEntradaNotaDTO> items_entrada = new ArrayList<>();
 	@Column(length = 255)
 	private String arquivo_nota;

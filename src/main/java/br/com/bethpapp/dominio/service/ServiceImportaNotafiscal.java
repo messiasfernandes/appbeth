@@ -63,9 +63,18 @@ public class ServiceImportaNotafiscal {
 			NodeList emitentes = raiz.getElementsByTagName("emit");
 			NodeList transportadora= raiz.getElementsByTagName("transp");
 			entrada.setTransporteNotafiscal(leituraXml.adicionarTranportadora(transportadora));;
+			NodeList infProt = raiz.getElementsByTagName("infProt");
+			for (int k = 0; k < infProt.getLength(); k++) {
+				Element chaves = (Element) infProt.item(k);
+				entrada.setChaveNota(chaves.getElementsByTagName("chNFe").item(k).getTextContent());
+				
+			}
+			
 			entrada.setFornecedor(dadosFornecedor(emitentes));
 			NodeList produtos = raiz.getElementsByTagName("det");
 			entrada.setItems_entrada(leituraXml.adicionarProduto(produtos, pMargem));
+			
+			
 
 		} catch (ParserConfigurationException e) {
 

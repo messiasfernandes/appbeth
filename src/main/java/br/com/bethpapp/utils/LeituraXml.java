@@ -91,8 +91,8 @@ public class LeituraXml {
 		var transportadoraNotafiscal = new TransporteNotafiscal();
 		for (int k = 0; k < nodeTranportadora.getLength(); k++) {
 		Element transportadora = (Element) nodeTranportadora.item(k);
-	//	transportadoraNotafiscal.setCnpj(transportadora.getElementsByTagName("CNPJ").item(k).getTextContent());
-		transportadoraNotafiscal.setNomeTransporte(transportadora.getElementsByTagName("xNome").item(k).getTextContent());
+		//transportadoraNotafiscal.setCnpj(transportadora.getElementsByTagName("CNPJ").item(k).getTextContent());
+//	   transportadoraNotafiscal.setNomeTransporte(transportadora.getElementsByTagName("xNome").item(k).getTextContent());
 		NodeList nodeList = transportadora.getElementsByTagName("IE");
 		if (nodeList != null && nodeList.getLength() > 0) {
 			Node foneNode = nodeList.item(k);
@@ -113,8 +113,8 @@ public class LeituraXml {
 				}
 			}
 		}
-	//	transportadoraNotafiscal.setIncricaoEstadual(transportadora.getElementsByTagName("IE").item(k).getTextContent());
-		transportadoraNotafiscal.setEnderreco(transportadora.getElementsByTagName("xEnder").item(k).getTextContent());
+///	transportadoraNotafiscal.setIncricaoEstadual(transportadora.getElementsByTagName("IE").item(k).getTextContent());
+	//	transportadoraNotafiscal.setEnderreco(transportadora.getElementsByTagName("xEnder").item(k).getTextContent());
 		transportadoraNotafiscal.setPesoBruto(new BigDecimal(transportadora.getElementsByTagName("pesoB").item(k).getTextContent()));
 	//	transportadoraNotafiscal.setPlacaVeiculo(transportadora.getElementsByTagName("placa").item(k).getTextContent());
 		transportadoraNotafiscal.setQtevolume(Integer.parseInt(transportadora.getElementsByTagName("qVol").item(k).getTextContent()));

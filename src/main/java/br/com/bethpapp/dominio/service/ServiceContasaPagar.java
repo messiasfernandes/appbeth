@@ -16,6 +16,7 @@ import br.com.bethpapp.dominio.entidade.ContasPagarDetalhe;
 import br.com.bethpapp.dominio.entidade.FormadePagmamento;
 import br.com.bethpapp.dominio.entidade.Fornecedor;
 import br.com.bethpapp.dominio.enumerado.StatusPagamento;
+import br.com.bethpapp.dominio.service.exeption.NegocioException;
 import jakarta.transaction.Transactional;
 
 
@@ -29,7 +30,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	@Transactional
 	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma, LocalDate  dataEmisao) {
 		ContasPagar contaContasaPagar = new ContasPagar();
-//		try {
+		try {
 			
 			contaContasaPagar.setFornecedor(fornecedor);
 			   contaContasaPagar.setDatalancamento(dataEmisao);
@@ -56,9 +57,9 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 		         
 		         contaContasaPagar.getContasaPagarDetalhes().add(contasaPagarDetalhe);
 			}
-//		} catch (Exception e) {
-//			throw new NegocioException("Erro ao adicionar contas a pagar");
-//		}
+		} catch (Exception e) {
+			throw new NegocioException("Erro ao adicionar contas a pagar");
+		}
 		
 	     
 	     return contaContasaPagar;
