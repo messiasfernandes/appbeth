@@ -97,18 +97,16 @@ public class LeituraXml {
 
 			System.out.println("modFrete: " + modFrete);
 
-			if ("0".equals(modFrete)) {
-				NodeList nodeTransporte = transportadora.getElementsByTagName("transporta");
+			NodeList nodeTransporte = transportadora.getElementsByTagName("transporta");
 
-				for (int i = 0; i < nodeTransporte.getLength(); i++) {
-					Element elementeTrans = (Element) nodeTransporte.item(i);
-					tratarTransportaElemento(elementeTrans, transportadoraNotafiscal);
-				}
+			for (int i = 0; i < nodeTransporte.getLength(); i++) {
+				Element elementeTrans = (Element) nodeTransporte.item(i);
+				tratarTransportaElemento(elementeTrans, transportadoraNotafiscal);
+			}
 
-				Element volElement = (Element) transportadora.getElementsByTagName("vol").item(k);
-				if (volElement != null) {
-					tratarVolElemento(volElement, transportadoraNotafiscal);
-				}
+			Element volElement = (Element) transportadora.getElementsByTagName("vol").item(k);
+			if (volElement != null) {
+				tratarVolElemento(volElement, transportadoraNotafiscal);
 			}
 		}
 
@@ -197,32 +195,32 @@ public class LeituraXml {
 		BigDecimal totalNota = element.getElementsByTagName("vNF").item(0) != null
 				? new BigDecimal(element.getElementsByTagName("vNF").item(0).getTextContent())
 				: BigDecimal.ZERO;
-		System.out.println("total nota"+ totalNota);
+		System.out.println("total nota" + totalNota);
 		BigDecimal icms = element.getElementsByTagName("vICMS").item(0) != null
 				? new BigDecimal(element.getElementsByTagName("vICMS").item(0).getTextContent())
 				: BigDecimal.ZERO;
 		BigDecimal totalTributo = element.getElementsByTagName("vTotTrib").item(0) != null
 				? new BigDecimal(element.getElementsByTagName("vTotTrib").item(0).getTextContent())
 				: BigDecimal.ZERO;
-		
+
 		BigDecimal valorIpi = element.getElementsByTagName("vIPI").item(0) != null
 				? new BigDecimal(element.getElementsByTagName("vIPI").item(0).getTextContent())
 				: BigDecimal.ZERO;
-		
+
 		if (!totalNota.equals(BigDecimal.ZERO)) {
 			impostoNota.setTotalNota(totalNota);
-		  
+
 		}
-       if(!icms.equals(BigDecimal.ZERO)) {
-    	   impostoNota.setValorIcms(icms);
-       }
-       
-       if(!totalTributo.equals(BigDecimal.ZERO)) {
-    	   impostoNota.setValorTributo(totalTributo);
-       }
-       
-       if(!valorIpi.equals(BigDecimal.ZERO)) {
-    	   impostoNota.setValorIpi(valorIpi);
-       }
+		if (!icms.equals(BigDecimal.ZERO)) {
+			impostoNota.setValorIcms(icms);
+		}
+
+		if (!totalTributo.equals(BigDecimal.ZERO)) {
+			impostoNota.setValorTributo(totalTributo);
+		}
+
+		if (!valorIpi.equals(BigDecimal.ZERO)) {
+			impostoNota.setValorIpi(valorIpi);
+		}
 	}
 }
