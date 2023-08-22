@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import br.com.bethpapp.dominio.entidade.ImpostoNota;
 import br.com.bethpapp.dominio.entidade.TransporteNotafiscal;
 import jakarta.persistence.Column;
 import lombok.Data;
@@ -26,16 +27,14 @@ public class EntradaNotaCabecarioDTO {
 	private LocalDate data_entrada;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate data_emissao_nota;
-
-	private BigDecimal totalInf;
-	private Integer qtevolume;
-	 private TransporteNotafiscal transporteNotafiscal;
+	private BigDecimal totalProduto;
+	private ImpostoNota impostoNota;
+	private TransporteNotafiscal transporteNotafiscal;
 	private BigDecimal pesoBruto;
 	private FornecedorDTO fornecedor;
-    private String chaveNota;
+	private String chaveNota;
 	private List<ItemEntradaNotaDTO> items_entrada = new ArrayList<>();
 	@Column(length = 255)
 	private String arquivo_nota;
-	
 
 }

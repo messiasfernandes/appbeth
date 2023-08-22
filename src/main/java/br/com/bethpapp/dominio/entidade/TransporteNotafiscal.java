@@ -8,7 +8,6 @@ import java.math.RoundingMode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Digits;
 import lombok.AccessLevel;
 import lombok.Getter;

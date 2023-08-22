@@ -50,7 +50,9 @@ public class EntradaNotaCabecario extends GeradorId {
 	@Getter(value = AccessLevel.NONE)
 	@Digits(integer = 9, fraction = 4)
 	@Transient
-	private BigDecimal totalInf;
+	private BigDecimal totalProduto;
+	@Embedded
+	private ImpostoNota impostoNota;
 	@Embedded
 	private TransporteNotafiscal transporteNotafiscal;
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -66,25 +68,25 @@ public class EntradaNotaCabecario extends GeradorId {
 	private String chaveNota;
 
 	public EntradaNotaCabecario() {
-		totalInf = BigDecimal.ZERO;
+		totalProduto = BigDecimal.ZERO;
 	}
 
-	public void setTotalInf(BigDecimal totalInf) {
-		this.totalInf = totalInf.setScale(4, RoundingMode.HALF_EVEN);
+	public void setTotalProduto(BigDecimal totalProduto) {
+		this.totalProduto = totalProduto.setScale(4, RoundingMode.HALF_EVEN);
 	}
 
 	@Transient
 	private BigDecimal somarTotalnota() {
 
 		for (int i = 0; i < items_entrada.size(); i++) {
-			this.totalInf = totalInf.add(items_entrada.get(i).getSubtotal());
-			System.out.println(totalInf);
+			this.totalProduto = totalProduto.add(items_entrada.get(i).getSubtotal());
+			System.out.println(totalProduto);
 		}
 
-		return totalInf;
+		return totalProduto;
 	}
 
-	public BigDecimal getTotalInf() {
+	public BigDecimal getTotalProduto() {
 		return somarTotalnota();
 	}
 

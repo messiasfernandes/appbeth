@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
+import br.com.bethpapp.dominio.entidade.ImpostoNota;
 import br.com.bethpapp.dominio.entidade.ItemEntradaNota;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.entidade.TransporteNotafiscal;
@@ -27,6 +27,7 @@ public class LeituraXml {
 			entrada.setModelo(dadoinit.getElementsByTagName("mod").item(i).getTextContent());
 			entrada.setNaturezaopercao(dadoinit.getElementsByTagName("natOp").item(i).getTextContent());
 			entrada.setSerie(dadoinit.getElementsByTagName("serie").item(i).getTextContent());
+
 		}
 
 		entrada.setData_entrada(LocalDate.now());
@@ -88,79 +89,140 @@ public class LeituraXml {
 	}
 
 	public TransporteNotafiscal adicionarTranportadora(NodeList nodeTranportadora) {
-	    TransporteNotafiscal transportadoraNotafiscal = new TransporteNotafiscal();
+		TransporteNotafiscal transportadoraNotafiscal = new TransporteNotafiscal();
 
-	    for (int k = 0; k < nodeTranportadora.getLength(); k++) {
-	        Element transportadora = (Element) nodeTranportadora.item(k);
-	        String modFrete = transportadora.getElementsByTagName("modFrete").item(k).getTextContent();
+		for (int k = 0; k < nodeTranportadora.getLength(); k++) {
+			Element transportadora = (Element) nodeTranportadora.item(k);
+			String modFrete = transportadora.getElementsByTagName("modFrete").item(k).getTextContent();
 
-	        System.out.println("modFrete: " + modFrete);
+			System.out.println("modFrete: " + modFrete);
 
-	        if ("0".equals(modFrete)) {
-	            NodeList nodeTransporte = transportadora.getElementsByTagName("transporta");
+			if ("0".equals(modFrete)) {
+				NodeList nodeTransporte = transportadora.getElementsByTagName("transporta");
 
-	            for (int i = 0; i < nodeTransporte.getLength(); i++) {
-	                Element elementeTrans = (Element) nodeTransporte.item(i);
-	                tratarTransportaElemento(elementeTrans, transportadoraNotafiscal);
-	            }
+				for (int i = 0; i < nodeTransporte.getLength(); i++) {
+					Element elementeTrans = (Element) nodeTransporte.item(i);
+					tratarTransportaElemento(elementeTrans, transportadoraNotafiscal);
+				}
 
-	            Element volElement = (Element) transportadora.getElementsByTagName("vol").item(k);
-	            if (volElement != null) {
-	                tratarVolElemento(volElement, transportadoraNotafiscal);
-	            }
-	        }
-	    }
+				Element volElement = (Element) transportadora.getElementsByTagName("vol").item(k);
+				if (volElement != null) {
+					tratarVolElemento(volElement, transportadoraNotafiscal);
+				}
+			}
+		}
 
-	    return transportadoraNotafiscal;
+		return transportadoraNotafiscal;
 	}
 
 	private void tratarTransportaElemento(Element element, TransporteNotafiscal transportadoraNotafiscal) {
-	    String xEnder = element.getElementsByTagName("xEnder").item(0) != null ? element.getElementsByTagName("xEnder").item(0).getTextContent() : "";
-	    String xNome = element.getElementsByTagName("xNome").item(0) != null ? element.getElementsByTagName("xNome").item(0).getTextContent() : "";
+		String xEnder = element.getElementsByTagName("xEnder").item(0) != null
+				? element.getElementsByTagName("xEnder").item(0).getTextContent()
+				: "";
+		String xNome = element.getElementsByTagName("xNome").item(0) != null
+				? element.getElementsByTagName("xNome").item(0).getTextContent()
+				: "";
 
-	    if (!xEnder.isEmpty()) {
-	        System.out.println("xEnder: " + xEnder);
-	    }
-	    if (!xNome.isEmpty()) {
-	        System.out.println("xNome: " + xNome);
-	    }
+		if (!xEnder.isEmpty()) {
+			System.out.println("xEnder: " + xEnder);
+		}
+		if (!xNome.isEmpty()) {
+			System.out.println("xNome: " + xNome);
+		}
 
-	    // Configurar atributos em transportadoraNotafiscal
-	     if (!xEnder.isEmpty()) {
-	         transportadoraNotafiscal.setEnderreco(xEnder);
-	     }
-	     if (!xNome.isEmpty()) {
-	         transportadoraNotafiscal.setNomeTransporte(xNome);
-	     }
-	
+		// Configurar atributos em transportadoraNotafiscal
+		if (!xEnder.isEmpty()) {
+			transportadoraNotafiscal.setEnderreco(xEnder);
+		}
+		if (!xNome.isEmpty()) {
+			transportadoraNotafiscal.setNomeTransporte(xNome);
+		}
+
 	}
 
 	private void tratarVolElemento(Element element, TransporteNotafiscal transportadoraNotafiscal) {
-	    int qVol = element.getElementsByTagName("qVol").item(0) != null ? Integer.parseInt(element.getElementsByTagName("qVol").item(0).getTextContent()) : 0;
-	    BigDecimal pesoB = element.getElementsByTagName("pesoB").item(0) != null ? new BigDecimal(element.getElementsByTagName("pesoB").item(0).getTextContent()) : BigDecimal.ZERO;
-	    BigDecimal pesoL = element.getElementsByTagName("pesoL").item(0) != null ? new BigDecimal(element.getElementsByTagName("pesoL").item(0).getTextContent()) : BigDecimal.ZERO;
+		int qVol = element.getElementsByTagName("qVol").item(0) != null
+				? Integer.parseInt(element.getElementsByTagName("qVol").item(0).getTextContent())
+				: 0;
+		BigDecimal pesoB = element.getElementsByTagName("pesoB").item(0) != null
+				? new BigDecimal(element.getElementsByTagName("pesoB").item(0).getTextContent())
+				: BigDecimal.ZERO;
+		BigDecimal pesoL = element.getElementsByTagName("pesoL").item(0) != null
+				? new BigDecimal(element.getElementsByTagName("pesoL").item(0).getTextContent())
+				: BigDecimal.ZERO;
+		String esp = element.getElementsByTagName("esp").item(0).getTextContent();
+		// String placa =
+		// element.getElementsByTagName("placa").item(0).getTextContent();
+//		if (!element.getElementsByTagName("placa").item(0).getTextContent().isBlank()) {
+//			transportadoraNotafiscal.setPlacaVeiculo(element.getElementsByTagName("placa").item(0).getTextContent());
+//
+//		}
+		if (!esp.isEmpty()) {
+			transportadoraNotafiscal.setTipodeEmbalagem(esp);
+		}
+		if (qVol != 0) {
+			System.out.println("qVol: " + qVol);
+		}
+		if (!pesoB.equals(BigDecimal.ZERO)) {
+			System.out.println("pesoB: " + pesoB);
+		}
+		if (!pesoL.equals(BigDecimal.ZERO)) {
+			System.out.println("pesoL: " + pesoL);
+		}
 
-	    if (qVol != 0) {
-	        System.out.println("qVol: " + qVol);
-	    }
-	    if (!pesoB.equals(BigDecimal.ZERO)) {
-	        System.out.println("pesoB: " + pesoB);
-	    }
-	    if (!pesoL.equals(BigDecimal.ZERO)) {
-	        System.out.println("pesoL: " + pesoL);
-	    }
-
-	   //  Configurar atributos em transportadoraNotafiscal
-	     if (qVol != 0) {
-	         transportadoraNotafiscal.setQtevolume(qVol);
-	     }
-	     if (!pesoB.equals(BigDecimal.ZERO)) {
-	         transportadoraNotafiscal.setPesoBruto(pesoB);
-	     }
-	     if (!pesoL.equals(BigDecimal.ZERO)) {
-	         transportadoraNotafiscal.setPesoLiquido(pesoL);
-	     }
-	    // ...
+		// Configurar atributos em transportadoraNotafiscal
+		if (qVol != 0) {
+			transportadoraNotafiscal.setQtevolume(qVol);
+		}
+		if (!pesoB.equals(BigDecimal.ZERO)) {
+			transportadoraNotafiscal.setPesoBruto(pesoB);
+		}
+		if (!pesoL.equals(BigDecimal.ZERO)) {
+			transportadoraNotafiscal.setPesoLiquido(pesoL);
+		}
+		// ...
 	}
 
+	public ImpostoNota adicionarValoImposto(NodeList nodeImposto) {
+		ImpostoNota impostoNota = new ImpostoNota();
+		for (int k = 0; k < nodeImposto.getLength(); k++) {
+			Element imposto = (Element) nodeImposto.item(k);
+			trararValoImposto(imposto, impostoNota);
+		}
+		return impostoNota;
+	}
+
+	private void trararValoImposto(Element element, ImpostoNota impostoNota) {
+		System.out.println("pasou aqui");
+		BigDecimal totalNota = element.getElementsByTagName("vNF").item(0) != null
+				? new BigDecimal(element.getElementsByTagName("vNF").item(0).getTextContent())
+				: BigDecimal.ZERO;
+		System.out.println("total nota"+ totalNota);
+		BigDecimal icms = element.getElementsByTagName("vICMS").item(0) != null
+				? new BigDecimal(element.getElementsByTagName("vICMS").item(0).getTextContent())
+				: BigDecimal.ZERO;
+		BigDecimal totalTributo = element.getElementsByTagName("vTotTrib").item(0) != null
+				? new BigDecimal(element.getElementsByTagName("vTotTrib").item(0).getTextContent())
+				: BigDecimal.ZERO;
+		
+		BigDecimal valorIpi = element.getElementsByTagName("vIPI").item(0) != null
+				? new BigDecimal(element.getElementsByTagName("vIPI").item(0).getTextContent())
+				: BigDecimal.ZERO;
+		
+		if (!totalNota.equals(BigDecimal.ZERO)) {
+			impostoNota.setTotalNota(totalNota);
+		  
+		}
+       if(!icms.equals(BigDecimal.ZERO)) {
+    	   impostoNota.setValorIcms(icms);
+       }
+       
+       if(!totalTributo.equals(BigDecimal.ZERO)) {
+    	   impostoNota.setValorTributo(totalTributo);
+       }
+       
+       if(!valorIpi.equals(BigDecimal.ZERO)) {
+    	   impostoNota.setValorIpi(valorIpi);
+       }
+	}
 }
