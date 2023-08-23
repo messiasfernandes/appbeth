@@ -74,7 +74,7 @@ public class ServiceImportaNotafiscal {
 			
 			entrada.setFornecedor(dadosFornecedor(emitentes));
 			NodeList produtos = raiz.getElementsByTagName("det");
-			entrada.setItems_entrada(leituraXml.adicionarProduto(produtos, pMargem));
+			entrada.setItems_entrada(leituraXml.adicionarProduto(  produtos, pMargem, entrada.getImpostoNota().getTotalNota()));
 			
 			
 			

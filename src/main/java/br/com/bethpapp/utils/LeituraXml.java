@@ -35,7 +35,7 @@ public class LeituraXml {
 		return entrada;
 	}
 
-	public List<ItemEntradaNota> adicionarProduto(NodeList nodprouto, BigDecimal margem) {
+	public List<ItemEntradaNota> adicionarProduto(NodeList nodprouto, BigDecimal margem, BigDecimal totalNota) {
 
 		margem = margem.divide(new BigDecimal(100));
 
@@ -65,7 +65,11 @@ public class LeituraXml {
 					intemProduto.setQtde(Integer.valueOf(qte.intValueExact()));
 
 					var precocusto = (new BigDecimal(produto.getElementsByTagName("vUnTrib").item(j).getTextContent()));
-
+                    String desconto = obterTextoElementoOpcional(produto, "vDesc");
+                    if(!desconto.isEmpty()) {
+                    	precocusto= precocusto.multiply(new BigDecimal(intemProduto.getQtde()));
+                    	precocusto= precocusto.subtract(new BigDecimal(desconto));
+                    }
 					produto.getElementsByTagName("qTrib").item(j).getTextContent();
 					p.setUnidade(produto.getElementsByTagName("uCom").item(j).getTextContent());
 					p.setPrecocusto(precocusto);
@@ -108,11 +112,21 @@ public class LeituraXml {
 			if (volElement != null) {
 				tratarVolElemento(volElement, transportadoraNotafiscal);
 			}
+			Element veicTransp = (Element) transportadora.getElementsByTagName("veicTransp").item(k);
+			if(veicTransp !=null) {
+			 tratarVeiculoTranporte(veicTransp, transportadoraNotafiscal);	
+			}
 		}
 
 		return transportadoraNotafiscal;
 	}
-
+    private void tratarVeiculoTranporte (Element element, TransporteNotafiscal transportadoraNotafiscal) {
+    	 String placa = obterTextoElementoOpcional(element, "placa");
+    	 if (!placa.isEmpty()) {
+ 			transportadoraNotafiscal.setPlacaVeiculo(placa);
+ 		}
+    	 
+	}
 	private void tratarTransportaElemento(Element element, TransporteNotafiscal transportadoraNotafiscal) {
 		String xEnder = element.getElementsByTagName("xEnder").item(0) != null
 				? element.getElementsByTagName("xEnder").item(0).getTextContent()
@@ -120,7 +134,14 @@ public class LeituraXml {
 		String xNome = element.getElementsByTagName("xNome").item(0) != null
 				? element.getElementsByTagName("xNome").item(0).getTextContent()
 				: "";
-
+        String cnpj= obterTextoElementoOpcional(element, "CNPJ");
+        String inscricao= obterTextoElementoOpcional(element, "IE");
+        if(!inscricao.isEmpty()) {
+        	transportadoraNotafiscal.setIncricaoEstadual(inscricao);
+        }
+        if(!cnpj.isEmpty()) {
+        	transportadoraNotafiscal.setCnpj(cnpj);
+        }
 		if (!xEnder.isEmpty()) {
 			System.out.println("xEnder: " + xEnder);
 		}
@@ -148,13 +169,12 @@ public class LeituraXml {
 		BigDecimal pesoL = element.getElementsByTagName("pesoL").item(0) != null
 				? new BigDecimal(element.getElementsByTagName("pesoL").item(0).getTextContent())
 				: BigDecimal.ZERO;
-		String esp = element.getElementsByTagName("esp").item(0).getTextContent();
-		// String placa =
-		// element.getElementsByTagName("placa").item(0).getTextContent();
-//		if (!element.getElementsByTagName("placa").item(0).getTextContent().isBlank()) {
-//			transportadoraNotafiscal.setPlacaVeiculo(element.getElementsByTagName("placa").item(0).getTextContent());
-//
-//		}
+		
+	
+		String esp = obterTextoElementoOpcional(element, "esp");
+		
+
+
 		if (!esp.isEmpty()) {
 			transportadoraNotafiscal.setTipodeEmbalagem(esp);
 		}
@@ -167,7 +187,7 @@ public class LeituraXml {
 		if (!pesoL.equals(BigDecimal.ZERO)) {
 			System.out.println("pesoL: " + pesoL);
 		}
-
+		
 		// Configurar atributos em transportadoraNotafiscal
 		if (qVol != 0) {
 			transportadoraNotafiscal.setQtevolume(qVol);
@@ -222,5 +242,9 @@ public class LeituraXml {
 		if (!valorIpi.equals(BigDecimal.ZERO)) {
 			impostoNota.setValorIpi(valorIpi);
 		}
+	}
+	private String obterTextoElementoOpcional(Element parentElement, String tagName) {
+	    Element element = (Element) parentElement.getElementsByTagName(tagName).item(0);
+	    return element != null ? element.getTextContent() : "";
 	}
 }
