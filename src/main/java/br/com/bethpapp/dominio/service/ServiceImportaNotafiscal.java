@@ -71,10 +71,10 @@ public class ServiceImportaNotafiscal {
 				entrada.setChaveNota(chaves.getElementsByTagName("chNFe").item(k).getTextContent());
 				
 			}
-			
+			 NodeList totalNota= raiz.getElementsByTagName("ICMSTot");
 			entrada.setFornecedor(dadosFornecedor(emitentes));
 			NodeList produtos = raiz.getElementsByTagName("det");
-			entrada.setItems_entrada(leituraXml.adicionarProduto(  produtos, pMargem, entrada.getImpostoNota().getTotalNota()));
+			entrada.setItems_entrada(leituraXml.adicionarProduto(  produtos, pMargem,totalNota));
 			
 			
 			
