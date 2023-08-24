@@ -66,19 +66,22 @@ public class LeituraXml {
 
 					var precocusto = (new BigDecimal(produto.getElementsByTagName("vUnTrib").item(j).getTextContent()));
                     String desconto = obterTextoElementoOpcional(produto, "vDesc");
-                    if(!desconto.isEmpty()) {
-                    	precocusto= precocusto.multiply(new BigDecimal(intemProduto.getQtde()));
-                    	precocusto= precocusto.subtract(new BigDecimal(desconto));
-                    }
-					produto.getElementsByTagName("qTrib").item(j).getTextContent();
+                  
+                    produto.getElementsByTagName("qTrib").item(j).getTextContent();
 					p.setUnidade(produto.getElementsByTagName("uCom").item(j).getTextContent());
 					p.setPrecocusto(precocusto);
 					p.setCustomedio(precocusto);
 					p.setPrecovenda(margem.multiply(p.getPrecocusto()));
 					System.out.println(p.getPrecovenda());
 					p.setAtivo(true);
-					intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
-
+					  if(!desconto.isEmpty()) {
+	                      intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto).subtract(new BigDecimal(desconto)));
+	                      intemProduto.setDesconto(new BigDecimal(desconto));
+						} else {
+							intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
+						}			
+				  
+					
 					intemProduto.setProduto(p);
 
 					entradas.add(intemProduto);
