@@ -1,6 +1,7 @@
 package br.com.bethpapp.utils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,61 +46,56 @@ public class LeituraXml {
 		System.out.println("margem" + margem);
 
 		List<ItemEntradaNota> entradas = new ArrayList<>();
-	//	try {
-			for (int k = 0; k < nodprouto.getLength(); k++) {
+		// try {
+		for (int k = 0; k < nodprouto.getLength(); k++) {
 
-				Element produtos = (Element) nodprouto.item(k);
+			Element produtos = (Element) nodprouto.item(k);
 
-				NodeList produtolista = produtos.getElementsByTagName("prod");
+			NodeList produtolista = produtos.getElementsByTagName("prod");
 
-				for (int j = 0; j < produtolista.getLength(); j++) {
-					Element produto = (Element) produtolista.item(j);
-					ItemEntradaNota intemProduto = new ItemEntradaNota();
-					var p = new Produto();
+			for (int j = 0; j < produtolista.getLength(); j++) {
+				Element produto = (Element) produtolista.item(j);
+				ItemEntradaNota intemProduto = new ItemEntradaNota();
+				var p = new Produto();
 
-					p.setCodigoEan13(produto.getElementsByTagName("cEAN").item(j).getTextContent());
+				p.setCodigoEan13(produto.getElementsByTagName("cEAN").item(j).getTextContent());
 
-					p.setCodigofabricante(produto.getElementsByTagName("cProd").item(j).getTextContent());
-					p.setCodigoEan13(produto.getElementsByTagName("cEAN").item(j).getTextContent());
-					p.setNomeproduto(produto.getElementsByTagName("xProd").item(j).getTextContent());
-					BigDecimal qte = new BigDecimal((produto.getElementsByTagName("qTrib").item(j).getTextContent()));
-					intemProduto.setQtde(Integer.valueOf(qte.intValueExact()));
+				p.setCodigofabricante(produto.getElementsByTagName("cProd").item(j).getTextContent());
+				p.setCodigoEan13(produto.getElementsByTagName("cEAN").item(j).getTextContent());
+				p.setNomeproduto(produto.getElementsByTagName("xProd").item(j).getTextContent());
+				BigDecimal qte = new BigDecimal((produto.getElementsByTagName("qTrib").item(j).getTextContent()));
+				intemProduto.setQtde(Integer.valueOf(qte.intValueExact()));
 
-					var precocusto = (new BigDecimal(produto.getElementsByTagName("vUnTrib").item(j).getTextContent()));
-					//String desconto = obterTextoElementoOpcional(produto, "vDesc");
+				var precocusto = (new BigDecimal(produto.getElementsByTagName("vUnTrib").item(j).getTextContent()));
+				// String desconto = obterTextoElementoOpcional(produto, "vDesc");
 
-					produto.getElementsByTagName("qTrib").item(j).getTextContent();
-					p.setUnidade(produto.getElementsByTagName("uCom").item(j).getTextContent());
-					p.setPrecocusto(precocusto);
-				
+				produto.getElementsByTagName("qTrib").item(j).getTextContent();
+				p.setUnidade(produto.getElementsByTagName("uCom").item(j).getTextContent());
+				p.setPrecocusto(precocusto);
 
-					p.setAtivo(true);
-//					if (!desconto.isEmpty()) {
-//						intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto)
-//								.subtract(new BigDecimal(desconto)));
-//						intemProduto.setDesconto(new BigDecimal(desconto));
-//					} else {
-						intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
-				//}
+				p.setAtivo(true);
 
-					BigDecimal customedio = calculoCusto.calcularRateioImpostos(total, intemProduto.getQtde(),
-							intemProduto.getSubtotal());
-					System.out.println(customedio + " cuto medio");
-					if (!customedio.equals(BigDecimal.ZERO)) {
-
-						p.setCustomedio(customedio.add(p.getPrecocusto()));
-					} else {
-						p.setCustomedio(precocusto);
-					}
-					p.setPrecovenda(margem.multiply(p.getCustomedio()));
-					System.out.println(p.getPrecovenda());
-					intemProduto.setProduto(p);
-
-					entradas.add(intemProduto);
-
+				intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
+			
+				BigDecimal customedioTotal = calculoCusto.calcularRateioImpostos(total, intemProduto.getQtde(),
+						intemProduto.getSubtotal());
+				System.out.println(customedioTotal.setScale(4, RoundingMode.HALF_EVEN)+ " cuto medio");
+				if (customedioTotal.signum() > 0) {
+                
+                  
+					p.setCustomedio(customedioTotal);
+				} else {
+					p.setCustomedio(p.getPrecocusto());
 				}
+				p.setPrecovenda(margem.multiply(p.getCustomedio()));
+				System.out.println(p.getPrecovenda());
+				intemProduto.setProduto(p);
+
+				entradas.add(intemProduto);
 
 			}
+
+		}
 //		} catch (Exception e) {
 //			throw new NegocioException("Erro adicionar produto");
 //		}
