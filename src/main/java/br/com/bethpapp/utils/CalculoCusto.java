@@ -21,24 +21,30 @@ public class CalculoCusto {
 			BigDecimal totalImposto = rateioImpostos(element);
 			System.out.println(totalImposto + "totalimposot");
 			if (totalImposto.signum() > 0) {
-				rateioImposto = subtotal.divide(totalProduto).multiply(totalImposto).divide(new BigDecimal(qtde));
+				rateioImposto = subtotal.divide(totalProduto.setScale(4), MathContext.DECIMAL128).multiply(totalImposto);
+			
 				System.out.println(rateioImposto + "rateio");
 			}
 			BigDecimal frete = rateioFrete(element);
 			if (frete.signum() > 0) {
-				rateioFrete = subtotal.divide(totalProduto).multiply(frete).divide(new BigDecimal(qtde));
+				rateioFrete = subtotal.divide(totalProduto).multiply(frete);
+				
 			}
 			BigDecimal seguro = rateioSeguro(element);
 			if (seguro.signum() > 0) {
-				rateioSeguro = subtotal.divide(totalProduto).multiply(seguro).divide(new BigDecimal(qtde));
+				rateioSeguro = subtotal.divide(totalProduto).multiply(seguro);
+					
 			}
 			BigDecimal desconto = rateioDesconto(element);
 			if (desconto.signum() > 0) {
-				rateioDesconto = subtotal.divide(totalProduto.setScale(4), MathContext.DECIMAL128).multiply(desconto) .divide(new BigDecimal(qtde));
+				rateioDesconto = subtotal.divide(totalProduto.setScale(4), MathContext.DECIMAL128).multiply(desconto) ;
+					
 				System.out.println(rateioDesconto);
 			}
 		}
-		return   rateioImposto.add(rateioSeguro).add(rateioFrete).subtract(rateioDesconto);
+	
+
+		return   	rateioImposto.add(subtotal).add(rateioSeguro).add(rateioFrete).subtract(rateioDesconto);
 	}
 
 	private BigDecimal obterValorElemento(Element parentElement, String tagName) {
@@ -47,7 +53,7 @@ public class CalculoCusto {
 	}
 
 	private BigDecimal rateioImpostos(Element imposto) {
-
+        BigDecimal vST=obterValorElemento(imposto, "vST");
 		BigDecimal vICMSDeson = obterValorElemento(imposto, "vICMSDeson");
 
 		
@@ -55,7 +61,7 @@ public class CalculoCusto {
 	
 		BigDecimal vIPI = new BigDecimal(imposto.getElementsByTagName("vIPI").item(0).getTextContent());
 
-		return vIPI.add(vII).add(vICMSDeson.setScale(4, RoundingMode.HALF_EVEN));
+		return vIPI.add(vII).add(vST).add(vICMSDeson.setScale(4, RoundingMode.HALF_EVEN));
 	}
 
 	private BigDecimal rateioFrete(Element imposto) {

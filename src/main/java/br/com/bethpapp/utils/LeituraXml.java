@@ -1,6 +1,7 @@
 package br.com.bethpapp.utils;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -67,7 +68,6 @@ public class LeituraXml {
 				intemProduto.setQtde(Integer.valueOf(qte.intValueExact()));
 
 				var precocusto = (new BigDecimal(produto.getElementsByTagName("vUnTrib").item(j).getTextContent()));
-				// String desconto = obterTextoElementoOpcional(produto, "vDesc");
 
 				produto.getElementsByTagName("qTrib").item(j).getTextContent();
 				p.setUnidade(produto.getElementsByTagName("uCom").item(j).getTextContent());
@@ -76,15 +76,16 @@ public class LeituraXml {
 				p.setAtivo(true);
 
 				intemProduto.setSubtotal(new BigDecimal(intemProduto.getQtde()).multiply(precocusto));
-			
-				BigDecimal customedioTotal = calculoCusto.calcularRateioImpostos(total, intemProduto.getQtde(),
+
+				BigDecimal customedioTotal = p.getPrecocusto();
+				customedioTotal = calculoCusto.calcularRateioImpostos(total, intemProduto.getQtde(),
 						intemProduto.getSubtotal());
-				System.out.println(customedioTotal.setScale(4, RoundingMode.HALF_EVEN)+ " cuto medio");
-				if (customedioTotal.signum() > 0) {
-                
-                  
-					p.setCustomedio(customedioTotal);
+				System.out.println(customedioTotal.setScale(4, RoundingMode.HALF_EVEN) + " cuto medio");
+				if (customedioTotal.signum() != 0) {
+					p.setCustomedio(customedioTotal.divide(new BigDecimal(intemProduto.getQtde()).setScale(4),
+							MathContext.DECIMAL128));
 				} else {
+				
 					p.setCustomedio(p.getPrecocusto());
 				}
 				p.setPrecovenda(margem.multiply(p.getCustomedio()));

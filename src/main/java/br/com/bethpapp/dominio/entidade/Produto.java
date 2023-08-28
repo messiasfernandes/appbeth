@@ -60,7 +60,7 @@ public class Produto extends GeradorId {
 	private String codigoEan13;
 	@Column(length = 255)
 	private String caracteristica;
-	@Column(length = 13)
+	@Column(length = 20)
 	private String codigofabricante;
 
 	@Digits(integer = 9, fraction = 4)
