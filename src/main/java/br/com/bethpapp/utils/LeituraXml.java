@@ -47,7 +47,7 @@ public class LeituraXml {
 		System.out.println("margem" + margem);
 
 		List<ItemEntradaNota> entradas = new ArrayList<>();
-		// try {
+		 try {
 		for (int k = 0; k < nodprouto.getLength(); k++) {
 
 			Element produtos = (Element) nodprouto.item(k);
@@ -97,9 +97,9 @@ public class LeituraXml {
 			}
 
 		}
-//		} catch (Exception e) {
-//			throw new NegocioException("Erro adicionar produto");
-//		}
+		} catch (Exception e) {
+			throw new NegocioException("Erro adicionar produto");
+		}
 		return entradas;
 	}
 
