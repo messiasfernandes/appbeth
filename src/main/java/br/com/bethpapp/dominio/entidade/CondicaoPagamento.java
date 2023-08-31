@@ -31,7 +31,7 @@ public class CondicaoPagamento extends GeradorId {
 	@NotNull(message = "o Campo descrição é obrigatório!!")
 	@Column(length = 50)
 	private String descricao;
-	@Column(columnDefinition = "DECIMAL(9,4) DEFAULT 0.000")
+	@Digits(integer = 9, fraction = 4)
 	@Setter(value = AccessLevel.NONE)
 	@Digits(integer = 9, fraction = 4)
 	private BigDecimal taxadeJuro;

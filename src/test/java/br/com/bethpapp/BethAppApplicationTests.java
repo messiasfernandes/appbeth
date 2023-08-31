@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -89,10 +87,16 @@ System.out.println("valor da Total = " + total);
   }
  @Test
  void datahora() {
-	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMMM-dd HH:mm:ss a").withLocale(Locale.ROOT);
+//	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMMM-dd HH:mm:ss a").withLocale(Locale.ROOT);
+//
+//	 LocalDateTime date = LocalDateTime.parse("2019-mai-29 10:15:30 AM", formatter);
+	 String dateStr = "2022-02-16 10:22:15";
+	 
+     // Convert String to LocalDateTime using Parse() method
+     LocalDateTime localDateTime = LocalDateTime.parse(dateStr);
 
-	 LocalDateTime date = LocalDateTime.parse("2019-mai-29 10:15:30 AM", formatter);
-
-	 System.out.println(date);
+     // Print LocalDateTime object
+     System.out.println("LocalDateTime obj: "+localDateTime);
+	// System.out.println(date);
  }
 }  

@@ -17,6 +17,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,15 +34,15 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable {
 	@NotNull
 	private Integer numparcela;
 	@Setter(value = AccessLevel.NONE)
-	@Column(columnDefinition = "DECIMAL(9,4) DEFAULT 0.0000")
+	@Digits(integer = 9, fraction = 4)
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valoparcela;
 	@Setter(value = AccessLevel.NONE)
-	@Column(columnDefinition = "DECIMAL(9,4) DEFAULT 0.0000")
+	@Digits(integer = 9, fraction = 4)
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valoprago;
 	@Setter(value = AccessLevel.NONE)
-	@Column(columnDefinition = "DECIMAL(9,4) DEFAULT 0.0000")
+	@Digits(integer = 9, fraction = 4)
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valorapagar;
 	private BigDecimal taxaJuro;
@@ -61,14 +62,14 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable {
 	private StatusPagamento statusPagmaento;
 
 	public void setValoparcela(BigDecimal valoparcela) {
-		this.valoparcela = valoparcela.setScale(3, RoundingMode.HALF_UP);
+		this.valoparcela = valoparcela.setScale(4, RoundingMode.HALF_UP);
 	}
 
 	public void setValoprago(BigDecimal valoprago) {
-		this.valoprago = valoprago.setScale(3, RoundingMode.HALF_UP);
+		this.valoprago = valoprago.setScale(4, RoundingMode.HALF_UP);
 	}
 
 	public void setValorapagar(BigDecimal valorapagar) {
-		this.valorapagar = valorapagar.setScale(3, RoundingMode.HALF_UP);
+		this.valorapagar = valorapagar.setScale(4, RoundingMode.HALF_UP);
 	}
 }

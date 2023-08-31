@@ -26,7 +26,7 @@ public class EstoqueMovimento extends GeradorId {
 	@Column(length = 15, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TipoMovimentacao tipoMovimentacao;
-
+	@Column(columnDefinition = "TIMESTAMP")
 	@DateTimeFormat(pattern = " dd/MM/yyyy HH:mm ")
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime datamovimento;
