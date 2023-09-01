@@ -13,18 +13,16 @@ public class Estoque extends GeradorId {
 
 	private static final long serialVersionUID = 1L;
 //  @JsonIgnore
-  // @JsonBackReference
+	// @JsonBackReference
 	@OneToOne(fetch = FetchType.LAZY)
-  
+
 	private Produto produto;
 
 	private Integer quantidade;
 
 	public Estoque() {
-	
+
 		this.quantidade = 0;
 	}
-	
-	
 
 }

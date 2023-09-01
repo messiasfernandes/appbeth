@@ -3,7 +3,7 @@ package br.com.bethpapp.utils;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +24,7 @@ public class LeituraXml {
 		var entrada = new EntradaNotaCabecario();
 		for (int i = 0; i < notaentrada.getLength(); i++) {
 			Element dadoinit = (Element) notaentrada.item(i);
-			entrada.setData_emissao_nota(
-					LocalDate.parse(dadoinit.getElementsByTagName("dhEmi").item(i).getTextContent().substring(0, 10)));
+			entrada.setData_hora_emissao_nota(entrada.converte(dadoinit.getElementsByTagName("dhEmi").item(i).getTextContent()));
 			entrada.setNumerodanota(dadoinit.getElementsByTagName("nNF").item(i).getTextContent());
 			entrada.setModelo(dadoinit.getElementsByTagName("mod").item(i).getTextContent());
 			entrada.setNaturezaopercao(dadoinit.getElementsByTagName("natOp").item(i).getTextContent());
@@ -33,7 +32,7 @@ public class LeituraXml {
 
 		}
 
-		entrada.setData_entrada(LocalDate.now());
+		entrada.setData_hora_entrada(LocalDateTime.now());
 		entrada.setArquivo_nota(xml);
 		return entrada;
 	}

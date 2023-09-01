@@ -2,7 +2,7 @@ package br.com.bethpapp.dominio.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +44,7 @@ public class ServiceImportaNotafiscal {
 	@Autowired
 	private ServiceContasaPagar serviceContasaPagar;
 	private LeituraXml leituraXml = new LeituraXml();
-	private LocalDate dataemisao;
+	private LocalDateTime dataemisao;
 
 	public EntradaNotaCabecario imporxml(String xml, BigDecimal pMargem, Long idforma, Integer qtdeparcelas) {
 		System.out.println(arquivo + local_arquivo_xml + xml);
@@ -56,7 +56,7 @@ public class ServiceImportaNotafiscal {
 
 			var dados = doc.getElementsByTagName("ide");
 			entrada = leituraXml.lerxml(xml, dados);
-			dataemisao = entrada.getData_emissao_nota();
+			dataemisao = entrada.getData_hora_emissao_nota();
             
 			Element raiz = doc.getDocumentElement();
 
@@ -124,12 +124,11 @@ public class ServiceImportaNotafiscal {
 			}
 
 			Long titulo = Long.parseLong(entrada.getNumerodanota());
-			BigDecimal totalnota = entrada.getItems_entrada().stream().map(ItemEntradaNota::getSubtotal)
-					.reduce(BigDecimal.ZERO, BigDecimal::add);
+			BigDecimal totalnota = entrada.getImpostoNota().getTotalNota();
 			serviceEstoqueMovimento.entradaEstoquue(entrada);
 			serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
 			var contas = serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma,
-					dataemisao);
+					dataemisao.toLocalDate());
 			serviceContasaPagar.salvar(contas);
 			daoEntradaNota.save(entrada);
 			return entrada;

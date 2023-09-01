@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -87,16 +89,18 @@ System.out.println("valor da Total = " + total);
   }
  @Test
  void datahora() {
-//	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMMM-dd HH:mm:ss a").withLocale(Locale.ROOT);
-//
-//	 LocalDateTime date = LocalDateTime.parse("2019-mai-29 10:15:30 AM", formatter);
-	 String dateStr = "2022-02-16 10:22:15";
-	 
-     // Convert String to LocalDateTime using Parse() method
-     LocalDateTime localDateTime = LocalDateTime.parse(dateStr);
+	  String dateString = "2019-03-01T15:00:00-03:00";
 
-     // Print LocalDateTime object
-     System.out.println("LocalDateTime obj: "+localDateTime);
-	// System.out.println(date);
- }
+      DateTimeFormatter inputFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+      OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateString, inputFormatter);
+
+      LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
+
+      DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+      String formattedDateTime = localDateTime.format(outputFormatter);
+
+      System.out.println("Original OffsetDateTime: " + offsetDateTime);
+      System.out.println("Converted LocalDateTime: " + formattedDateTime);
+  }
+ 
 }  

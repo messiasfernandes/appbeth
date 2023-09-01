@@ -1,7 +1,7 @@
 package br.com.bethpapp.modelo.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +23,10 @@ public class EntradaNotaCabecarioDTO {
 	private String modelo;
 
 	private String serie;
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate data_entrada;
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate data_emissao_nota;
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	private LocalDateTime data_hora_entrada;
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+	private LocalDateTime data_hora_emissao_nota;
 	private BigDecimal totalProduto;
 	private ImpostoNota impostoNota;
 	private TransporteNotafiscal transporteNotafiscal;

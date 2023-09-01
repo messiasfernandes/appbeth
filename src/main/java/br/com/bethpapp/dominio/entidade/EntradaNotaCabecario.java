@@ -2,7 +2,9 @@ package br.com.bethpapp.dominio.entidade;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +38,10 @@ public class EntradaNotaCabecario extends GeradorId {
 	private static final long serialVersionUID = 1L;
 	@Column(length = 25)
 	private String numerodanota;
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate data_entrada;
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate data_emissao_nota;
+	@JsonFormat(pattern = "ddd/MM/yyyy HH:mm:ss")
+	private LocalDateTime data_hora_entrada;
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+	private LocalDateTime data_hora_emissao_nota;
 	@Column(length = 60)
 	private String naturezaopercao;
 	@Column(length = 10)
@@ -88,6 +90,13 @@ public class EntradaNotaCabecario extends GeradorId {
 
 	public BigDecimal getTotalProduto() {
 		return somarTotalnota();
+	}
+@Transient
+	public LocalDateTime converte(String data) {
+		DateTimeFormatter inputFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+		OffsetDateTime offsetDateTime = OffsetDateTime.parse(data, inputFormatter);
+		data_hora_entrada = offsetDateTime.toLocalDateTime();
+		return data_hora_entrada;
 	}
 
 }
