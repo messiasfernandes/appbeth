@@ -20,7 +20,6 @@ import org.xml.sax.SAXException;
 import br.com.bethpapp.dominio.dao.DaoEntradaNota;
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
 import br.com.bethpapp.dominio.entidade.Fornecedor;
-import br.com.bethpapp.dominio.entidade.ItemEntradaNota;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.exeption.NegocioException;
 import br.com.bethpapp.utils.LeituraXml;
@@ -103,7 +102,7 @@ public class ServiceImportaNotafiscal {
 			Integer qtdeparcelas) {
 		entrada.getItems_entrada().forEach(e -> e.setEntradaNotafiscal(entrada));
 
-		if ((daoEntradaNota.buscarnota(entrada.getFornecedor().getId(), entrada.getNumerodanota()) == true)) {
+		if ((daoEntradaNota.buscarnota(entrada.getFornecedor().getId(), entrada.getNumerodanota(), entrada.getStatusEntradaNota()) == true)) {
 
 			throw new NegocioException("Nota  cadastrada já no banco de dados");
 		} else {
@@ -128,7 +127,7 @@ public class ServiceImportaNotafiscal {
 			serviceEstoqueMovimento.entradaEstoquue(entrada);
 			serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
 			var contas = serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma,
-					dataemisao.toLocalDate());
+					dataemisao.toLocalDate(),entrada.getNumerodanota());
 			serviceContasaPagar.salvar(contas);
 			daoEntradaNota.save(entrada);
 			return entrada;

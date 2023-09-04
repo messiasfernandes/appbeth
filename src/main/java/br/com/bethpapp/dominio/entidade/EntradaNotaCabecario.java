@@ -20,6 +20,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -62,6 +64,7 @@ public class EntradaNotaCabecario extends GeradorId {
 	@Embedded
 	private TransporteNotafiscal transporteNotafiscal;
 	@Column(length = 20)
+	@Enumerated(EnumType.STRING)
 	private StatusEntradaNota statusEntradaNota;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)

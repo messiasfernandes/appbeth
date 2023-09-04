@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
 import br.com.bethpapp.modelo.dto.EntradaNotaCabecarioDTO;
-import br.com.bethpapp.modelo.dto.ProdutoDtoEditar;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Entada de Nota fiscal")
 public interface EntradaNotafiscalOpenApi extends ControllerOpenApi{
-	@Operation(summary = "Salvar um Movimentação ")
+	@Operation(summary = "Salvar uma nota fiscal e  Movimentação de estoque ")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Nota fiscal importada  com sucesso"),
 			@ApiResponse(responseCode = "400", description = "problema com resquisão") })
 	public ResponseEntity<EntradaNotaCabecarioDTO> importanota( String xml,
@@ -33,6 +32,8 @@ public interface EntradaNotafiscalOpenApi extends ControllerOpenApi{
 			@ApiResponse(responseCode = "404", description = "Nota fiscal não  Encotrada", content = @Content) })
 	ResponseEntity<Page<EntradaNotaCabecarioDTO>> listar(String nome, Integer pagina, Integer size,
 			Pageable page);
-	
-	ResponseEntity<EntradaNotaCabecarioDTO> buscar(@Param(value = "ID de uma Nota") Long id);
+	@Operation(summary = "Cancelar  um entrada de nota fiscal ")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Status nota fiscal Atualizado com sucesso"),
+			@ApiResponse(responseCode = "400", description = "problema com resquisão") })
+	ResponseEntity<EntradaNotaCabecarioDTO> cancelarNota(@Param(value = "ID de uma Nota") Long id);
 }

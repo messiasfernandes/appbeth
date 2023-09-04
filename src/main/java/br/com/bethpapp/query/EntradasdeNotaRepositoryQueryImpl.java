@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
+import br.com.bethpapp.dominio.enumerado.StatusEntradaNota;
 import br.com.bethpapp.dominio.service.ServiceFuncoes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -23,7 +24,7 @@ public class EntradasdeNotaRepositoryQueryImpl extends ServiceFuncoes implements
 	private EntityManager maneger;
 
 	@Override
-	public Boolean buscarnota(Long codigoFonecedor, String numeroNota) {
+	public Boolean buscarnota(Long codigoFonecedor, String numeroNota,StatusEntradaNota status) {
 		CriteriaBuilder builder = maneger.getCriteriaBuilder();
 
 		CriteriaQuery<EntradaNotaCabecario> criteria = builder.createQuery(EntradaNotaCabecario.class);
@@ -31,6 +32,7 @@ public class EntradasdeNotaRepositoryQueryImpl extends ServiceFuncoes implements
 		var predicates = new ArrayList<Predicate>();
 		predicates.add(builder.equal(root.get("fornecedor").get("id"), codigoFonecedor));
 		predicates.add(builder.equal(root.get("numerodanota"), numeroNota));
+		predicates.add(builder.equal(root.get("statusEntradaNota"), status));
 		criteria.where(predicates.toArray(new Predicate[0]));
 		return !maneger.createQuery(criteria).getResultList().isEmpty();
 	}
@@ -100,7 +102,7 @@ public class EntradasdeNotaRepositoryQueryImpl extends ServiceFuncoes implements
 		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) == 14)||(qtdecaraceteres(paramentro) == 11)) {
 			predicates.add(builder.like(root.get("fornecedor").get("cpfouCnpj"), paramentro + "%"));
 		}
-
+        predicates.add(builder.equal(root.get("statusEntradaNota"), StatusEntradaNota.Entregue));
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
 

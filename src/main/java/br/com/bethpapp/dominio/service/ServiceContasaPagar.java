@@ -28,12 +28,13 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	private DaoFormaDePagamento daoFormaDePagamento;
 	
 	@Transactional
-	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma, LocalDate  dataEmisao) {
+	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma, LocalDate  dataEmisao, String numNota) {
 		ContasPagar contaContasaPagar = new ContasPagar();
 		try {
 			
 			contaContasaPagar.setFornecedor(fornecedor);
 			   contaContasaPagar.setDatalancamento(dataEmisao);
+			   contaContasaPagar.setNumeroTitulo(numNota);
 			     Integer numeroparcela=0;
 			     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(4), MathContext.DECIMAL128);
 			    contaContasaPagar.setTotalPagar(valortotalconta);
@@ -82,7 +83,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 
 	@Override
 	public ContasPagar buccarporid(Long id) {
-		// TODO Auto-generated method stub
+	
 		return null;
 	}
 
@@ -93,7 +94,15 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	
 		return daoContasApagar.save(objeto);
 	}
-
+    @Transactional
+	public ContasPagar cancelarConta(String cnpj, String numTitulo) {
+		var conta =daoContasApagar.buscarconta(cnpj, numTitulo);
+		for (int i = 0; i < conta.getContasaPagarDetalhes().size(); i++) {
+			conta.getContasaPagarDetalhes().get(i).setStatusPagmaento(StatusPagamento.CANCELADO);
+		}
+		return daoContasApagar.save(conta);
+	}
+	
 
 	
 

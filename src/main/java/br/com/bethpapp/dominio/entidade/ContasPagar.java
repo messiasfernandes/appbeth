@@ -34,6 +34,8 @@ public class ContasPagar extends GeradorId implements Serializable {
 	private LocalDate datalancamento;
 	@Column(length = 120)
 	private String observacao;
+	@Column(length = 50)
+	private String numeroTitulo;
     private BigDecimal totalPagar;
 	@JsonManagedReference
 	@Fetch(FetchMode.SUBSELECT)
