@@ -29,7 +29,7 @@ public interface ProdutoOpenApi extends ControllerOpenApi {
 	ResponseEntity<Page<ProdutoDTO>> listar(String nome, Integer pagina, Integer size,
 			Pageable page);
 
-	@Operation(summary = "Excluid um Produto por ID")
+	@Operation(summary = "Excluir um Produto por ID")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Produto excluído"),
 			@ApiResponse(responseCode = "404", description = "Produto não encontrado") })
 
@@ -45,6 +45,8 @@ public interface ProdutoOpenApi extends ControllerOpenApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Produto salvo com sucesso"),
 			@ApiResponse(responseCode = "400", description = "problema com resquisão") })
 	public ResponseEntity<ProdutoDTO> criar(@Param(value = "corpo") ProdutoInput produto, HttpServletResponse response);
+	
+	
 }
 
 

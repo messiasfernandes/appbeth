@@ -2,6 +2,7 @@ package br.com.bethpapp.dominio.entidade;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.FetchMode;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import br.com.bethpapp.dominio.enumerado.StatusEntradaNota;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -42,6 +44,8 @@ public class EntradaNotaCabecario extends GeradorId {
 	private LocalDateTime data_hora_entrada;
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
 	private LocalDateTime data_hora_emissao_nota;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate data_cancelamento;
 	@Column(length = 60)
 	private String naturezaopercao;
 	@Column(length = 10)
@@ -57,6 +61,8 @@ public class EntradaNotaCabecario extends GeradorId {
 	private ImpostoNota impostoNota;
 	@Embedded
 	private TransporteNotafiscal transporteNotafiscal;
+	@Column(length = 20)
+	private StatusEntradaNota statusEntradaNota;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
 	private Fornecedor fornecedor;

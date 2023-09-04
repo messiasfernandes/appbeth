@@ -15,6 +15,7 @@ import br.com.bethpapp.dominio.entidade.ImpostoNota;
 import br.com.bethpapp.dominio.entidade.ItemEntradaNota;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.entidade.TransporteNotafiscal;
+import br.com.bethpapp.dominio.enumerado.StatusEntradaNota;
 import br.com.bethpapp.dominio.service.exeption.NegocioException;
 
 public class LeituraXml {
@@ -29,6 +30,7 @@ public class LeituraXml {
 			entrada.setModelo(dadoinit.getElementsByTagName("mod").item(i).getTextContent());
 			entrada.setNaturezaopercao(dadoinit.getElementsByTagName("natOp").item(i).getTextContent());
 			entrada.setSerie(dadoinit.getElementsByTagName("serie").item(i).getTextContent());
+			entrada.setStatusEntradaNota(StatusEntradaNota.Entregue);
 
 		}
 

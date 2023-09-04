@@ -4,10 +4,12 @@ import java.math.BigDecimal;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
 import br.com.bethpapp.modelo.dto.EntradaNotaCabecarioDTO;
+import br.com.bethpapp.modelo.dto.ProdutoDtoEditar;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,4 +33,6 @@ public interface EntradaNotafiscalOpenApi extends ControllerOpenApi{
 			@ApiResponse(responseCode = "404", description = "Nota fiscal não  Encotrada", content = @Content) })
 	ResponseEntity<Page<EntradaNotaCabecarioDTO>> listar(String nome, Integer pagina, Integer size,
 			Pageable page);
+	
+	ResponseEntity<EntradaNotaCabecarioDTO> buscar(@Param(value = "ID de uma Nota") Long id);
 }

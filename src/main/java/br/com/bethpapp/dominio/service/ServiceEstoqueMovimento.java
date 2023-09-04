@@ -69,14 +69,14 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 				serviceEstoque.salvar(adicionarEstoque(movimento));
 			}
 		} else {
-			serviceEstoque.salvar(baxarEstoque(movimento).getProduto().getEstoque());
+			serviceEstoque.salvar(baixarEstoque(movimento).getProduto().getEstoque());
 		}
 
 		return movimento;
 
 	}
 
-	private EstoqueMovimento baxarEstoque(EstoqueMovimento movimento) {
+	private EstoqueMovimento baixarEstoque(EstoqueMovimento movimento) {
 		if (movimento.getProduto().getEstoque()==null) {
 			throw new NegocioException("Não possivel baixar estoque de um produto que não tenha estoque");
 		}
