@@ -31,7 +31,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma, LocalDate  dataEmisao, String numNota) {
 		ContasPagar contaContasaPagar = new ContasPagar();
 		try {
-			
+			contaContasaPagar.setTotatdeParcelas(qtepacerla);
 			contaContasaPagar.setFornecedor(fornecedor);
 			   contaContasaPagar.setDatalancamento(dataEmisao);
 			   contaContasaPagar.setNumeroTitulo(numNota);

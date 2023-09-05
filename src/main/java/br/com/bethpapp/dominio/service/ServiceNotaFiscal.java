@@ -27,6 +27,10 @@ public class ServiceNotaFiscal implements ServiceModel<EntradaNotaCabecario> {
 
 		return daoEntradaNota.buscar(nome, pageable);
 	}
+	public Page<EntradaNotaCabecario> buscaCcancelada(String nome, Pageable pageable) {
+
+		return daoEntradaNota.buscarCancelada(nome, pageable);
+	}
 
 	@Override
 	public void excluir(Long codigo) {

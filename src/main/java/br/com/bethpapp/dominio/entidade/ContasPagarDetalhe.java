@@ -53,7 +53,8 @@ public class ContasPagarDetalhe extends GeradorId implements Serializable {
 	private LocalDate dataVencimento;
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate descontoAte;
-
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	private LocalDate datadePagamento;
 	@ManyToOne
 	private FormadePagmamento formadePagamento;
 	@NonNull

@@ -82,7 +82,7 @@ public class EntradasdeNotaRepositoryQueryImpl extends ServiceFuncoes implements
 
 	}
 
-	private Predicate[] criarRestricoes(String paramentro, CriteriaBuilder builder, Root<EntradaNotaCabecario> root) {
+	private Predicate[] criarRestricoes(String paramentro, CriteriaBuilder builder, Root<EntradaNotaCabecario> root ) {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if ((!ehnumero(paramentro) && (qtdecaraceteres(paramentro) > 0))) {
@@ -102,8 +102,56 @@ public class EntradasdeNotaRepositoryQueryImpl extends ServiceFuncoes implements
 		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) == 14)||(qtdecaraceteres(paramentro) == 11)) {
 			predicates.add(builder.like(root.get("fornecedor").get("cpfouCnpj"), paramentro + "%"));
 		}
+		
         predicates.add(builder.equal(root.get("statusEntradaNota"), StatusEntradaNota.Entregue));
 		return predicates.toArray(new Predicate[predicates.size()]);
+	}
+	private Predicate[] criarRestricoesCancelada(String paramentro, CriteriaBuilder builder, Root<EntradaNotaCabecario> root ) {
+		List<Predicate> predicates = new ArrayList<>();
+
+		if ((!ehnumero(paramentro) && (qtdecaraceteres(paramentro) > 0))) {
+			System.out.println("pasou fornecedor"+ paramentro);
+			predicates.add(builder.like(root.get("fornecedor").get("nome"), paramentro.toUpperCase() + "%")
+
+			);
+
+		}
+
+		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) <11)) {
+			
+		
+			predicates.add(builder.or(builder.equal(root.get("numerodanota"), paramentro)));
+		}
+
+		if ((ehnumero(paramentro)) && (qtdecaraceteres(paramentro) == 14)||(qtdecaraceteres(paramentro) == 11)) {
+			predicates.add(builder.like(root.get("fornecedor").get("cpfouCnpj"), paramentro + "%"));
+		}
+		
+        predicates.add(builder.equal(root.get("statusEntradaNota"), StatusEntradaNota.Cancelado));
+		return predicates.toArray(new Predicate[predicates.size()]);
+	}
+	@Override
+	public Page<EntradaNotaCabecario> buscarCancelada(String paramentro, Pageable pageable) {
+		CriteriaBuilder builder = maneger.getCriteriaBuilder();
+		CriteriaQuery<EntradaNotaCabecario> criteria = builder.createQuery(EntradaNotaCabecario.class);
+		Root<EntradaNotaCabecario> root = criteria.from(EntradaNotaCabecario.class);
+		Predicate[] predicates = null;
+
+		predicates = criarRestricoesCancelada(paramentro, builder, root);
+   
+		root.fetch("fornecedor", JoinType.INNER).fetch("cidade",JoinType.INNER);
+		root.fetch("items_entrada", JoinType.INNER).fetch("produto", JoinType.INNER).fetch("estoque", JoinType.INNER);
+		
+
+		criteria.select(root);
+
+		criteria.where(predicates);
+
+	
+		TypedQuery<EntradaNotaCabecario> query = maneger.createQuery(criteria);
+		adicionarRestricoesDePaginacao(query, pageable);
+		return new PageImpl<>(query.getResultList(), pageable, total(paramentro));
+	
 	}
 
 }

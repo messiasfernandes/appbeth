@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bethpapp.controller.documentacao.EntradaNotafiscalOpenApi;
 import br.com.bethpapp.coversor.EntradaNotaFiscalConverter;
+import br.com.bethpapp.dominio.enumerado.StatusEntradaNota;
 import br.com.bethpapp.dominio.service.ServiceImportaNotafiscal;
 import br.com.bethpapp.dominio.service.ServiceNotaFiscal;
 import br.com.bethpapp.modelo.dto.EntradaNotaCabecarioDTO;
@@ -53,7 +54,16 @@ public class EntradaNotaFiscalController extends ControllerEvent implements Entr
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(entradanfConverter.topage(serviceNotaFiscal.buscar(paramentro, page)));
 	}
+	@GetMapping("/canceladadas")
+	
+	public ResponseEntity<Page<EntradaNotaCabecarioDTO>> bucarCancelada(
+			@RequestParam(value = "paramentro", required = false, defaultValue = "") String paramentro,
+			@RequestParam(value = "page", defaultValue = "0") Integer pagina, 
+			@RequestParam(value = "size", defaultValue = "4") Integer size, Pageable page) {
 
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(entradanfConverter.topage(serviceNotaFiscal.buscaCcancelada(paramentro, page)));
+	}
 	@PutMapping
 	@Override
 	public ResponseEntity<EntradaNotaCabecarioDTO> cancelarNota(@RequestParam Long id) {
