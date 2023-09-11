@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
+import br.com.bethpapp.dominio.entidade.Fornecedor;
 import br.com.bethpapp.dominio.entidade.ImpostoNota;
 import br.com.bethpapp.dominio.entidade.ItemEntradaNota;
 import br.com.bethpapp.dominio.entidade.Produto;
@@ -61,7 +62,7 @@ public class LeituraXml {
 				var p = new Produto();
 
 				p.setCodigoEan13(produto.getElementsByTagName("cEAN").item(j).getTextContent());
-
+           
 				p.setCodigofabricante(produto.getElementsByTagName("cProd").item(j).getTextContent());
 				p.setCodigoEan13(produto.getElementsByTagName("cEAN").item(j).getTextContent());
 				p.setNomeproduto(produto.getElementsByTagName("xProd").item(j).getTextContent());

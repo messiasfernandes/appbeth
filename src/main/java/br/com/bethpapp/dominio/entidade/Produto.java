@@ -82,6 +82,10 @@ public class Produto extends GeradorId {
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn
 	private SubCategoria subcategoria;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn
+	private Fornecedor fornecedor;
 	@Fetch(FetchMode.SUBSELECT)
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))

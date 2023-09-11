@@ -49,6 +49,7 @@ public class ProdutoDTO {
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal customedio;
 	private EstoqueDTO estoque;
+	private FornecedorDTO fornecedor;
 
 	private List<AtributoDTO> atributos = new ArrayList<>();
 	private Set<ComponeteDTO> componentes;

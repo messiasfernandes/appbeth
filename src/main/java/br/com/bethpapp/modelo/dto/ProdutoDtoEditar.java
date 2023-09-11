@@ -10,6 +10,7 @@ import org.springframework.format.annotation.NumberFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 
+import br.com.bethpapp.dominio.entidade.Fornecedor;
 import lombok.Data;
 @Data
 public class ProdutoDtoEditar {
@@ -45,7 +46,7 @@ public class ProdutoDtoEditar {
 	@JsonFormat(pattern = "#,##0.00", shape = Shape.STRING)
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal customedio;
-	
+	 private FornecedorDTO fornecedor;
 
 	private List<AtributoDTO> atributos = new ArrayList<>();
 	private Set<ComponeteDTO> componentes;

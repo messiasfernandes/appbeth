@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.bethpapp.dominio.dao.DaoForncedor;
 import br.com.bethpapp.dominio.dao.DaoProduto;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.exeption.EntidadeEmUsoExeption;
@@ -16,8 +17,8 @@ import jakarta.transaction.Transactional;
 public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produto> {
 	@Autowired
 	private DaoProduto daoProduto;
-	
-
+	@Autowired
+    private DaoForncedor daoForncedor;
 	@Override
 	public Page<Produto> buscar(String nome, Pageable pageable) {
 
@@ -53,21 +54,26 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 	@Transactional
 	@Override
 	public Produto salvar(Produto objeto) {
-	//	var estoque = new Estoque();
+	
 		Produto produto = null;
 		if (objeto.getAtributos().size() > 0) {
 			objeto.setCaracteristica(concatenar(objeto));
 		}
-//		estoque= daoEstoque.buscarproduto(objeto.getId());
-//		if (estoque==null) {
-//			 estoque = new Estoque();
-//			estoque.setQuantidade(0);
-//			produto = daoProduto.save(objeto);
-//			estoque.setProduto(produto);
-		//	daoEstoque.save(estoque);
-	//	} else {
+		if (objeto.getFornecedor() != null && objeto.getFornecedor().getId() != null) {
+		    System.out.println("passou aqui");
+		    var fornecedor = daoForncedor.findById(objeto.getFornecedor().getId());
+		    
+		    if (fornecedor.isPresent()) {
+		        objeto.setFornecedor(fornecedor.get());
+		    } else {
+		        // Lide com o caso em que o fornecedor não foi encontrado no banco de dados
+		    }
+		} else {
+		    // Lide com o caso em que o fornecedor ou seu ID são nulos
+		}
+
 			produto = daoProduto.save(objeto);
-	//	}
+	
 		return produto;
 	}
 
@@ -100,6 +106,11 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 
 	public Produto buscarporCodFabricante(String codigofabricante) {
 		return daoProduto.findByCodigofabricante(codigofabricante);
+	}
+	
+	public String  geararCodioEan13(String codigofabricante) {
+		var codigoPais="789";
+		return"";
 	}
 
 }

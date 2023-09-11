@@ -100,6 +100,7 @@ public class ServiceImportaNotafiscal {
 	@Transactional(rollbackOn = Exception.class)
 	public EntradaNotaCabecario salvar(EntradaNotaCabecario entrada, BigDecimal margen, Long idforma,
 			Integer qtdeparcelas) {
+	var fonecedorsalvo=	serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
 		entrada.getItems_entrada().forEach(e -> e.setEntradaNotafiscal(entrada));
 
 		if ((daoEntradaNota.buscarnota(entrada.getFornecedor().getId(), entrada.getNumerodanota(), entrada.getStatusEntradaNota()) == true)) {
@@ -109,7 +110,7 @@ public class ServiceImportaNotafiscal {
 			Map<String, Produto> produtosExistentes = new HashMap<>();
 
 			for (int i = 0; i < entrada.getItems_entrada().size(); i++) {
-				System.out.println(entrada.getItems_entrada().get(i).getProduto().getCodigofabricante());
+				entrada.getItems_entrada().get(i).getProduto().setFornecedor(fonecedorsalvo);
 				String codigoFabricante = entrada.getItems_entrada().get(i).getProduto().getCodigofabricante();
 				long cont = serviceProduto.buscarCodFabricante(codigoFabricante);
 
@@ -117,7 +118,9 @@ public class ServiceImportaNotafiscal {
 					Produto produtoExistente = produtosExistentes.computeIfAbsent(codigoFabricante,
 							key -> serviceProduto.buscarporCodFabricante(key));
 					entrada.getItems_entrada().get(i).setProduto(produtoExistente);
+					
 				} else {
+					
 					serviceProduto.salvar(entrada.getItems_entrada().get(i).getProduto());
 				}
 			}
@@ -125,7 +128,7 @@ public class ServiceImportaNotafiscal {
 			Long titulo = Long.parseLong(entrada.getNumerodanota());
 			BigDecimal totalnota = entrada.getImpostoNota().getTotalNota();
 			serviceEstoqueMovimento.entradaEstoquue(entrada);
-			serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
+			
 			var contas = serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma,
 					dataemisao.toLocalDate(),entrada.getNumerodanota());
 			serviceContasaPagar.salvar(contas);

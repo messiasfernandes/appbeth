@@ -6,7 +6,7 @@ import lombok.Data;
 public class FornecedorDTO {
 	
 
-	
+	private Long id;
 	private String nome;
 
 

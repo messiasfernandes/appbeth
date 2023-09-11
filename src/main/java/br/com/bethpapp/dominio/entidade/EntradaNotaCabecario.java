@@ -91,7 +91,7 @@ public class EntradaNotaCabecario extends GeradorId {
 
 		for (int i = 0; i < items_entrada.size(); i++) {
 			this.totalProduto = totalProduto.add(items_entrada.get(i).getSubtotal());
-			System.out.println(totalProduto);
+
 		}
 
 		return totalProduto;
@@ -100,7 +100,8 @@ public class EntradaNotaCabecario extends GeradorId {
 	public BigDecimal getTotalProduto() {
 		return somarTotalnota();
 	}
-@Transient
+
+	@Transient
 	public LocalDateTime converte(String data) {
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 		OffsetDateTime offsetDateTime = OffsetDateTime.parse(data, inputFormatter);
