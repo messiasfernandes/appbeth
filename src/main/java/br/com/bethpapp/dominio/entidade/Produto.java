@@ -95,7 +95,7 @@ public class Produto extends GeradorId {
 	@Fetch(FetchMode.SUBSELECT)
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "produto_componente", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "componente_id"))
-	private Set<Componente> componentes;
+	private List<Componente> componentes;
 
 	public void setNomeproduto(String nomeproduto) {
 		if (nomeproduto != null) {

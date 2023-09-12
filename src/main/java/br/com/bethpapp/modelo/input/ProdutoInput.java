@@ -41,9 +41,9 @@ public class ProdutoInput {
 
 	private BigDecimal customedio;
 	private SubCategoriaInput subcategoria;
-    private FornecedorInput fornecedor;
+   private FornecedorInput fornecedor;
 
 	private List<Atributo> atributos;
-	private Set<Componente> componentes;
+	private List<Componente> componentes;
 
 }

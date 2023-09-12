@@ -110,7 +110,7 @@ public class ServiceImportaNotafiscal {
 			Map<String, Produto> produtosExistentes = new HashMap<>();
 
 			for (int i = 0; i < entrada.getItems_entrada().size(); i++) {
-				entrada.getItems_entrada().get(i).getProduto().setFornecedor(fonecedorsalvo);
+			//	entrada.getItems_entrada().get(i).getProduto().setFornecedor(fonecedorsalvo);
 				String codigoFabricante = entrada.getItems_entrada().get(i).getProduto().getCodigofabricante();
 				long cont = serviceProduto.buscarCodFabricante(codigoFabricante);
 

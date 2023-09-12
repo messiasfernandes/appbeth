@@ -59,18 +59,22 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 		if (objeto.getAtributos().size() > 0) {
 			objeto.setCaracteristica(concatenar(objeto));
 		}
-		if (objeto.getFornecedor() != null && objeto.getFornecedor().getId() != null) {
-		    System.out.println("passou aqui");
-		    var fornecedor = daoForncedor.findById(objeto.getFornecedor().getId());
-		    
-		    if (fornecedor.isPresent()) {
-		        objeto.setFornecedor(fornecedor.get());
-		    } else {
-		        // Lide com o caso em que o fornecedor não foi encontrado no banco de dados
-		    }
-		} else {
-		    // Lide com o caso em que o fornecedor ou seu ID são nulos
-		}
+	
+//		if (objeto.getFornecedor() != null && objeto.getFornecedor().getId() != null) {
+//		    System.out.println("passou aqui");
+//		    var fornecedor = daoForncedor.findById(objeto.getFornecedor().getId());
+//		    
+//		    if (fornecedor.isPresent()) {
+//		        objeto.setFornecedor(fornecedor.get());
+//		    	if (objeto.getComponentes().size() > 0) {
+//					objeto.getComponentes().forEach(f-> objeto.getFornecedor());
+//				}
+//		    } else {
+//		        // Lide com o caso em que o fornecedor não foi encontrado no banco de dados
+//		    }
+//		} else {
+//		    // Lide com o caso em que o fornecedor ou seu ID são nulos
+//		}
 
 			produto = daoProduto.save(objeto);
 	

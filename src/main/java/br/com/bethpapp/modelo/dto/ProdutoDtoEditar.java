@@ -46,9 +46,9 @@ public class ProdutoDtoEditar {
 	@JsonFormat(pattern = "#,##0.00", shape = Shape.STRING)
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal customedio;
-	 private FornecedorDTO fornecedor;
+   private FornecedorDTO fornecedor;
 
 	private List<AtributoDTO> atributos = new ArrayList<>();
-	private Set<ComponeteDTO> componentes;
+	private List<ComponeteDTO> componentes;
 
 }
