@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
@@ -83,7 +82,7 @@ public class Produto extends GeradorId {
 	@JoinColumn
 	private SubCategoria subcategoria;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.ALL)
 	@JoinColumn
 	private Fornecedor fornecedor;
 	@Fetch(FetchMode.SUBSELECT)

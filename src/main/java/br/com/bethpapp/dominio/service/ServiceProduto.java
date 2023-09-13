@@ -54,7 +54,7 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 	@Transactional
 	@Override
 	public Produto salvar(Produto objeto) {
-	
+	   
 		Produto produto = null;
 		if (objeto.getAtributos().size() > 0) {
 			objeto.setCaracteristica(concatenar(objeto));
@@ -75,7 +75,7 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 //		} else {
 //		    // Lide com o caso em que o fornecedor ou seu ID são nulos
 //		}
-
+          System.out.println(  objeto.getFornecedor());
 			produto = daoProduto.save(objeto);
 	
 		return produto;

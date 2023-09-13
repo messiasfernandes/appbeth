@@ -23,7 +23,6 @@ public class Cidade implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-
 	private Long cod_municipio;
 	@Column(length = 100, nullable = false)
 
