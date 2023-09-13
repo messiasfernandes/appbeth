@@ -69,14 +69,15 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 				serviceEstoque.salvar(adicionarEstoque(movimento));
 			}
 		} else {
-			serviceEstoque.salvar(baxarEstoque(movimento).getProduto().getEstoque());
+			
+			serviceEstoque.salvar(baixarEstoque(movimento).getProduto().getEstoque());
 		}
 
 		return movimento;
 
 	}
 
-	private EstoqueMovimento baxarEstoque(EstoqueMovimento movimento) {
+	private EstoqueMovimento baixarEstoque(EstoqueMovimento movimento) {
 		if (movimento.getProduto().getEstoque()==null) {
 			throw new NegocioException("Não possivel baixar estoque de um produto que não tenha estoque");
 		}
@@ -116,5 +117,19 @@ public class ServiceEstoqueMovimento extends ServiceFuncoes implements ServiceMo
 	     salvar(estoquemovimento);
 		}
 
+	}
+	public void CancelarEstoqueNota(EntradaNotaCabecario entrada) {
+		
+		for (int i = 0; i < entrada.getItems_entrada().size(); i++) {
+		     EstoqueMovimento estoquemovimento = new EstoqueMovimento();
+		     estoquemovimento.setProduto(entrada.getItems_entrada().get(i).getProduto());
+		     estoquemovimento.setTipoMovimentacao(TipoMovimentacao.Devolucao);
+		     estoquemovimento.setDatamovimento(LocalDateTime.now());
+		     estoquemovimento.setQtde(entrada.getItems_entrada().get(i).getQtde());
+		     verificarMovimento(estoquemovimento);
+		
+		     daoMovementacaoEstoque.save(estoquemovimento);
+			}
+		
 	}
 }

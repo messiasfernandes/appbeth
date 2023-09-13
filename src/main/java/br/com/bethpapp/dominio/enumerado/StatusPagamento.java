@@ -1,7 +1,8 @@
 package br.com.bethpapp.dominio.enumerado;
 
 public enum StatusPagamento {
-	PENDENTE("Pendente"), QUITADO("Quitado"), CANCELADO("Cancelado"), PAGOPARCIAL("Pagamento Parcial");
+	PENDENTE("Pendente"), PAGO("Pago"), CANCELADO("Cancelado"), PAGOPARCIAL("Pagamento Parcial"),
+	VENCIDO("Vencido "), RENEGOCIADO("Renegociado");
 
 	private String descricao;
 
@@ -35,5 +36,6 @@ public enum StatusPagamento {
 	        }
 	        return formatted.toString().trim();
 	    }
-
+	  
+	
 }

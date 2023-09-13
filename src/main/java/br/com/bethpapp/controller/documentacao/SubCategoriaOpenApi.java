@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Tag(name = "Subcategorias")
 public interface SubCategoriaOpenApi extends ControllerOpenApi {
-	
+	@Operation(summary = "Listar Subcategoria")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Subcategoria  Encotrada", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = SubCategoria.class)) }),

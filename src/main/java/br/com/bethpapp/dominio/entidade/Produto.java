@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
@@ -60,31 +59,32 @@ public class Produto extends GeradorId {
 	private String codigoEan13;
 	@Column(length = 255)
 	private String caracteristica;
-	@Column(length = 13)
+	@Column(length = 20)
 	private String codigofabricante;
 
-	@Digits(integer = 9, fraction = 3)
+	@Digits(integer = 9, fraction = 4)
 	@Setter(value = AccessLevel.NONE)
 	private BigDecimal precovenda;
 	@Setter(value = AccessLevel.NONE)
-	@Digits(integer = 9, fraction = 3)
+	@Digits(integer = 9, fraction = 4)
 	private BigDecimal precocusto;
 
-
-	@Digits(integer = 9, fraction = 3)
+	@Digits(integer = 9, fraction = 4)
 	private BigDecimal customedio;
 	@Column
 	private Integer estoqueminimo;
-    @JsonIgnore
-	///@JsonBackReference
+	@JsonIgnore
 	@OneToOne(mappedBy = "produto", fetch = FetchType.LAZY)
-    @JoinColumn
+	@JoinColumn
 	private Estoque estoque;
-
 	@JsonIgnoreProperties(value = { "nomeSubCategoria" }, allowGetters = true)
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn
 	private SubCategoria subcategoria;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.ALL)
+	@JoinColumn
+	private Fornecedor fornecedor;
 	@Fetch(FetchMode.SUBSELECT)
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
@@ -94,7 +94,7 @@ public class Produto extends GeradorId {
 	@Fetch(FetchMode.SUBSELECT)
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "produto_componente", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "componente_id"))
-	private Set<Componente> componentes;
+	private List<Componente> componentes;
 
 	public void setNomeproduto(String nomeproduto) {
 		if (nomeproduto != null) {

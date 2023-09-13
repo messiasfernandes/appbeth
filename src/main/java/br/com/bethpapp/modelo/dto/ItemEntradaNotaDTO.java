@@ -9,7 +9,7 @@ public class ItemEntradaNotaDTO {
 	private Integer qtde;
 
 	private BigDecimal subtotal;
-	
+	private BigDecimal desconto;
 	private ProdutoDTO produto;
 	
 	

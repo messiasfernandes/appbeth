@@ -28,15 +28,16 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	private DaoFormaDePagamento daoFormaDePagamento;
 	
 	@Transactional
-	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma, LocalDate  dataEmisao) {
+	public ContasPagar addconta(Integer qtepacerla,Long titulo,  Fornecedor fornecedor, BigDecimal valortotalconta, Long idForma, LocalDate  dataEmisao, String numNota) {
 		ContasPagar contaContasaPagar = new ContasPagar();
 		try {
-			
+			contaContasaPagar.setTotatdeParcelas(qtepacerla);
 			contaContasaPagar.setFornecedor(fornecedor);
 			   contaContasaPagar.setDatalancamento(dataEmisao);
+			   contaContasaPagar.setNumeroTitulo(numNota);
 			     Integer numeroparcela=0;
-			     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(3), MathContext.DECIMAL128);
-			   
+			     BigDecimal valoparcela = valortotalconta.divide(new BigDecimal(qtepacerla).setScale(4), MathContext.DECIMAL128);
+			    contaContasaPagar.setTotalPagar(valortotalconta);
 			FormadePagmamento formadePagmamento = daoFormaDePagamento.findById(idForma).get();
 		     for (int i=0; i< qtepacerla;i++) {
 		    	 ContasPagarDetalhe contasaPagarDetalhe = new ContasPagarDetalhe();
@@ -48,7 +49,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 		         contasaPagarDetalhe.setValoparcela(valoparcela);
 		         contasaPagarDetalhe.setValorapagar(valoparcela);
 		         contasaPagarDetalhe.setValoprago(new BigDecimal(0));
-		         contasaPagarDetalhe.setNumtitulo(titulo);
+		         contasaPagarDetalhe.setNumtitulo(titulo.toString()+ "-"+numeroparcela.toString()+"/"+qtepacerla.toString());
 		         if (formadePagmamento.getId()==1l) {
 		          	 contasaPagarDetalhe.setDataVencimento(contaContasaPagar.getDatalancamento().plusDays((numeroparcela* 0)));
 		         }else {
@@ -82,7 +83,7 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 
 	@Override
 	public ContasPagar buccarporid(Long id) {
-		// TODO Auto-generated method stub
+	
 		return null;
 	}
 
@@ -93,7 +94,15 @@ public class ServiceContasaPagar implements ServiceModel<ContasPagar> {
 	
 		return daoContasApagar.save(objeto);
 	}
-
+    @Transactional
+	public ContasPagar cancelarConta(String cnpj, String numTitulo) {
+		var conta =daoContasApagar.buscarconta(cnpj, numTitulo);
+		for (int i = 0; i < conta.getContasaPagarDetalhes().size(); i++) {
+			conta.getContasaPagarDetalhes().get(i).setStatusPagmaento(StatusPagamento.CANCELADO);
+		}
+		return daoContasApagar.save(conta);
+	}
+	
 
 	
 

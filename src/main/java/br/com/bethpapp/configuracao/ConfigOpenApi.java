@@ -17,8 +17,8 @@ public class ConfigOpenApi {
 	@Value("Beth APP")
 	String appDesciption;
 
-	@Bean
-	public OpenAPI usersMicroserviceOpenAPI() {
+    @Bean
+    OpenAPI usersMicroserviceOpenAPI() {
 
 		Contact contato = new Contact();
 		contato.setEmail("messiasfernandes@gamil.com");

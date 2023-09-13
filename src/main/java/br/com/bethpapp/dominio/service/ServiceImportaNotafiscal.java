@@ -2,7 +2,7 @@ package br.com.bethpapp.dominio.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +20,6 @@ import org.xml.sax.SAXException;
 import br.com.bethpapp.dominio.dao.DaoEntradaNota;
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
 import br.com.bethpapp.dominio.entidade.Fornecedor;
-import br.com.bethpapp.dominio.entidade.ItemEntradaNota;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.exeption.NegocioException;
 import br.com.bethpapp.utils.LeituraXml;
@@ -44,7 +43,7 @@ public class ServiceImportaNotafiscal {
 	@Autowired
 	private ServiceContasaPagar serviceContasaPagar;
 	private LeituraXml leituraXml = new LeituraXml();
-	private LocalDate dataemisao;
+	private LocalDateTime dataemisao;
 
 	public EntradaNotaCabecario imporxml(String xml, BigDecimal pMargem, Long idforma, Integer qtdeparcelas) {
 		System.out.println(arquivo + local_arquivo_xml + xml);
@@ -56,13 +55,28 @@ public class ServiceImportaNotafiscal {
 
 			var dados = doc.getElementsByTagName("ide");
 			entrada = leituraXml.lerxml(xml, dados);
-			dataemisao = entrada.getData_emissao_nota();
+			dataemisao = entrada.getData_hora_emissao_nota();
+            
 			Element raiz = doc.getDocumentElement();
 
 			NodeList emitentes = raiz.getElementsByTagName("emit");
+			NodeList transportadora= raiz.getElementsByTagName("transp");
+			entrada.setTransporteNotafiscal(leituraXml.adicionarTranportadora(transportadora));;
+			NodeList infProt = raiz.getElementsByTagName("infProt");
+			NodeList totalNotaInposto = raiz.getElementsByTagName("total");
+			entrada.setImpostoNota(leituraXml.adicionarValoImposto(totalNotaInposto));
+			for (int k = 0; k < infProt.getLength(); k++) {
+				Element chaves = (Element) infProt.item(k);
+				entrada.setChaveNota(chaves.getElementsByTagName("chNFe").item(k).getTextContent());
+				
+			}
+			 NodeList totalNota= raiz.getElementsByTagName("ICMSTot");
 			entrada.setFornecedor(dadosFornecedor(emitentes));
 			NodeList produtos = raiz.getElementsByTagName("det");
-			entrada.setItems_entrada(leituraXml.adicionarProduto(produtos, pMargem));
+			entrada.setItems_entrada(leituraXml.adicionarProduto(  produtos, pMargem,totalNota));
+			
+			
+			
 
 		} catch (ParserConfigurationException e) {
 
@@ -86,16 +100,17 @@ public class ServiceImportaNotafiscal {
 	@Transactional(rollbackOn = Exception.class)
 	public EntradaNotaCabecario salvar(EntradaNotaCabecario entrada, BigDecimal margen, Long idforma,
 			Integer qtdeparcelas) {
+	var fonecedorsalvo=	serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
 		entrada.getItems_entrada().forEach(e -> e.setEntradaNotafiscal(entrada));
 
-		if ((daoEntradaNota.buscarnota(entrada.getFornecedor().getId(), entrada.getNumerodanota()) == true)) {
+		if ((daoEntradaNota.buscarnota(entrada.getFornecedor().getId(), entrada.getNumerodanota(), entrada.getStatusEntradaNota()) == true)) {
 
 			throw new NegocioException("Nota  cadastrada já no banco de dados");
 		} else {
 			Map<String, Produto> produtosExistentes = new HashMap<>();
 
 			for (int i = 0; i < entrada.getItems_entrada().size(); i++) {
-				System.out.println(entrada.getItems_entrada().get(i).getProduto().getCodigofabricante());
+				entrada.getItems_entrada().get(i).getProduto().setFornecedor(fonecedorsalvo);
 				String codigoFabricante = entrada.getItems_entrada().get(i).getProduto().getCodigofabricante();
 				long cont = serviceProduto.buscarCodFabricante(codigoFabricante);
 
@@ -103,18 +118,19 @@ public class ServiceImportaNotafiscal {
 					Produto produtoExistente = produtosExistentes.computeIfAbsent(codigoFabricante,
 							key -> serviceProduto.buscarporCodFabricante(key));
 					entrada.getItems_entrada().get(i).setProduto(produtoExistente);
+					
 				} else {
+					
 					serviceProduto.salvar(entrada.getItems_entrada().get(i).getProduto());
 				}
 			}
 
 			Long titulo = Long.parseLong(entrada.getNumerodanota());
-			BigDecimal totalnota = entrada.getItems_entrada().stream().map(ItemEntradaNota::getSubtotal)
-					.reduce(BigDecimal.ZERO, BigDecimal::add);
+			BigDecimal totalnota = entrada.getImpostoNota().getTotalNota();
 			serviceEstoqueMovimento.entradaEstoquue(entrada);
-			serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
+			
 			var contas = serviceContasaPagar.addconta(qtdeparcelas, titulo, entrada.getFornecedor(), totalnota, idforma,
-					dataemisao);
+					dataemisao.toLocalDate(),entrada.getNumerodanota());
 			serviceContasaPagar.salvar(contas);
 			daoEntradaNota.save(entrada);
 			return entrada;

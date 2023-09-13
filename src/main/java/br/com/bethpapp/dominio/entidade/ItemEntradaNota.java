@@ -14,17 +14,25 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @Entity
 public class ItemEntradaNota extends GeradorId {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	public ItemEntradaNota() {
+		subtotal = BigDecimal.ZERO;
+	///	desconto = BigDecimal.ZERO;
+	}
+
 	private Integer qtde;
 	@Setter(value = AccessLevel.NONE)
-	@Digits(integer = 9, fraction = 3)
+	@Digits(integer = 9, fraction = 4)
 	private BigDecimal subtotal;
+	//@Setter(value = AccessLevel.NONE)
+//	@Digits(integer = 9, fraction = 4)
+//	private BigDecimal desconto;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
 	private Produto produto;
@@ -32,8 +40,16 @@ public class ItemEntradaNota extends GeradorId {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
 	private EntradaNotaCabecario entradaNotafiscal;
+
 	public void setSubtotal(BigDecimal subtotal) {
-		this.subtotal = subtotal.setScale(3,RoundingMode.HALF_UP);
+		this.subtotal = subtotal.setScale(4, RoundingMode.HALF_UP);
 	}
-	
+
+
+
+
+//	public void setDesconto(BigDecimal desconto) {
+//		this.desconto = desconto.setScale(4, RoundingMode.HALF_UP);
+//	}
+
 }

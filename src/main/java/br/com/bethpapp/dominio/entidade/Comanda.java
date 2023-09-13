@@ -7,9 +7,7 @@ import java.util.List;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.bethpapp.dominio.enumerado.StatusPagamento;
@@ -35,8 +33,7 @@ public class Comanda implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@DateTimeFormat(pattern = " dd/MM/yyyy  HH:mm:ss")
-	@JsonFormat(pattern = "dd/MM/yyyy  HH:mm:ss")
+	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDateTime data_abertura;
 	@Column(length = 20)
 	@Enumerated(EnumType.STRING)

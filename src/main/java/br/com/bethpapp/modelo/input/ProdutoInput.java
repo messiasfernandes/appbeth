@@ -4,11 +4,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import br.com.bethpapp.dominio.entidade.Atributo;
 import br.com.bethpapp.dominio.entidade.Componente;
 import lombok.Data;
 
 @Data
+@JsonInclude(content = Include.NON_NULL)
 public class ProdutoInput {
 
 	private Long id;
@@ -37,9 +41,9 @@ public class ProdutoInput {
 
 	private BigDecimal customedio;
 	private SubCategoriaInput subcategoria;
-	// private EstoqueInput estoque;
+   private FornecedorInput fornecedor;
 
 	private List<Atributo> atributos;
-	private Set<Componente> componentes;
+	private List<Componente> componentes;
 
 }

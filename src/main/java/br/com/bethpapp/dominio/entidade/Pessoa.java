@@ -31,15 +31,17 @@ public class Pessoa implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-   public Pessoa() {
-	
-}
+ 
    @Setter(value = AccessLevel.NONE)
 	@Column(length = 100)
 	private String nome;
 
 	public void setNome(String nome) {
-	this.nome = nome.toUpperCase();
+		if (nome != null) {
+			this.nome = nome.toUpperCase();
+		} else {
+			this.nome = nome;
+		}
 }
 	@Column(length = 14)
 	private String cpfouCnpj;

@@ -4,7 +4,8 @@ package br.com.bethpapp.dominio.enumerado;
 
 public enum TipoMovimentacao {
 	Entrada("Entrada"),
-	Saida("Saida");
+	Saida("Saida"),
+	Devolucao("Devolução");
 	private String descricao;
 
 	private TipoMovimentacao(String descricao) {
