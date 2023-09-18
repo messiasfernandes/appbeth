@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 import br.com.bethpapp.dominio.entidade.Comanda;
 import br.com.bethpapp.modelo.dto.ComandaDTO;
-import br.com.bethpapp.modelo.dto.FornecedorDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

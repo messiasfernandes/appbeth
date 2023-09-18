@@ -2,6 +2,7 @@ package br.com.bethpapp.dominio.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ import br.com.bethpapp.dominio.dao.DaoEntradaNota;
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
 import br.com.bethpapp.dominio.entidade.Fornecedor;
 import br.com.bethpapp.dominio.entidade.Produto;
+import br.com.bethpapp.dominio.entidade.ProdutoFornecedor;
 import br.com.bethpapp.dominio.service.exeption.NegocioException;
 import br.com.bethpapp.utils.LeituraXml;
 import jakarta.transaction.Transactional;
@@ -100,7 +102,7 @@ public class ServiceImportaNotafiscal {
 	@Transactional(rollbackOn = Exception.class)
 	public EntradaNotaCabecario salvar(EntradaNotaCabecario entrada, BigDecimal margen, Long idforma,
 			Integer qtdeparcelas) {
-	var fonecedorsalvo=	serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
+	
 		entrada.getItems_entrada().forEach(e -> e.setEntradaNotafiscal(entrada));
 
 		if ((daoEntradaNota.buscarnota(entrada.getFornecedor().getId(), entrada.getNumerodanota(), entrada.getStatusEntradaNota()) == true)) {
@@ -108,9 +110,15 @@ public class ServiceImportaNotafiscal {
 			throw new NegocioException("Nota  cadastrada já no banco de dados");
 		} else {
 			Map<String, Produto> produtosExistentes = new HashMap<>();
-
+			var fonecedorsalvo=	serviceForncedorNotaFiscal.salvarfornecedorXml(entrada.getFornecedor());
+			
 			for (int i = 0; i < entrada.getItems_entrada().size(); i++) {
-				entrada.getItems_entrada().get(i).getProduto().setFornecedor(fonecedorsalvo);
+				var produtofornecedor = new ProdutoFornecedor();
+				produtofornecedor.setDataCompra(LocalDate.now());
+				produtofornecedor.setFornecedor(fonecedorsalvo);
+				produtofornecedor.setValorProduto(entrada.getItems_entrada().get(i).getProduto().getPrecocusto());
+				produtofornecedor.setProduto(entrada.getItems_entrada().get(i).getProduto());
+				entrada.getItems_entrada().get(i).getProduto().getFornecedores().add(produtofornecedor);
 				String codigoFabricante = entrada.getItems_entrada().get(i).getProduto().getCodigofabricante();
 				long cont = serviceProduto.buscarCodFabricante(codigoFabricante);
 
@@ -121,7 +129,7 @@ public class ServiceImportaNotafiscal {
 					
 				} else {
 					
-					serviceProduto.salvar(entrada.getItems_entrada().get(i).getProduto());
+					serviceProduto.salvarProdutoNota(entrada.getItems_entrada().get(i).getProduto());
 				}
 			}
 

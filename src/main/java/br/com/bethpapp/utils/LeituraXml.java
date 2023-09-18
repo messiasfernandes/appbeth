@@ -11,7 +11,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import br.com.bethpapp.dominio.entidade.EntradaNotaCabecario;
-import br.com.bethpapp.dominio.entidade.Fornecedor;
 import br.com.bethpapp.dominio.entidade.ImpostoNota;
 import br.com.bethpapp.dominio.entidade.ItemEntradaNota;
 import br.com.bethpapp.dominio.entidade.Produto;
