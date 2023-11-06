@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.bethpapp.controller.documentacao.FornecedorOpenApi;
 import br.com.bethpapp.coversor.FornecedorConverter;
 import br.com.bethpapp.dominio.service.ServiceForncedor;
-import br.com.bethpapp.modelo.dto.ComandaDTO;
 import br.com.bethpapp.modelo.dto.FornecedorDTO;
 import br.com.bethpapp.modelo.input.FornecedorInput;
 import jakarta.servlet.http.HttpServletResponse;

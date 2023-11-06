@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.bethpapp.dominio.dao.DaoForncedor;
 import br.com.bethpapp.dominio.dao.DaoProduto;
 import br.com.bethpapp.dominio.entidade.Produto;
 import br.com.bethpapp.dominio.service.exeption.EntidadeEmUsoExeption;
@@ -17,8 +16,7 @@ import jakarta.transaction.Transactional;
 public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produto> {
 	@Autowired
 	private DaoProduto daoProduto;
-	@Autowired
-    private DaoForncedor daoForncedor;
+
 	@Override
 	public Page<Produto> buscar(String nome, Pageable pageable) {
 
@@ -59,6 +57,10 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 		if (objeto.getAtributos().size() > 0) {
 			objeto.setCaracteristica(concatenar(objeto));
 		}
+		if (objeto.getFornecedores().size() > 0) {
+			objeto.setCaracteristica(concatenar(objeto));
+		}
+	
 	
 //		if (objeto.getFornecedor() != null && objeto.getFornecedor().getId() != null) {
 //		    System.out.println("passou aqui");
@@ -75,7 +77,6 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 //		} else {
 //		    // Lide com o caso em que o fornecedor ou seu ID são nulos
 //		}
-          System.out.println(  objeto.getFornecedor());
 			produto = daoProduto.save(objeto);
 	
 		return produto;
@@ -116,5 +117,7 @@ public class ServiceProduto extends ServiceFuncoes implements ServiceModel<Produ
 		var codigoPais="789";
 		return"";
 	}
-
+    public Produto salvarProdutoNota(Produto objeto) {
+     return daoProduto.save(objeto)	;
+    }
 }
